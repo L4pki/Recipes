@@ -1,6 +1,6 @@
-using Domain.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
+using Domain.Entities.Map;
 
 namespace Infrastructure.Data.Configuration;
 public class UserRecipeLikeMapConfiguration : IEntityTypeConfiguration<UserRecipeLikeMapping>
@@ -16,7 +16,7 @@ public class UserRecipeLikeMapConfiguration : IEntityTypeConfiguration<UserRecip
                .OnDelete( DeleteBehavior.Restrict );
 
         builder.HasOne( rt => rt.Recipe )
-               .WithMany( t => t.Likers )
+               .WithMany( t => t.UsersLikes )
                .HasForeignKey( rt => rt.IdRecipe )
                .OnDelete( DeleteBehavior.Restrict );
     }

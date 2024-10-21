@@ -1,4 +1,4 @@
-using Infrastructure.Data;
+using Domain.Entities.Map;
 
 namespace Domain.Entities;
 
@@ -36,5 +36,9 @@ public class Recipe
     public List<UserRecipeLikeMapping> UsersLikes { get; private set; } = new List<UserRecipeLikeMapping>();
     public List<UserRecipeStarMapping> UsersStars { get; private set; } = new List<UserRecipeStarMapping>();
     public User Author { get; private set; }
+
+    public Recipe()
+    {
+    }
 
 }

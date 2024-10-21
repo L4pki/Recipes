@@ -13,4 +13,8 @@ public class Ingridient
         IdRecipe = idRecipe;
     }
     public Recipe Recipe { get; private init; }
+
+    public Ingridient()
+    {
+    }
 }

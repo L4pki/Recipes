@@ -13,4 +13,8 @@ public class Step
         NumberOfStep = numberOfStep;
     }
     public Recipe Recipe { get; private set; }
+
+    public Step()
+    {
+    }
 }

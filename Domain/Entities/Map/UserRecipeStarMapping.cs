@@ -1,4 +1,4 @@
-namespace Domain.Entities;
+namespace Domain.Entities.Map;
 public class UserRecipeStarMapping
 {
     public int IdUser { get; private set; }
@@ -6,4 +6,8 @@ public class UserRecipeStarMapping
 
     public int IdRecipe { get; private set; }
     public Recipe Recipe { get; private set; }
+
+    public UserRecipeStarMapping()
+    {
+    }
 }

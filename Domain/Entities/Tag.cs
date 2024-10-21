@@ -1,4 +1,4 @@
-using Infrastructure.Data;
+using Domain.Entities.Map;
 
 namespace Domain.Entities;
 public class Tag
@@ -11,5 +11,9 @@ public class Tag
         Name = name;
     }
 
-    public List<ResipesTagsMapping> RecipesByTag { get; set; } = new List<ResipesTagsMapping>();
+    public List<RecipesTagsMapping> RecipesByTag { get; set; } = new List<RecipesTagsMapping>();
+
+    public Tag()
+    {
+    }
 }

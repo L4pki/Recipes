@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Domain.Entities.Map;
 
 namespace Domain.Entities;
 
@@ -17,7 +18,9 @@ public class User
     }
 
     public List<Recipe> PersonalRecipes { get; set; } = new List<Recipe>();
-    public List<Recipe> FavoriteRecipes { get; set; } = new List<Recipe>();
-    public List<Recipe> LikeRecipes { get; set; } = new List<Recipe>();
-
+    public List<UserRecipeStarMapping> FavoriteRecipes { get; set; } = new List<UserRecipeStarMapping>();
+    public List<UserRecipeLikeMapping> LikeRecipes { get; set; } = new List<UserRecipeLikeMapping>();
+    public User()
+    {
+    }
 }
