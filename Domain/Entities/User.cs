@@ -18,6 +18,6 @@ public class User
 
     public List<Recipe> PersonalRecipes { get; set; } = new List<Recipe>();
     public List<Recipe> FavoriteRecipes { get; set; } = new List<Recipe>();
-    public List<Recipe> LikeRecipes { get; set; } = new List<Recipe> { };
+    public List<Recipe> LikeRecipes { get; set; } = new List<Recipe>();
 
 }

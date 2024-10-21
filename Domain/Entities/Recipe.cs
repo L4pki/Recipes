@@ -1,3 +1,5 @@
+using Infrastructure.Data;
+
 namespace Domain.Entities;
 
 public class Recipe
@@ -28,7 +30,11 @@ public class Recipe
         NumberOfPersons = numberOfPersons;
     }
 
-    public List<Tag> Tags { get; private set; } = new List<Tag>();
+    public List<RecipesTagsMapping> Tags { get; private set; } = new List<RecipesTagsMapping>();
     public List<Step> StepOfCooking { get; private set; } = new List<Step>();
     public List<Ingridient> IngridientForCooking { get; private set; } = new List<Ingridient>();
+    public List<UserRecipeLikeMapping> UsersLikes { get; private set; } = new List<UserRecipeLikeMapping>();
+    public List<UserRecipeStarMapping> UsersStars { get; private set; } = new List<UserRecipeStarMapping>();
+    public User Author { get; private set; }
+
 }
