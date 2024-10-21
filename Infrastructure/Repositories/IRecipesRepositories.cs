@@ -1,13 +1,13 @@
-using Domain.Entities;
+using Domain.RecipeEntities;
 
 namespace Domain.Repositories;
 public interface IRecipesRepositories
 {
-    public void Create(Recipes recipes);
-    public void Delete(Recipes recipes);
-    public Recipes Update(Recipes recipes);
-    public Recipes GetByTagsOrName(string tag);
-    public Recipes GetAll();
-    public Recipes GetByAuthor( string AuthorName );
-    public Recipes GetByMostLikes();
+    public void Create( Recipe recipes );
+    public void Delete( Recipe recipes );
+    public Recipe Update( Recipe recipes );
+    public Recipe GetByTagsOrName( string tag );
+    public Recipe GetAll();
+    public Recipe GetByAuthor( string AuthorName );
+    public Recipe GetByMostLikes();
 }
