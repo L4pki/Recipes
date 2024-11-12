@@ -2,7 +2,7 @@ using Application.Querys;
 using Domain.Interfaces;
 using MediatR;
 
-namespace Application.Handlers.UserHandlers.Querys;
+namespace Application.Querys.Handlers;
 public class CheckUserQueryHandler : IRequestHandler<CheckUserQuery, bool>
 {
     private readonly IUserRepository _userRepository;

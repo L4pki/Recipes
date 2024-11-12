@@ -3,7 +3,7 @@ using Domain.Entities.RecipeEntities;
 using Domain.Interfaces.RecipeInterfaces;
 using MediatR;
 
-namespace Application.Handlers.RecipeHandlers.Querys;
+namespace Application.Querys.Handlers;
 public class GetAllTagQueryHandler : IRequestHandler<GetAllTagQuery, IReadOnlyList<Tag>>
 {
     private readonly ITagRepository _tagRepository;

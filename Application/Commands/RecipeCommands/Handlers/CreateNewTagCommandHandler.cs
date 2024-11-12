@@ -1,10 +1,9 @@
-using Application.Commands.RecipeCommands;
 using Application.Models.Result;
 using Domain.Entities.RecipeEntities;
 using Domain.Interfaces.RecipeInterfaces;
 using MediatR;
 
-namespace Application.Handlers.RecipeHandlers.Commands;
+namespace Application.Commands.RecipeCommands.Handlers;
 public class CreateNewTagCommandHandler : IRequestHandler<CreateNewTagCommand, TagResult>
 {
     private readonly ITagRepository _tagRepository;

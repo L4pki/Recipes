@@ -1,12 +1,11 @@
-using Application.Commands.UserCommands;
 using Application.Models.Result;
 using Application.Querys;
-using Application.Sequrity;
+using Application.Seсurity;
 using Domain.Entities;
 using Domain.Interfaces;
 using MediatR;
 
-namespace Application.Handlers.UserHandlers.Commands;
+namespace Application.Commands.UserCommands.Handlers;
 
 public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, UserResult>
 {

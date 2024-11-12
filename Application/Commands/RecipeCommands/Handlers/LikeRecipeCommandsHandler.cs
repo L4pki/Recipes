@@ -1,8 +1,7 @@
-using Application.Commands.RecipeCommands;
 using Domain.Interfaces.RecipeInterfaces;
 using MediatR;
 
-namespace Application.Handlers.RecipeHandlers.Commands;
+namespace Application.Commands.RecipeCommands.Handlers;
 public class LikeRecipeCommandsHandler : IRequestHandler<LikeRecipeCommand, string>
 {
     private readonly IRecipeRepository _recipeRepository;

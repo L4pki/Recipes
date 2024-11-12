@@ -1,16 +1,18 @@
 using Application.Commands.RecipeCommands;
+using Application.Models.Result;
 using Application.Querys;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using WebAPI.Dto.RecipeDto;
+using WebAPI.Dto.UserDto;
 using WebAPI.Services;
 
 namespace WebAPI.Controllers;
 
 [ApiController]
-[Route( "recipes" )]
+[Route( "recipe" )]
 
 public class RecipeController : ControllerBase
 {
@@ -30,8 +32,8 @@ public class RecipeController : ControllerBase
 
         try
         {
-            var userClaims = _authService.GetUserClaims( token );
-            return Ok( await _mediator.Send(
+            UserClaimsDto userClaims = _authService.GetUserClaims( token );
+            RecipeResult newRecipe = await _mediator.Send(
                     new CreateRecipeCommand(
                         recipe.Name,
                         recipe.ShortDescription,
@@ -41,15 +43,17 @@ public class RecipeController : ControllerBase
                         recipe.NumberOfPersons,
                         recipe.Ingridients,
                         recipe.Steps,
-                        recipe.Tags ) ) );
+                        recipe.Tags ) );
+
+            return Ok( newRecipe );
         }
         catch ( SecurityTokenException )
         {
-            return Unauthorized( "Недействительный токен." );
+            return BadRequest( "Недействительный токен." );
         }
         catch
         {
-            return Unauthorized( "Неизвестная ошибка" );
+            return BadRequest( "Неизвестная ошибка" );
         }
     }
 
@@ -62,13 +66,13 @@ public class RecipeController : ControllerBase
 
         try
         {
-            var userClaims = _authService.GetUserClaims( token );
-            var recipeInDb = await _mediator.Send( new GetRecipeByIdQuery( recipe.IdRecipe ) );
+            UserClaimsDto userClaims = _authService.GetUserClaims( token );
+            RecipeResult recipeInDb = await _mediator.Send( new GetRecipeByIdQuery( recipe.IdRecipe ) );
             if ( recipeInDb.Recipe != null )
             {
                 if ( recipeInDb.Recipe.IdAuthor == userClaims.Id )
                 {
-                    return Ok( await _mediator.Send( new UpdateRecipeCommand(
+                    RecipeResult newRecipe = await _mediator.Send( new UpdateRecipeCommand(
                         recipe.IdRecipe,
                         recipe.Name,
                         recipe.ShortDescription,
@@ -78,7 +82,9 @@ public class RecipeController : ControllerBase
                         recipe.NumberOfPersons,
                         recipe.Ingridients,
                         recipe.Steps,
-                        recipe.Tags ) ) );
+                        recipe.Tags ) );
+
+                    return Ok( newRecipe );
                 }
                 return BadRequest( "Не является вашим рецептом!" );
             }
@@ -86,11 +92,11 @@ public class RecipeController : ControllerBase
         }
         catch ( SecurityTokenException )
         {
-            return Unauthorized( "Недействительный токен." );
+            return BadRequest( "Недействительный токен." );
         }
         catch
         {
-            return Unauthorized( "Неизвестная ошибка" );
+            return BadRequest( "Неизвестная ошибка" );
         }
     }
 
@@ -102,8 +108,8 @@ public class RecipeController : ControllerBase
 
         try
         {
-            var userClaims = _authService.GetUserClaims( token );
-            var recipe = await _mediator.Send( new GetRecipeByIdQuery( recipeId ) );
+            UserClaimsDto userClaims = _authService.GetUserClaims( token );
+            RecipeResult recipe = await _mediator.Send( new GetRecipeByIdQuery( recipeId ) );
             if ( recipe.Recipe != null )
             {
                 if ( recipe.Recipe.IdAuthor == userClaims.Id )
@@ -116,11 +122,11 @@ public class RecipeController : ControllerBase
         }
         catch ( SecurityTokenException )
         {
-            return Unauthorized( "Недействительный токен." );
+            return BadRequest( "Недействительный токен." );
         }
         catch
         {
-            return Unauthorized( "Неизвестная ошибка" );
+            return BadRequest( "Неизвестная ошибка" );
         }
     }
 
@@ -132,16 +138,16 @@ public class RecipeController : ControllerBase
 
         try
         {
-            var userClaims = _authService.GetUserClaims( token );
+            UserClaimsDto userClaims = _authService.GetUserClaims( token );
             return Ok( await _mediator.Send( new LikeRecipeCommand( recipeId, userClaims.Id ) ) );
         }
         catch ( SecurityTokenException )
         {
-            return Unauthorized( "Недействительный токен." );
+            return BadRequest( "Недействительный токен." );
         }
         catch
         {
-            return Unauthorized( "Неизвестная ошибка" );
+            return BadRequest( "Неизвестная ошибка" );
         }
     }
 

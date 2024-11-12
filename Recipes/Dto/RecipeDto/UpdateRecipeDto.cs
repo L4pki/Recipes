@@ -10,8 +10,8 @@ public class UpdateRecipeDto
     public string PhotoUrl { get; set; }
     public TimeSpan TimeCosts { get; set; }
     public int NumberOfPersons { get; set; }
-    public IngridientDto[] Ingridients { get; set; }
-    public StepDto[] Steps { get; set; }
-    public TagDto[] Tags { get; set; }
+    public List<IngridientDto> Ingridients { get; set; }
+    public List<StepDto> Steps { get; set; }
+    public List<TagDto> Tags { get; set; }
 
 }

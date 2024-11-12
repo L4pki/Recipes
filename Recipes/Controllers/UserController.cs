@@ -58,7 +58,7 @@ public class UserController : ControllerBase
 
         try
         {
-            var userClaims = _authService.GetUserClaims( token );
+            UserClaimsDto userClaims = _authService.GetUserClaims( token );
 
             UserResult serviceAnswer = await _mediator.Send( new UpdateUserCommand( user.Login, user.Password, user.Name, user.About, userClaims.Login ) );
 
@@ -67,11 +67,11 @@ public class UserController : ControllerBase
         }
         catch ( SecurityTokenException )
         {
-            return Unauthorized( "Недействительный токен." );
+            return BadRequest( "Недействительный токен." );
         }
         catch
         {
-            return Unauthorized( "Неизвестная ошибка" );
+            return BadRequest( "Неизвестная ошибка" );
         }
     }
 
@@ -83,16 +83,16 @@ public class UserController : ControllerBase
 
         try
         {
-            var userClaims = _authService.GetUserClaims( token );
+            UserClaimsDto userClaims = _authService.GetUserClaims( token );
             return Ok( await _mediator.Send( new StarUserCommand( recipeId, userClaims.Id ) ) );
         }
         catch ( SecurityTokenException )
         {
-            return Unauthorized( "Недействительный токен." );
+            return BadRequest( "Недействительный токен." );
         }
         catch
         {
-            return Unauthorized( "Неизвестная ошибка" );
+            return BadRequest( "Неизвестная ошибка" );
         }
     }
 
@@ -104,16 +104,16 @@ public class UserController : ControllerBase
 
         try
         {
-            var userClaims = _authService.GetUserClaims( token );
+            UserClaimsDto userClaims = _authService.GetUserClaims( token );
             return Ok( await _mediator.Send( new GetStarRecipeQuery( userClaims.Id ) ) );
         }
         catch ( SecurityTokenException )
         {
-            return Unauthorized( "Недействительный токен." );
+            return BadRequest( "Недействительный токен." );
         }
         catch
         {
-            return Unauthorized( "Неизвестная ошибка" );
+            return BadRequest( "Неизвестная ошибка" );
         }
     }
 
@@ -125,16 +125,16 @@ public class UserController : ControllerBase
 
         try
         {
-            var userClaims = _authService.GetUserClaims( token );
+            UserClaimsDto userClaims = _authService.GetUserClaims( token );
             return Ok( await _mediator.Send( new GetLikedRecipeQuery( userClaims.Id ) ) );
         }
         catch ( SecurityTokenException )
         {
-            return Unauthorized( "Недействительный токен." );
+            return BadRequest( "Недействительный токен." );
         }
         catch
         {
-            return Unauthorized( "Неизвестная ошибка" );
+            return BadRequest( "Неизвестная ошибка" );
         }
     }
 
@@ -146,16 +146,16 @@ public class UserController : ControllerBase
 
         try
         {
-            var userClaims = _authService.GetUserClaims( token );
+            UserClaimsDto userClaims = _authService.GetUserClaims( token );
             return Ok( await _mediator.Send( new GetUserByLoginQuery( userClaims.Login ) ) );
         }
         catch ( SecurityTokenException )
         {
-            return Unauthorized( "Недействительный токен." );
+            return BadRequest( "Недействительный токен." );
         }
         catch
         {
-            return Unauthorized( "Неизвестная ошибка" );
+            return BadRequest( "Неизвестная ошибка" );
         }
     }
 
@@ -167,16 +167,16 @@ public class UserController : ControllerBase
 
         try
         {
-            var userClaims = _authService.GetUserClaims( token );
+            UserClaimsDto userClaims = _authService.GetUserClaims( token );
             return Ok( await _mediator.Send( new GetRecipeByAuthorQuery( userClaims.Id ) ) );
         }
         catch ( SecurityTokenException )
         {
-            return Unauthorized( "Недействительный токен." );
+            return BadRequest( "Недействительный токен." );
         }
         catch
         {
-            return Unauthorized( "Неизвестная ошибка" );
+            return BadRequest( "Неизвестная ошибка" );
         }
     }
 }

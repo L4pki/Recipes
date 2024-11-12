@@ -3,7 +3,7 @@ using Domain.Entities;
 using Domain.Interfaces;
 using MediatR;
 
-namespace Application.Handlers.UserHandlers.Querys;
+namespace Application.Querys.Handlers;
 public class GetUserByLoginQueryHandler : IRequestHandler<GetUserByLoginQuery, User>
 {
     private readonly IUserRepository _userRepository;

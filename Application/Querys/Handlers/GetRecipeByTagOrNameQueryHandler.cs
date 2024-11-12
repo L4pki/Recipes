@@ -3,7 +3,7 @@ using Application.Querys;
 using Domain.Interfaces.RecipeInterfaces;
 using MediatR;
 
-namespace Application.Handlers.RecipeHandlers.Querys;
+namespace Application.Querys.Handlers;
 public class GetRecipeByTagOrNameQueryHandler : IRequestHandler<GetRecipeByTagOrNameQuery, RecipeListResult>
 {
     private readonly IRecipeRepository _recipeRepository;

@@ -1,11 +1,10 @@
-using Application.Commands.UserCommands;
 using Application.Models.Result;
 using Application.Querys;
 using Application.Seсurity;
 using Domain.Entities;
 using MediatR;
 
-namespace Application.Handlers.UserHandlers.Commands;
+namespace Application.Commands.UserCommands.Handlers;
 public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, UserResult>
 {
     private readonly IPasswordHasher _passwordHasher;

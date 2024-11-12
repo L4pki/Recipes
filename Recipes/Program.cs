@@ -1,4 +1,4 @@
-using Application.Sequrity;
+using Application.Seсurity;
 using Domain.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Repositories;

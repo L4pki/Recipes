@@ -1,8 +1,7 @@
-using Application.Commands.UserCommands;
 using Domain.Interfaces;
 using MediatR;
 
-namespace Application.Handlers.UserHandlers.Commands;
+namespace Application.Commands.UserCommands.Handlers;
 public class StarUserCommandHandler : IRequestHandler<StarUserCommand, string>
 {
     private readonly IUserRepository _userRepository;
