@@ -41,9 +41,9 @@ public class RecipeController : ControllerBase
                         userClaims.Id,
                         recipe.TimeCosts,
                         recipe.NumberOfPersons,
-                        recipe.Ingridients,
-                        recipe.Steps,
-                        recipe.Tags ) );
+                        recipe.Ingridients.ToArray(),
+                        recipe.Steps.ToArray(),
+                        recipe.Tags.ToArray() ) );
 
             return Ok( newRecipe );
         }
@@ -80,9 +80,9 @@ public class RecipeController : ControllerBase
                         userClaims.Id,
                         recipe.TimeCosts,
                         recipe.NumberOfPersons,
-                        recipe.Ingridients,
-                        recipe.Steps,
-                        recipe.Tags ) );
+                        recipe.Ingridients.ToArray(),
+                        recipe.Steps.ToArray(),
+                        recipe.Tags.ToArray() ) );
 
                     return Ok( newRecipe );
                 }
