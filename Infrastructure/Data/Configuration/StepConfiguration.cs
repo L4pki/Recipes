@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using Domain.RecipeEntities;
+using Domain.Entities.RecipeEntities;
 
 namespace Infrastructure.Data.Configuration;
 public class StepConfiguration : IEntityTypeConfiguration<Step>

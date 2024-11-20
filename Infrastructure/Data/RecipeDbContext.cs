@@ -1,9 +1,10 @@
-using Domain;
-using Domain.RecipeEntities;
+using Domain.Entities;
+using Domain.Entities.RecipeEntities;
 using Infrastructure.Data.Configuration;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data;
+
 public class RecipeDbContext : DbContext
 {
     public RecipeDbContext( DbContextOptions<RecipeDbContext> options )

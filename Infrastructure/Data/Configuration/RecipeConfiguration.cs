@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using Domain.RecipeEntities;
-using System.Reflection.Emit;
+using Domain.Entities.RecipeEntities;
 
 namespace Infrastructure.Data.Configuration;
+
 public class RecipeConfiguration : IEntityTypeConfiguration<Recipe>
 {
     public void Configure( EntityTypeBuilder<Recipe> builder )
