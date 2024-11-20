@@ -3,6 +3,7 @@ using Application.Models.Result;
 using MediatR;
 
 namespace Application.Commands.RecipeCommands;
+
 public class CreateRecipeCommand : IRequest<RecipeResult>
 {
     public string Name { get; set; }

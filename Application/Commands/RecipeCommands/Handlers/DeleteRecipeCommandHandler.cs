@@ -2,6 +2,7 @@ using Domain.Interfaces.RecipeInterfaces;
 using MediatR;
 
 namespace Application.Commands.RecipeCommands.Handlers;
+
 public class DeleteRecipeCommandHandler : IRequestHandler<DeleteRecipeCommand, string>
 {
     private readonly IRecipeRepository _recipeRepository;

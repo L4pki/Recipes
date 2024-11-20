@@ -5,6 +5,7 @@ using Domain.Entities;
 using MediatR;
 
 namespace Application.Commands.UserCommands.Handlers;
+
 public class LoginUserCommandHandler : IRequestHandler<LoginUserCommand, UserResult>
 {
     private readonly IPasswordHasher _passwordHasher;

@@ -1,7 +1,8 @@
 using Domain.Entities;
 using MediatR;
 
-namespace Application.Querys;
+namespace Application.Queries;
+
 public class GetUserByLoginQuery : IRequest<User>
 {
     public string Login { get; set; }

@@ -1,6 +1,7 @@
 using Domain.Entities.RecipeEntities;
 
 namespace Application.Models.Result;
+
 public class RecipeListResult
 {
     public IReadOnlyList<Recipe> Recipes { get; set; }

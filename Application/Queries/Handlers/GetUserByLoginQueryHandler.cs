@@ -1,9 +1,9 @@
-using Application.Querys;
 using Domain.Entities;
 using Domain.Interfaces;
 using MediatR;
 
-namespace Application.Querys.Handlers;
+namespace Application.Queries.Handlers;
+
 public class GetUserByLoginQueryHandler : IRequestHandler<GetUserByLoginQuery, User>
 {
     private readonly IUserRepository _userRepository;

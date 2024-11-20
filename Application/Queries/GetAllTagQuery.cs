@@ -1,7 +1,8 @@
 using Domain.Entities.RecipeEntities;
 using MediatR;
 
-namespace Application.Querys;
+namespace Application.Queries;
+
 public class GetAllTagQuery : IRequest<IReadOnlyList<Tag>>
 {
     public GetAllTagQuery()

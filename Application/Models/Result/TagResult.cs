@@ -1,4 +1,5 @@
 namespace Application.Models.Result;
+
 public class TagResult
 {
     public string Name { get; set; }

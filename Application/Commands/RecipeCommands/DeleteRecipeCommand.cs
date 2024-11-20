@@ -1,6 +1,7 @@
 using MediatR;
 
 namespace Application.Commands.RecipeCommands;
+
 public class DeleteRecipeCommand : IRequest<string>
 {
     public int Id { get; set; }

@@ -1,6 +1,7 @@
 using Domain.Entities.RecipeEntities;
 
 namespace Application.Models.Result;
+
 public class RecipeResult
 {
     public Recipe Recipe { get; set; }

@@ -1,6 +1,7 @@
 using MediatR;
 
 namespace Application.Commands.UserCommands;
+
 public class StarUserCommand : IRequest<string>
 {
     public int IdRecipe { get; set; }

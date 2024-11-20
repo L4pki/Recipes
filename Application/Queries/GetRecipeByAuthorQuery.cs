@@ -1,7 +1,8 @@
 using Application.Models.Result;
 using MediatR;
 
-namespace Application.Querys;
+namespace Application.Queries;
+
 public class GetRecipeByAuthorQuery : IRequest<RecipeListResult>
 {
     public int IdAuthor { get; set; }

@@ -3,6 +3,7 @@ using Application.Models.Result;
 using MediatR;
 
 namespace Application.Commands.RecipeCommands;
+
 public class UpdateRecipeCommand : IRequest<RecipeResult>
 {
     public int IdRecipe {  get; set; }

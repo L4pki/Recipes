@@ -4,6 +4,7 @@ using Domain.Interfaces.RecipeInterfaces;
 using MediatR;
 
 namespace Application.Commands.RecipeCommands.Handlers;
+
 public class CreateRecipeCommandHandler : IRequestHandler<CreateRecipeCommand, RecipeResult>
 {
     private readonly IRecipeRepository _recipeRepository;

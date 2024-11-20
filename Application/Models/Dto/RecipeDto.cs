@@ -2,6 +2,7 @@ using Domain.Entities.RecipeEntities;
 using Domain.Entities;
 
 namespace Application.Models.Dto;
+
 public class RecipeDto
 {
     public int Id { get; set; }

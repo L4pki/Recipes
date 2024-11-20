@@ -4,6 +4,7 @@ using Domain.Interfaces.RecipeInterfaces;
 using MediatR;
 
 namespace Application.Commands.RecipeCommands.Handlers;
+
 public class CreateNewTagCommandHandler : IRequestHandler<CreateNewTagCommand, TagResult>
 {
     private readonly ITagRepository _tagRepository;

@@ -1,6 +1,7 @@
 using MediatR;
 
-namespace Application.Querys;
+namespace Application.Queries;
+
 public class CheckUserQuery : IRequest<bool>
 {
     public string Login { get; set; }

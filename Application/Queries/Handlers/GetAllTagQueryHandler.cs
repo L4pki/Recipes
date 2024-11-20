@@ -1,9 +1,9 @@
-using Application.Querys;
 using Domain.Entities.RecipeEntities;
 using Domain.Interfaces.RecipeInterfaces;
 using MediatR;
 
-namespace Application.Querys.Handlers;
+namespace Application.Queries.Handlers;
+
 public class GetAllTagQueryHandler : IRequestHandler<GetAllTagQuery, IReadOnlyList<Tag>>
 {
     private readonly ITagRepository _tagRepository;

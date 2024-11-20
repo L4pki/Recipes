@@ -5,6 +5,7 @@ using Domain.Interfaces;
 using MediatR;
 
 namespace Application.Commands.UserCommands.Handlers;
+
 public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, UserResult>
 {
     private readonly IPasswordHasher _passwordHasher;

@@ -1,6 +1,7 @@
 using Domain.Entities;
 
 namespace Application.Models.Result;
+
 public class UserResult
 {
     public User User { get; set; }

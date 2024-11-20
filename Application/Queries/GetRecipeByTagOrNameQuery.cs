@@ -1,7 +1,8 @@
 using Application.Models.Result;
 using MediatR;
 
-namespace Application.Querys;
+namespace Application.Queries;
+
 public class GetRecipeByTagOrNameQuery : IRequest<RecipeListResult>
 {
     public string SearchString { get; set; }

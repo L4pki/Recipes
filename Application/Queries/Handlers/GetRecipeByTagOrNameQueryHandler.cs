@@ -1,9 +1,9 @@
 using Application.Models.Result;
-using Application.Querys;
 using Domain.Interfaces.RecipeInterfaces;
 using MediatR;
 
-namespace Application.Querys.Handlers;
+namespace Application.Queries.Handlers;
+
 public class GetRecipeByTagOrNameQueryHandler : IRequestHandler<GetRecipeByTagOrNameQuery, RecipeListResult>
 {
     private readonly IRecipeRepository _recipeRepository;

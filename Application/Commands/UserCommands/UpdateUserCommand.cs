@@ -2,6 +2,7 @@ using Application.Models.Result;
 using MediatR;
 
 namespace Application.Commands.UserCommands;
+
 public class UpdateUserCommand : IRequest<UserResult>
 {
     public string Login { get; set; }

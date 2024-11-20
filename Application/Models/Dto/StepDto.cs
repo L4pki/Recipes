@@ -1,4 +1,5 @@
 namespace Application.Models.Dto;
+
 public class StepDto
 {
     public int NumberOfStep { get; set; }
