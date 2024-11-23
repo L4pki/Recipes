@@ -7,6 +7,7 @@ public class User
     public int Id { get; private init; }
     public string Login { get; set; }
     public string PasswordHash { get; set; }
+    public string RefreshToken { get; set; }
     public string Name { get; set; }
     public string About { get; set; }
 

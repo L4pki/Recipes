@@ -1,4 +1,4 @@
-namespace Domain.Repositories;
+using Domain.Entities;
 public interface IUserRepositories
 {
     public void Create( User user );

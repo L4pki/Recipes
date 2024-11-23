@@ -1,0 +1,44 @@
+header {
+    background-color: #4CAF50; /* Цвет фона */
+    padding: 10px 20px; /* Отступы сверху и снизу, слева и справа */
+    color: white; /* Цвет текста */
+}
+
+nav {
+    display: flex; /* Используем Flexbox для навигации */
+    justify-content: space-between; /* Распределяем элементы по ширине */
+    align-items: center; /* Центрируем элементы по вертикали */
+}
+
+h1 {
+    margin: 0; /* Убираем отступы у заголовка */
+    font-size: 24px; /* Размер шрифта заголовка */
+}
+
+ul {
+    list-style-type: none; /* Убираем маркеры списка */
+    margin: 0; /* Убираем отступы у списка */
+    padding: 0; /* Убираем внутренние отступы у списка */
+    display: flex; /* Используем Flexbox для списка */
+}
+
+li {
+    margin: 0 15px; /* Отступы между элементами списка */
+}
+
+a {
+    color: white; /* Цвет ссылок */
+    text-decoration: none; /* Убираем подчеркивание у ссылок */
+}
+
+button {
+    background-color: transparent; /* Прозрачный фон для кнопки */
+    border: none; /* Убираем обводку у кнопки */
+    color: white; /* Цвет текста кнопки */
+    cursor: pointer; /* Курсор при наведении */
+    font-size: 16px; /* Размер шрифта кнопки */
+}
+
+button:hover {
+    text-decoration: underline; /* Подчеркивание текста кнопки при наведении */
+}

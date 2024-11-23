@@ -31,18 +31,24 @@ public class UpdateRecipeCommandHandler : IRequestHandler<UpdateRecipeCommand, R
         string.IsNullOrWhiteSpace( request.PhotoUrl ) ||
         request.NumberOfPersons == 0 ||
         request.TimeCosts == TimeSpan.Zero ||
-        request.Ingridients == null ||
+        request.Ingridients.Length == 0 ||
         request.Steps.Length == 0 ||
-        request.Tags == null )
+        request.Tags.Length == 0 )
         {
             return new RecipeResult( null, "Ошибка: Все поля обязательны для заполнения." );
         }
 
         Recipe newRecipe = await _recipeRepository.GetByIdAsync( request.IdRecipe, cancellationToken );
 
+        if( newRecipe == null )
+        {
+            return new RecipeResult( null, "Ошибка: Рецепт не найден." );
+        }
+
         newRecipe.Name = request.Name;
         newRecipe.ShortDescription = request.ShortDescription;
         newRecipe.PhotoUrl = request.PhotoUrl;
+        newRecipe.IdAuthor = request.IdAuthor;
         newRecipe.TimeCosts = request.TimeCosts;
         newRecipe.NumberOfPersons = request.NumberOfPersons;
 
@@ -58,6 +64,12 @@ public class UpdateRecipeCommandHandler : IRequestHandler<UpdateRecipeCommand, R
             recipe.Tags.Add( tagInDb );
         }
 
+        var existingIngridients = await _ingridientRepository.GetByRecipeIdAsync( recipe.Id, cancellationToken );
+        foreach ( var existingIngridient in existingIngridients )
+        {
+            await _ingridientRepository.DeleteAsync( existingIngridient, cancellationToken );
+        }
+
         foreach ( var ingridient in request.Ingridients )
         {
             var newIngridient = new Ingridient
@@ -68,6 +80,12 @@ public class UpdateRecipeCommandHandler : IRequestHandler<UpdateRecipeCommand, R
             };
 
             await _ingridientRepository.CreateAsync( newIngridient, cancellationToken );
+        }
+
+        var existingSteps = await _stepRepository.GetByRecipeIdAsync( recipe.Id, cancellationToken );
+        foreach ( var existingStep in existingSteps )
+        {
+            await _stepRepository.DeleteAsync( existingStep, cancellationToken );
         }
 
         int numberOfStep = 0;

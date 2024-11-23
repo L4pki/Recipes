@@ -1,0 +1,228 @@
+.recipe-content {
+    box-shadow: 0px 16px 72px 0px rgba(34, 39, 47, 0.1);
+    border-radius: 72px 24px 24px 0px;
+    width: 1200px;
+    height: 430px;
+}
+
+.recipe-link {
+    width: 430px;
+    height: 430px;
+}
+
+.recipe-item {
+    width: 1200px;
+    height: 430px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 16px 72px 0px rgba(34, 39, 47, 0.1);
+    border-radius: 72px 24px 24px 0px;
+    margin: 0px;
+    padding: 0px;
+}
+
+.recipe-image {
+    width: 430px;
+    height: 430px;
+    border-radius: 72px 0px 72px 0px;
+    background: rgba(255, 255, 255, 1);
+    margin: 0px;
+    object-fit: cover;
+}
+
+.recipe-about {
+    width: 100%;
+    height: 100%;
+    color: black;
+    background: rgba(255, 255, 255, 1);
+    padding: 40px;
+    box-sizing: border-box;
+    border-radius: 72px 24px 24px 0px;
+}
+
+.recipe-info-first {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+}
+
+.recipe-tag {
+    display: inline-block;
+    width: 90px;
+    height: 25px;
+    border-radius: 5px;
+    background: #fceccb;
+    text-align: center;
+    margin-right: 5px;
+}
+
+.recipe-tag-text {
+    width: 90px;
+    height: 20px;
+    font-family: Montserrat;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 30px;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: #f4a126;
+}
+
+.recipe-button {
+    display: flex;
+    align-items: center;
+}
+
+.starLike-button {
+    width: 107px;
+    height: 50px;
+    border-radius: 16px;
+    border: 1px solid rgba(253, 177, 0, 1);
+    color: rgba(253, 177, 0, 1);
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+    left: 0;
+}
+
+.starLike-button-image {
+    margin-left: 20px;
+    margin-right: 10px;
+}
+
+.starLike-button-text {
+    margin-left: 10px;
+    margin-right: 20px;
+    width: 19px;
+    height: 28px;
+    font-family: Montserrat;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 28px;
+    text-align: center;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+}
+
+.recipe-info-second {
+    width: 693px;
+    height: 141px;
+    margin-bottom: 50px;
+}
+
+.recipe-name {
+    color: rgba(37, 41, 45, 1);
+    width: 693px;
+    height: 30px;
+    font-family: Montserrat;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 30px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+}
+
+.recipe-description {
+    width: 571px;
+    height: 95px;
+    font-family: Montserrat;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 30px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(74, 82, 90, 1);
+}
+
+.recipe-info-third {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.recipe-time {
+    width: 236px;
+    height: 64px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.recipe-time-textbox {
+    margin-left: 15px;
+    height: 64px;
+}
+
+.recipe-time-text {
+    width: 168px;
+    height: 28px;
+    font-family: Montserrat;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 28px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: #cccccc;
+    margin: 5px 0px 0px 0px;
+}
+
+.recipe-time-value {
+    width: 64px;
+    height: 28px;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 28px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(37, 41, 45, 1);
+    margin: 0px;
+}
+
+.recipe-person {
+    width: 236px;
+    height: 64px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.recipe-person-textbox {
+    margin-left: 15px;
+    height: 64px;
+}
+
+.recipe-person-text {
+    width: 77px;
+    height: 28px;
+    font-family: Montserrat;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 28px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: #cccccc;
+    margin: 5px 0px 0px 0px;
+}
+
+.recipe-person-value {
+    width: 75px;
+    height: 28px;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 28px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(37, 41, 45, 1);
+    margin: 0px;
+}

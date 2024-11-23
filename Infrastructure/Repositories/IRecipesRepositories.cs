@@ -1,4 +1,4 @@
-using Domain.RecipeEntities;
+using Domain.Entities.RecipeEntities;
 
 namespace Domain.Repositories;
 public interface IRecipesRepositories

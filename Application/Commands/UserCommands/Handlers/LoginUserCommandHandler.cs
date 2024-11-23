@@ -1,5 +1,5 @@
 using Application.Models.Result;
-using Application.Querys;
+using Application.Queries;
 using Application.Seсurity;
 using Domain.Entities;
 using MediatR;
