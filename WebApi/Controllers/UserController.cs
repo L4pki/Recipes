@@ -1,6 +1,6 @@
 using Application.Commands.UserCommands;
 using Application.Models.Result;
-using Application.Querys;
+using Application.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
