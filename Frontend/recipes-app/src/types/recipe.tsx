@@ -17,6 +17,7 @@ export interface Step {
 
 export interface Recipe {
     id: number;
+    authorName: string;
     name: string;
     shortDescription: string;
     photoUrl: string;
@@ -29,6 +30,7 @@ export interface Recipe {
 
 export interface RecipeDetail {
     id: number;
+    authorName: string;
     name: string;
     shortDescription: string;
     photoUrl: string;

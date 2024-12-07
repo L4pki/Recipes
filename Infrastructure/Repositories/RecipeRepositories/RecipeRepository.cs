@@ -58,6 +58,7 @@ public class RecipeRepository : IRecipeRepository
         recipe.TimeCosts = modifiedRecipe.TimeCosts;
         recipe.NumberOfPersons = modifiedRecipe.NumberOfPersons;
         recipe.IdAuthor = modifiedRecipe.IdAuthor;
+        recipe.AuthorName = recipe.AuthorName;
         recipe.Tags.Clear();
         recipe.IngridientForCooking.Clear();
         recipe.StepOfCooking.Clear();
@@ -125,6 +126,7 @@ public class RecipeRepository : IRecipeRepository
                 ShortDescription = r.ShortDescription,
                 PhotoUrl = r.PhotoUrl,
                 IdAuthor = r.IdAuthor,
+                AuthorName = r.AuthorName,
                 TimeCosts = r.TimeCosts,
                 Tags = r.Tags.ToList(),
                 IngridientForCooking = r.IngridientForCooking.ToList(),
@@ -166,7 +168,6 @@ public class RecipeRepository : IRecipeRepository
         }
     }
 
-
     public async Task<IReadOnlyList<RecipeModel>> GetByTagsOrNameAsync( string searchQuery, CancellationToken cancellationToken )
     {
         if ( string.IsNullOrWhiteSpace( searchQuery ) )
@@ -188,6 +189,7 @@ public class RecipeRepository : IRecipeRepository
                 ShortDescription = r.ShortDescription,
                 PhotoUrl = r.PhotoUrl,
                 IdAuthor = r.IdAuthor,
+                AuthorName = r.AuthorName,
                 TimeCosts = r.TimeCosts,
                 Tags = r.Tags,
                 NumberOfPersons = r.NumberOfPersons,
@@ -214,6 +216,7 @@ public class RecipeRepository : IRecipeRepository
                 ShortDescription = r.ShortDescription,
                 PhotoUrl = r.PhotoUrl,
                 IdAuthor = r.IdAuthor,
+                AuthorName = r.AuthorName,
                 TimeCosts = r.TimeCosts,
                 Tags = r.Tags.ToList(),
                 NumberOfPersons = r.NumberOfPersons,
@@ -245,6 +248,7 @@ public class RecipeRepository : IRecipeRepository
                 ShortDescription = r.ShortDescription,
                 PhotoUrl = r.PhotoUrl,
                 IdAuthor = r.IdAuthor,
+                AuthorName = r.AuthorName,
                 TimeCosts = r.TimeCosts,
                 Tags = r.Tags,
                 NumberOfPersons = r.NumberOfPersons,
@@ -269,6 +273,7 @@ public class RecipeRepository : IRecipeRepository
                 ShortDescription = r.ShortDescription,
                 PhotoUrl = r.PhotoUrl,
                 IdAuthor = r.IdAuthor,
+                AuthorName = r.AuthorName,
                 TimeCosts = r.TimeCosts,
                 Tags = r.Tags,
                 NumberOfPersons = r.NumberOfPersons,
@@ -292,6 +297,7 @@ public class RecipeRepository : IRecipeRepository
                 ShortDescription = r.ShortDescription,
                 PhotoUrl = r.PhotoUrl,
                 IdAuthor = r.IdAuthor,
+                AuthorName = r.AuthorName,
                 TimeCosts = r.TimeCosts,
                 Tags = r.Tags,
                 NumberOfPersons = r.NumberOfPersons,
@@ -323,6 +329,7 @@ public class RecipeRepository : IRecipeRepository
                 ShortDescription = x.Recipe.ShortDescription,
                 PhotoUrl = x.Recipe.PhotoUrl,
                 IdAuthor = x.Recipe.IdAuthor,
+                AuthorName = x.Recipe.AuthorName,
                 TimeCosts = x.Recipe.TimeCosts,
                 Tags = x.Recipe.Tags,
                 NumberOfPersons = x.Recipe.NumberOfPersons,

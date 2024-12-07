@@ -23,6 +23,11 @@
     padding: 0px;
 }
 
+.recipe-container {
+    position: relative; 
+    display: inline-block; 
+}
+
 .recipe-image {
     width: 430px;
     height: 430px;
@@ -30,6 +35,22 @@
     background: rgba(255, 255, 255, 1);
     margin: 0px;
     object-fit: cover;
+}
+
+.recipe-author {
+    position: absolute;
+    bottom: 10px; 
+    width: auto;
+    height: auto; 
+    background: rgba(255, 255, 255, 1); 
+    font-family: Montserrat;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 28px;
+    text-align: left;
+    color: rgba(253, 177, 0, 1);
+    padding: 5px; 
+    border-radius: 0px 5px 5px 0px; 
 }
 
 .recipe-about {
@@ -148,6 +169,7 @@
 .recipe-time {
     width: 236px;
     height: 64px;
+    margin-right: 40px;
     display: flex;
     justify-content: left;
     align-items: center;

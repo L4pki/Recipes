@@ -13,6 +13,7 @@ public class RecipeModel
     public List<Tag> Tags { get; set; }
     public List<Step> StepOfCooking { get; set; }
     public List<Ingridient> IngridientForCooking { get; set; }
+    public string AuthorName { get; set; }
     public int NumberOfPersons { get; set; }
     public int UsersLikesCount { get; set; }
     public int UsersStarsCount { get; set; }

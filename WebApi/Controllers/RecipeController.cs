@@ -39,6 +39,7 @@ public class RecipeController : ControllerBase
                         recipe.ShortDescription,
                         recipe.PhotoUrl,
                         userClaims.Id,
+                        userClaims.Login,
                         recipe.TimeCosts,
                         recipe.NumberOfPersons,
                         recipe.Ingridients.ToArray(),
@@ -188,6 +189,8 @@ public class RecipeController : ControllerBase
     }
 
     [HttpGet( "detail/{id}" )]
+    [ProducesResponseType( typeof( RecipeDetailResult ), StatusCodes.Status200OK )]
+    [ProducesResponseType( typeof( string ), StatusCodes.Status400BadRequest )]
     public async Task<IActionResult> RecipeDetailAsync( int id )
     {
         try

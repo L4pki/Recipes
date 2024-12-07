@@ -1,19 +1,36 @@
 footer {
-    background-color: #333; /* Цвет фона */
-    color: white; /* Цвет текста */
-    text-align: center; /* Центрируем текст */
-    padding: 20px 0; /* Отступы сверху и снизу */
-    position: relative; /* Относительное позиционирование */
-    bottom: 0; /* Фиксация футера внизу */
-    width: 100%; /* Ширина футера */
+    width: auto;
+    height: 113px;
+    background: rgba(251, 249, 244, 1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 h1 {
-    margin: 0; /* Убираем отступы */
-    font-size: 24px; /* Размер шрифта заголовка */
+    width: 132px;
+    height: 39px;
+    font-family: Montserrat;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 39.01px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(253, 177, 0, 1);
+    margin-left: 100px;
 }
 
 h3 {
-    margin: 5px 0 0; /* Отступы для подзаголовка */
-    font-size: 16px; /* Размер шрифта подзаголовка */
+    width: 151px;
+    height: 24px;
+    font-family: Montserrat;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 24.38px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(74, 82, 90, 1);
+    margin-right: 100px;
 }
