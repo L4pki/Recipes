@@ -15,6 +15,6 @@ public class GetUserByLoginQueryHandler : IRequestHandler<GetUserByLoginQuery, U
 
     public async Task<User> Handle( GetUserByLoginQuery request, CancellationToken cancellationToken )
     {
-        return await _userRepository.GetUserInfoByLoginAsync( request.Login, cancellationToken );
+        return await _userRepository.GetUserByLoginAsync( request.Login, cancellationToken );
     }
 }

@@ -1,0 +1,45 @@
+.auth-container {
+    display: flex;
+    justify-content: center; /* Центрируем контейнер */
+    align-items: center; /* Центрируем по вертикали */
+    height: 100vh; /* Высота на весь экран */
+    background-color: #f4f4f4; /* Цвет фона страницы */
+}
+
+.auth-form-container {
+    background-color: white; /* Цвет фона формы */
+    padding: 20px; /* Отступы вокруг формы */
+    border-radius: 8px; /* Скругление углов */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Тень для формы */
+    width: 300px; /* Ширина формы */
+}
+
+.auth-title {
+    text-align: center; /* Центрируем заголовок */
+    margin-bottom: 20px; /* Отступ снизу */
+}
+
+.toggle-mode-button {
+    display: block; /* Делаем кнопку блочной */
+    margin: 20px auto 0; /* Отступы сверху и снизу */
+    padding: 10px; /* Отступы внутри кнопки */
+    background-color: #007bff; /* Цвет фона кнопки */
+    color: white; /* Цвет текста кнопки */
+    border: none; /* Убираем обводку */
+    border-radius: 5px; /* Скругление углов кнопки */
+    cursor: pointer; /* Курсор при наведении */
+    transition: background-color 0.3s; /* Плавный переход цвета фона */
+}
+
+.toggle-mode-button:hover {
+    background-color: #0056b3; /* Цвет фона кнопки при наведении */
+}
+
+.user-info {
+    text-align: center; /* Центрируем текст */
+}
+
+.user-greeting {
+    font-size: 20px; /* Размер шрифта приветствия */
+    margin-top: 20px; /* Отступ сверху */
+}

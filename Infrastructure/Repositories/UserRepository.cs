@@ -1,6 +1,7 @@
 using Domain.Entities;
 using Domain.Entities.RecipeEntities;
 using Domain.Interfaces;
+using Domain.Models;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,16 +27,10 @@ public class UserRepository : IUserRepository
         return await _recipeDbContext.Set<User>().AnyAsync( u => u.Login == login, cancellationToken );
     }
 
-    public async Task<User> GetUserInfoByLoginAsync( string login, CancellationToken cancellationToken )
+    public async Task<User> GetUserByLoginAsync( string login, CancellationToken cancellationToken )
     {
-        return await _recipeDbContext.Set<User>()
-            .Include( u => u.PersonalRecipes )
-            .ThenInclude( r => r.StepOfCooking )
-            .Include( u => u.PersonalRecipes )
-            .ThenInclude( r => r.IngridientForCooking )
-            .Include( u => u.PersonalRecipes )
-            .ThenInclude( r => r.Tags )
-        .FirstOrDefaultAsync( u => u.Login == login, cancellationToken );
+        return await _recipeDbContext.Set<User>().FirstOrDefaultAsync( u => u.Login == login, cancellationToken );
+        
     }
 
     public async Task DeleteAsync( int id, CancellationToken cancellationToken )
@@ -48,15 +43,32 @@ public class UserRepository : IUserRepository
         }
     }
 
-    public async Task<User> GetUserByIdAsync( int id, CancellationToken cancellationToken )
+    public async Task<UserModel> GetUserInfoByIdAsync( int id, CancellationToken cancellationToken )
     {
-        return await _recipeDbContext.Set<User>().FirstOrDefaultAsync( u => u.Id == id, cancellationToken );
+        var userModel = await _recipeDbContext.Set<User>()
+        .Where( u => u.Id == id )
+        .Include( u => u.PersonalRecipes )
+        .Include( u => u.FavoriteRecipes )
+        .Include( u => u.LikeRecipes )
+        .Select( u => new UserModel
+        {
+            Id = u.Id,
+            Login = u.Login,
+            Name = u.Name,
+            About = u.About,
+            FavoriteRecipesCount = u.FavoriteRecipes.Count,
+            LikeRecipesCount = u.LikeRecipes.Count,
+            PersonalRecipesCount = u.PersonalRecipes.Count,
+            PersonalRecipes = u.PersonalRecipes.ToList()
+        } )
+        .FirstOrDefaultAsync( cancellationToken );
+
+        return userModel;
     }
 
     public async Task<User> UpdateAsync( string login, User user, CancellationToken cancellationToken )
     {
         var existingUser = await _recipeDbContext.Set<User>().FirstOrDefaultAsync( u => u.Login == login, cancellationToken );
-        existingUser.Login = user.Login;
         existingUser.Name = user.Name;
         existingUser.About = user.About;
         existingUser.PasswordHash = user.PasswordHash;

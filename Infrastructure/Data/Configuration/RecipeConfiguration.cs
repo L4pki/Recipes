@@ -28,6 +28,9 @@ public class RecipeConfiguration : IEntityTypeConfiguration<Recipe>
         builder.Property( r => r.NumberOfPersons )
                .IsRequired();
 
+        builder.Property( r => r.AuthorName )
+               .IsRequired();
+
         builder.HasOne( r => r.Author )
                .WithMany( a => a.PersonalRecipes )
                .HasForeignKey( a => a.IdAuthor )

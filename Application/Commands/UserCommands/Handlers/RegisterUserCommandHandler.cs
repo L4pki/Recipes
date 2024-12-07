@@ -44,7 +44,8 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, U
             Login = request.Login,
             PasswordHash = hashedPassword,
             Name = request.Name,
-            About = request.About
+            About = request.About,
+            RefreshToken = request.RefreshToken,
         };
 
         await _userRepository.CreateAsync( newUser, cancellationToken );
