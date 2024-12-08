@@ -4,7 +4,7 @@ import handleError from "../utils/errorHandler";
 
 export const registerUser = async (userData: User) => {
     try {
-        const response = await axiosInstance.post("/user/register", userData);
+        const response = await axiosInstance.post("/auth/register", userData);
         console.log("Успешно зарегистрирован:", response.data);
         localStorage.setItem("token", response.data.token);
         return response.data;
@@ -18,7 +18,7 @@ export const loginUser = async (loginData: {
     password: string;
 }) => {
     try {
-        const response = await axiosInstance.post("/user/login", loginData);
+        const response = await axiosInstance.post("/auth/login", loginData);
         console.log("Успешный вход:", response.data);
         localStorage.setItem("token", response.data.token);
         return response.data;
@@ -29,7 +29,7 @@ export const loginUser = async (loginData: {
 
 export const refreshAccessToken = async () => {
     try {
-        const response = await axiosInstance.get('/user/token');
+        const response = await axiosInstance.get('/auth/token');
         localStorage.setItem('token', response.data.token);
         console.log("Успешный вход:", response.data);
     } catch (error) {

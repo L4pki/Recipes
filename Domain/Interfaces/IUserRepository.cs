@@ -18,4 +18,6 @@ public interface IUserRepository
     Task<string> StarAsync( int idRecipe, int idUser, CancellationToken cancellationToken );
 
     Task<User> UpdateAsync( string login, User user, CancellationToken cancellationToken );
+
+    Task<string> UpdateTokenAsync( string refreshToken, int idUser, CancellationToken cancellationToken );
 }

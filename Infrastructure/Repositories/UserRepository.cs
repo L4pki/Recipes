@@ -30,7 +30,7 @@ public class UserRepository : IUserRepository
     public async Task<User> GetUserByLoginAsync( string login, CancellationToken cancellationToken )
     {
         return await _recipeDbContext.Set<User>().FirstOrDefaultAsync( u => u.Login == login, cancellationToken );
-        
+
     }
 
     public async Task DeleteAsync( int id, CancellationToken cancellationToken )
@@ -105,4 +105,16 @@ public class UserRepository : IUserRepository
         return "Пользователь не найден";
     }
 
+    public async Task<string> UpdateTokenAsync( string refreshToken, int idUser, CancellationToken cancellationToken )
+    {
+        User user = await _recipeDbContext.Set<User>()
+            .FirstOrDefaultAsync( u => u.Id == idUser, cancellationToken );
+        if ( user != null )
+        {
+            user.RefreshToken = refreshToken;
+            await _recipeDbContext.SaveChangesAsync( cancellationToken );
+            return "Токен обновлен";
+        }
+        return "Пользователь не найден";
+    }
 }

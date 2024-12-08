@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import './Header.css'; // Импортируем стили
 import { infoUser } from "../../api/userService";
+import Popup from "../AuthPopup/AuthPopup";
 
 const Header: React.FC = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [username, setUsername] = useState<string | null>(null);
+    const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false); // Состояние для управления попапом
+    const [isLoginMode, setIsLoginMode] = useState<boolean>(true);
 
     
 
@@ -45,6 +48,10 @@ const Header: React.FC = () => {
         setUsername(null);
     };
 
+    const toggleMode = () => {
+        setIsLoginMode(!isLoginMode);
+    };
+
     return (
         <header>
             <nav>
@@ -78,6 +85,15 @@ const Header: React.FC = () => {
                             <li>
                                 <button onClick={handleLogout}>Выйти</button>
                             </li>
+                            <div>
+                            <button onClick={() => setIsPopupOpen(true)}>Вход</button>
+            <Popup
+                isOpen={isPopupOpen}
+                isLogin={isLoginMode}
+                onClose={() => setIsPopupOpen(false)}
+                onToggleMode={toggleMode}
+            />
+                            </div>
                         </>
                     ) : (
                         <li>
