@@ -28,12 +28,13 @@ public class UserController : ControllerBase
     [HttpPost( "register" )]
     public async Task<IActionResult> Register( [FromBody] CreateUserDto user )
     {
-        UserResult serviceAnswer = await _mediator.Send( new RegisterUserCommand( user.Login, user.Password, user.Name, user.About ) );
+        var newRefreshToken = _authService.GenerateRefreshToken();
+        UserResult serviceAnswer = await _mediator.Send( new RegisterUserCommand( user.Login, user.Password, user.Name, user.About, newRefreshToken ) );
 
         if ( serviceAnswer.Message == "Регистрация прошла успешно!" )
         {
             string token = _authService.GenerateJwtToken( serviceAnswer.User );
-            return Ok( new { Token = token, serviceAnswer.Message } );
+            return Ok( new { Token = token, RefreshToken = newRefreshToken, serviceAnswer.Message } );
         }
         return BadRequest( serviceAnswer );
     }
@@ -51,6 +52,29 @@ public class UserController : ControllerBase
     }
 
     [Authorize]
+    [HttpGet( "token" )]
+    public async Task<IActionResult> RefreshToken()
+    {
+        string token = HttpContext.Request.Headers[ "Authorization" ].ToString().Replace( "Bearer ", "" );
+        UserClaimsDto userClaims = _authService.GetUserClaims( token );
+
+        var user = await _mediator.Send( new GetUserByLoginQuery( userClaims.Login ) );
+        if ( user == null )
+        {
+            return Unauthorized();
+        }
+        if ( user.RefreshToken != "" )
+        {
+            var newJwtToken = _authService.GenerateJwtToken( user );
+            return Ok( new
+            {
+                Token = newJwtToken
+            } );
+        }
+        return Unauthorized();
+    }
+
+    [Authorize]
     [HttpPost( "update" )]
     public async Task<IActionResult> UpdateUserAsync( [FromBody] UpdateUserDto user )
     {
@@ -60,10 +84,9 @@ public class UserController : ControllerBase
         {
             UserClaimsDto userClaims = _authService.GetUserClaims( token );
 
-            UserResult serviceAnswer = await _mediator.Send( new UpdateUserCommand( user.Login, user.Password, user.Name, user.About, userClaims.Login ) );
+            UserResult serviceAnswer = await _mediator.Send( new UpdateUserCommand( user.Password, user.Name, user.About, userClaims.Login ) );
 
-            string newToken = _authService.GenerateJwtToken( serviceAnswer.User );
-            return Ok( new { Token = newToken, serviceAnswer.Message } );
+            return Ok( new { serviceAnswer.Message } );
         }
         catch ( SecurityTokenException )
         {
@@ -76,15 +99,15 @@ public class UserController : ControllerBase
     }
 
     [Authorize]
-    [HttpPost( "recipe/star" )]
-    public async Task<IActionResult> StarUserAsync( [FromBody] int recipeId )
+    [HttpPost( "recipe/star/{id}" )]
+    public async Task<IActionResult> StarUserAsync( int id )
     {
         string token = HttpContext.Request.Headers[ "Authorization" ].ToString().Replace( "Bearer ", "" );
 
         try
         {
             UserClaimsDto userClaims = _authService.GetUserClaims( token );
-            return Ok( await _mediator.Send( new StarUserCommand( recipeId, userClaims.Id ) ) );
+            return Ok( await _mediator.Send( new StarUserCommand( id, userClaims.Id ) ) );
         }
         catch ( SecurityTokenException )
         {
@@ -147,7 +170,7 @@ public class UserController : ControllerBase
         try
         {
             UserClaimsDto userClaims = _authService.GetUserClaims( token );
-            return Ok( await _mediator.Send( new GetUserByLoginQuery( userClaims.Login ) ) );
+            return Ok( await _mediator.Send( new GetUserInfoByIdQuery( userClaims.Id ) ) );
         }
         catch ( SecurityTokenException )
         {

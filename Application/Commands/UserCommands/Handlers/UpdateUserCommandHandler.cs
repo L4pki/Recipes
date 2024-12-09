@@ -20,8 +20,7 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, UserR
     public async Task<UserResult> Handle( UpdateUserCommand request, CancellationToken cancellationToken )
     {
 
-        if ( string.IsNullOrWhiteSpace( request.Login ) ||
-            string.IsNullOrWhiteSpace( request.Password ) ||
+        if ( string.IsNullOrWhiteSpace( request.Password ) ||
             string.IsNullOrWhiteSpace( request.Name ) ||
             string.IsNullOrWhiteSpace( request.About ) )
         {
@@ -37,7 +36,7 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, UserR
 
         User newUser = new User
         {
-            Login = request.Login,
+            Login = request.FormerLogin,
             PasswordHash = hashedPassword,
             Name = request.Name,
             About = request.About

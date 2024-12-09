@@ -22,6 +22,6 @@ public class IngridientConfiguration : IEntityTypeConfiguration<Ingridient>
         builder.HasOne( i => i.Recipe )
                .WithMany( a => a.IngridientForCooking )
                .HasForeignKey( i => i.IdRecipe )
-               .OnDelete( DeleteBehavior.Restrict );
+               .OnDelete( DeleteBehavior.Cascade );
     }
 }

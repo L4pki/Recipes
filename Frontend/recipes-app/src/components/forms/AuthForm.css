@@ -1,0 +1,152 @@
+.auth-title {
+    font-family: Montserrat;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 30px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgb(0, 0, 0);
+    width: 515px;
+    height: 30px;
+    margin-bottom: 40px;
+}
+
+.auth-text {
+    color: rgba(74, 82, 90, 1);
+    font-family: Montserrat;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 28px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+}
+
+.auth-container {
+    margin: 50px;
+}
+
+.auth-input-container {
+    position: relative;
+    display: grid;
+    justify-content: space-between;
+    height: 150px;
+}
+
+.auth-input-pass-container {
+    display: flex;
+    justify-content: space-between;
+    height: 75px;
+    width: 580px;
+    gap: 20px;
+}
+
+.auth-input {
+    width: 580px;
+    height: 50px;
+    border-radius: 16px;
+    border: 1px solid rgba(145, 150, 161, 0.4);
+    display: flex; /* Добавлено для выравнивания */
+    align-items: center; /* Центрирование текста по вертикали */
+    padding: 0 25px; /* Добавлено для отступа внутри инпута */
+    box-sizing: border-box; /* Учитывать padding и border в ширине и высоте */
+}
+
+.auth-input input[type="text"],
+.auth-input input[type="password"] {
+    width: 100%; /* Занимает всю ширину контейнера */
+    height: 100%; /* Занимает всю высоту контейнера */
+    font-family: Montserrat, sans-serif; /* Убедитесь, что шрифт указан правильно */
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28px;
+    text-align: left;
+    color: rgba(37, 41, 45, 0.5);
+    border: none; /* Убираем стандартные границы инпутов */
+    outline: none; /* Убираем обводку при фокусе */
+    background: transparent; /* Фон прозрачный, чтобы видеть фон контейнера */
+}
+
+/* Добавление стилей для фокуса */
+.auth-input input[type="text"]:focus,
+.auth-input input[type="password"]:focus {
+    border: 1px solid rgba(37, 41, 45, 0.8); /* Изменение цвета границы при фокусе */
+}
+
+.auth-form-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 580px;
+}
+
+.auth-button-login {
+    width: 278px;
+    height: 60px;
+    border-radius: 16px;
+    background: rgba(253, 177, 0, 1);
+    font-family: Montserrat;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 28px;
+    text-align: center;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(255, 255, 255, 1);
+}
+
+.auth-button-exit {
+    width: 278px;
+    height: 60px;
+    border-radius: 16px;
+    border: 1px solid rgba(253, 177, 0, 1);
+    font-family: Montserrat;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 28px;
+    text-align: center;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(253, 177, 0, 1);
+}
+
+.auth-form-change {
+    display: flex;
+    justify-content: center;
+    margin: 30px;
+    width: 520px;
+}
+
+.auth-button-change {
+    color: rgba(253, 177, 0, 1);
+    font-family: Montserrat;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 28px;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    height: 28px;
+    display: inline-block;
+    border-bottom: 1px dashed rgba(253, 177, 0, 1);
+    padding-bottom: 2px;
+}
+
+.error-message {
+    width: 276px;
+    height: 28px;
+    font-family: Montserrat;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 28px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(37, 41, 45, 0.3);
+}
+
+.input-message {
+    display: flex;
+    flex-wrap: wrap;
+    width: 280px;
+}

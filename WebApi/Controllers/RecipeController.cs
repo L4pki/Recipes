@@ -39,6 +39,7 @@ public class RecipeController : ControllerBase
                         recipe.ShortDescription,
                         recipe.PhotoUrl,
                         userClaims.Id,
+                        userClaims.Login,
                         recipe.TimeCosts,
                         recipe.NumberOfPersons,
                         recipe.Ingridients.ToArray(),
@@ -58,8 +59,8 @@ public class RecipeController : ControllerBase
     }
 
     [Authorize]
-    [HttpPost( "update" )]
-    public async Task<IActionResult> UpdateRecipeAsync( [FromBody] UpdateRecipeDto recipe )
+    [HttpPost( "update/{id}" )]
+    public async Task<IActionResult> UpdateRecipeAsync( [FromBody] UpdateRecipeDto recipe, int id )
     {
 
         string token = HttpContext.Request.Headers[ "Authorization" ].ToString().Replace( "Bearer ", "" );
@@ -67,13 +68,14 @@ public class RecipeController : ControllerBase
         try
         {
             UserClaimsDto userClaims = _authService.GetUserClaims( token );
-            RecipeResult recipeInDb = await _mediator.Send( new GetRecipeByIdQuery( recipe.IdRecipe ) );
+            RecipeResult recipeInDb = await _mediator.Send( new GetRecipeByIdQuery( id ) );
             if ( recipeInDb.Recipe != null )
             {
                 if ( recipeInDb.Recipe.IdAuthor == userClaims.Id )
                 {
+
                     RecipeResult newRecipe = await _mediator.Send( new UpdateRecipeCommand(
-                        recipe.IdRecipe,
+                        id,
                         recipe.Name,
                         recipe.ShortDescription,
                         recipe.PhotoUrl,
@@ -83,6 +85,7 @@ public class RecipeController : ControllerBase
                         recipe.Ingridients.ToArray(),
                         recipe.Steps.ToArray(),
                         recipe.Tags.ToArray() ) );
+
 
                     return Ok( newRecipe );
                 }
@@ -96,7 +99,7 @@ public class RecipeController : ControllerBase
         }
         catch
         {
-            return BadRequest( "Неизвестная ошибка" );
+            return BadRequest( "Ошибка неизвестна" );
         }
     }
 
@@ -131,15 +134,15 @@ public class RecipeController : ControllerBase
     }
 
     [Authorize]
-    [HttpPost( "recipe/like" )]
-    public async Task<IActionResult> LikeRecipeAsync( [FromBody] int recipeId )
+    [HttpPost( "like/{id}" )]
+    public async Task<IActionResult> LikeRecipeAsync( int id )
     {
         string token = HttpContext.Request.Headers[ "Authorization" ].ToString().Replace( "Bearer ", "" );
 
         try
         {
             UserClaimsDto userClaims = _authService.GetUserClaims( token );
-            return Ok( await _mediator.Send( new LikeRecipeCommand( recipeId, userClaims.Id ) ) );
+            return Ok( await _mediator.Send( new LikeRecipeCommand( id, userClaims.Id ) ) );
         }
         catch ( SecurityTokenException )
         {
@@ -151,10 +154,54 @@ public class RecipeController : ControllerBase
         }
     }
 
-    [HttpPost( "search" )]
-    public async Task<IActionResult> RecipeListBySearchString( [FromBody] string searchString )
+    [HttpGet( "search/{searchString}" )]
+    public async Task<IActionResult> RecipeListBySearchString( string searchString )
     {
         return Ok( await _mediator.Send( new GetRecipeByTagOrNameQuery( searchString ) ) );
+    }
+
+    [HttpGet( "mostliked" )]
+    public async Task<IActionResult> RecipesMostLikedAsync()
+    {
+        return Ok( await _mediator.Send( new GetMostLikedRecipeQuery() ) );
+    }
+
+    [Authorize]
+    [HttpGet( "status/{id}" )]
+    public async Task<IActionResult> RecipeStatusAsync( int id )
+    {
+        string token = HttpContext.Request.Headers[ "Authorization" ].ToString().Replace( "Bearer ", "" );
+
+        try
+        {
+            UserClaimsDto userClaims = _authService.GetUserClaims( token );
+            RecipeStatusResult result = await _mediator.Send( new CheckLikeStarRecipeByUserQuery( userClaims.Id, id ) );
+            return Ok( result );
+        }
+        catch ( SecurityTokenException )
+        {
+            return BadRequest( "Недействительный токен." );
+        }
+        catch
+        {
+            return BadRequest( "Неизвестная ошибка" );
+        }
+    }
+
+    [HttpGet( "detail/{id}" )]
+    [ProducesResponseType( typeof( RecipeDetailResult ), StatusCodes.Status200OK )]
+    [ProducesResponseType( typeof( string ), StatusCodes.Status400BadRequest )]
+    public async Task<IActionResult> RecipeDetailAsync( int id )
+    {
+        try
+        {
+            RecipeDetailResult result = await _mediator.Send( new GetRecipeDetailQuery( id ) );
+            return Ok( result );
+        }
+        catch
+        {
+            return BadRequest( "Неизвестная ошибка" );
+        }
     }
 
     [HttpPost( "tag/create" )]
@@ -171,9 +218,14 @@ public class RecipeController : ControllerBase
     }
 
     [HttpGet( "tag/getall" )]
-    public async Task<IActionResult> GetAll()
+    public async Task<IActionResult> GetAllAsync()
     {
         return Ok( await _mediator.Send( new GetAllTagQuery() ) );
     }
 
+    [HttpGet( "tag/getpopular" )]
+    public async Task<IActionResult> GetPopularAsync()
+    {
+        return Ok( await _mediator.Send( new GetPopularTagQuery() ) );
+    }
 }

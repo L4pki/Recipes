@@ -8,4 +8,6 @@ public interface IAuthService
     public string GenerateJwtToken( User user );
 
     public UserClaimsDto GetUserClaims( string token );
+
+    public string GenerateRefreshToken();
 }

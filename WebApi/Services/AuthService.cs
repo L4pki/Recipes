@@ -2,6 +2,7 @@ using Domain.Entities;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using WebAPI.Dto.UserDto;
 
@@ -37,6 +38,16 @@ public class AuthService : IAuthService
             signingCredentials: creds );
 
         return new JwtSecurityTokenHandler().WriteToken( token );
+    }
+
+    public string GenerateRefreshToken()
+    {
+        var randomNumber = new byte[ 32 ];
+        using ( var rng = new RNGCryptoServiceProvider() )
+        {
+            rng.GetBytes( randomNumber );
+            return Convert.ToBase64String( randomNumber );
+        }
     }
 
     public UserClaimsDto GetUserClaims( string token )

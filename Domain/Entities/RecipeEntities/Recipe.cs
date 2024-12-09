@@ -7,6 +7,7 @@ public class Recipe
     public string ShortDescription { get; set; }
     public string PhotoUrl { get; set; }
     public int IdAuthor { get; set; }
+    public string AuthorName { get; set; }
     public TimeSpan TimeCosts { get; set; }
     public int NumberOfPersons { get; set; }
 

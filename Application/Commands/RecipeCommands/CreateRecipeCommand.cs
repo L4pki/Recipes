@@ -10,6 +10,7 @@ public class CreateRecipeCommand : IRequest<RecipeResult>
     public string ShortDescription { get; set; }
     public string PhotoUrl { get; set; }
     public int IdAuthor { get; set; }
+    public string AuthorName { get; set; }
     public TimeSpan TimeCosts { get; set; }
     public int NumberOfPersons { get; set; }
     public IngridientDto[] Ingridients { get; set; }
@@ -21,6 +22,7 @@ public class CreateRecipeCommand : IRequest<RecipeResult>
         string shortDescription,
         string photoUrl,
         int idAuthor,
+        string authorName,
         TimeSpan timeCosts,
         int numberOfPersons,
         IngridientDto[] ingridients,
@@ -31,6 +33,7 @@ public class CreateRecipeCommand : IRequest<RecipeResult>
         ShortDescription = shortDescription;
         PhotoUrl = photoUrl;
         IdAuthor = idAuthor;
+        AuthorName = authorName;
         TimeCosts = timeCosts;
         NumberOfPersons = numberOfPersons;
         Ingridients = ingridients;

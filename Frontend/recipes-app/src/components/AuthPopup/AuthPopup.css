@@ -1,0 +1,43 @@
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+}
+
+.popup-content {
+    background: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 700px;
+    border-radius: 24px;
+    transition: height 0.3s ease;
+}
+
+.popup-content.login {
+    height: 479px;
+}
+
+.popup-content.regist {
+    height: 563px;
+}
+
+.popup-content.choise {
+    height: 336px;
+}
+
+.error-message-box {
+    display: flex;
+    justify-content: center;
+    margin: 15px;
+}
+
+.popup-close {
+    float: right;
+    margin: 15px;
+}

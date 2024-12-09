@@ -14,6 +14,15 @@ using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder( args );
 
+builder.Services.AddCors( options =>
+{
+    options.AddPolicy( "AllowSpecificOrigin",
+        builder => builder.WithOrigins( "http://localhost:3000" )
+                          .AllowAnyMethod()
+                          .AllowAnyHeader()
+                          .AllowCredentials() );
+} );
+
 builder.Services.AddMediatR( cfg => cfg.RegisterServicesFromAssemblyContaining<RegisterUserCommand>() );
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -97,6 +106,8 @@ if ( app.Environment.IsDevelopment() )
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors( "AllowSpecificOrigin" );
 
 app.UseAuthorization();
 

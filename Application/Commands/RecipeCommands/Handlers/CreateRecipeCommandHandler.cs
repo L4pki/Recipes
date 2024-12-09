@@ -44,6 +44,7 @@ public class CreateRecipeCommandHandler : IRequestHandler<CreateRecipeCommand, R
             ShortDescription = request.ShortDescription,
             PhotoUrl = request.PhotoUrl,
             IdAuthor = request.IdAuthor,
+            AuthorName = request.AuthorName,
             TimeCosts = request.TimeCosts,
             NumberOfPersons = request.NumberOfPersons
         };
