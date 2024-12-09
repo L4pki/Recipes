@@ -3,12 +3,12 @@ import axios from 'axios';
 const handleError = (error: any) => {
     if (axios.isAxiosError(error)) {
         if (error.response) {
-            console.error('Ошибка:', error.response.data);
+            return { message: error.response.data.message || 'Произошла ошибка.', status: error.response.status };
         } else {
-            console.error('Ошибка:', error.message);
+            return { message: error.message, status: 500 };
         }
     } else {
-        console.error('Ошибка:', error);
+        return { message: 'Неизвестная ошибка', status: 500 };
     }
 };
 

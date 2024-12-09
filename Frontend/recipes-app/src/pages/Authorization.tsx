@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { User } from "../types/user";
 import { registerUser , loginUser  } from "../api/authService";
-import AuthForm from "../components/forms/AuthForm";
 import { infoUser } from "../api/userService";
 import { useNavigate } from "react-router-dom";
-import './styles/AuthComponent.css';
 
 const Authorization: React.FC = () => {
     const [user, setUser ] = useState<User>({
@@ -61,12 +59,7 @@ const Authorization: React.FC = () => {
             {!isAuthenticated ? (
                 <div className="auth-form-container">
                     <h2 className="auth-title">{isLoginMode ? "Вход" : "Регистрация"}</h2>
-                    <AuthForm
-                        user={user}
-                        onChange={handleChange}
-                        onSubmit={handleSubmit}
-                        isLoginMode={isLoginMode}
-                    />
+                    
                     <button className="toggle-mode-button" onClick={toggleMode}>
                         Перейти к {isLoginMode ? "регистрации" : "входу"}
                     </button>

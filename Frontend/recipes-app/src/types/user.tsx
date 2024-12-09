@@ -7,6 +7,10 @@ export interface User {
     about: string;
 }
 
+export interface PopupStatus {
+    status: "login" | "regist" | "choise";
+}
+
 export interface UserInfo {
     id: string; // Добавляем идентификатор пользователя
     login: string;
