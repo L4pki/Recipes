@@ -27,6 +27,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                .HasMaxLength( 100 )
                .IsRequired();
 
+        builder.Property( u => u.RefreshToken )
+               .IsRequired();
+
         builder.HasMany( a => a.PersonalRecipes )
                .WithOne( r => r.Author )
                .HasForeignKey( r => r.IdAuthor )

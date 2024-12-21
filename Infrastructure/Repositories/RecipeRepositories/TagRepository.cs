@@ -38,4 +38,19 @@ public class TagRepository : ITagRepository
         return await _recipeDbContext.Set<Tag>().FirstOrDefaultAsync( u => u.Name == name, cancellationToken );
     }
 
+    public async Task<IReadOnlyList<Tag>> GetPopularTagAsync( CancellationToken cancellationToken )
+    {
+        return await _recipeDbContext.Tags
+            .Where( tag => tag.RecipesByTag.Any() ) 
+            .GroupBy( tag => tag.Id )
+            .OrderByDescending( g => g.Count() ) 
+            .Select( g => new
+            {
+                Tag = g.FirstOrDefault(), 
+                Count = g.Count() 
+            } )
+            .Take( 10 ) 
+            .ToListAsync( cancellationToken ) 
+            .ContinueWith( task => task.Result.Select( x => x.Tag ).ToList(), cancellationToken );
+    }
 }

@@ -1,0 +1,76 @@
+header {
+    padding: 10px 20px; /* Отступы сверху и снизу, слева и справа */
+    background-color: rgb(134, 132, 132); /* Цвет текста */
+}
+
+nav {
+    display: flex; /* Используем Flexbox для навигации */
+    justify-content: space-between; /* Распределяем элементы по ширине */
+    align-items: center; /* Центрируем элементы по вертикали */
+}
+
+h1 {
+    width: 132px;
+    height: 39px;
+    font-family: Montserrat;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 39.01px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(253, 177, 0, 1);
+    margin-left: 100px;
+}
+
+.header-navigate {
+    width: 524px;
+    height: 29px;
+    display: flex;
+    align-items: center;
+}
+
+.nav-link {
+    width: 74px;
+    height: 22px;
+    font-family: Montserrat;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 21.94px;
+    text-align: left;
+    color: rgba(145, 150, 161, 1);
+    transition: color 0.3s, font-weight 0.3s;
+}
+
+.nav-link-active {
+    font-weight: 600;
+    color: rgba(58, 60, 65, 1);
+}
+
+ul {
+    list-style-type: none; /* Убираем маркеры списка */
+    margin: 0; /* Убираем отступы у списка */
+    padding: 0; /* Убираем внутренние отступы у списка */
+    display: flex; /* Используем Flexbox для списка */
+}
+
+li {
+    margin: 0 15px; /* Отступы между элементами списка */
+}
+
+a {
+    color: white; /* Цвет ссылок */
+    text-decoration: none; /* Убираем подчеркивание у ссылок */
+}
+
+button {
+    background-color: transparent; /* Прозрачный фон для кнопки */
+    border: none; /* Убираем обводку у кнопки */
+    color: white; /* Цвет текста кнопки */
+    cursor: pointer; /* Курсор при наведении */
+    font-size: 16px; /* Размер шрифта кнопки */
+}
+
+button:hover {
+    text-decoration: underline; /* Подчеркивание текста кнопки при наведении */
+}

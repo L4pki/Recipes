@@ -20,6 +20,6 @@ public class StepConfiguration : IEntityTypeConfiguration<Step>
         builder.HasOne( s => s.Recipe )
                .WithMany( a => a.StepOfCooking )
                .HasForeignKey( s => s.IdRecipe )
-               .OnDelete( DeleteBehavior.Restrict );
+               .OnDelete( DeleteBehavior.Cascade );
     }
 }
