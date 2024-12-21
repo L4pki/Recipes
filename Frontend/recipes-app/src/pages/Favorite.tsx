@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { getFavoriteRecipes, checkStatusLikeStarRecipe, likeRecipe, starRecipe } from '../api/recipeService';
 import { Recipe, RecipeStatus } from '../types/recipe';
 import './styles/Favorite.css';
-import RecipeForm from '../components/RecipeCard/RecipeCard';
+import { RecipeCard } from '../components/RecipeCard/RecipeCard';
 
 const Favorite = () => {
     const [favoriteRecipes, setFavoriteRecipes] = useState<Recipe[]>([]);
@@ -77,7 +77,7 @@ const Favorite = () => {
             <ul className="recipes-list">
                 {favoriteRecipes.length > 0 ? (
                     favoriteRecipes.map(recipe => (
-                        <RecipeForm
+                        <RecipeCard
                             key={recipe.id}
                             recipe={recipe}
                             recipeStatus={recipeStatuses[recipe.id]}
