@@ -6,19 +6,6 @@
 
 .content {
     flex: 1;
-    padding: 20px;
-    background-color: #f9f9f9;
-}
-
-header {
-    background-color: #282c34;
-    color: white;
-    padding: 10px 20px;
-}
-
-footer {
-    background-color: #282c34;
-    color: white;
-    text-align: center;
-    padding: 10px 0;
+    padding: 20px 100px;
+    background: #fefefb;
 }

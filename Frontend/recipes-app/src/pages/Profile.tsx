@@ -7,6 +7,7 @@ import { Recipe, RecipeStatus } from '../types/recipe';
 import { likeRecipe, starRecipe, checkStatusLikeStarRecipe } from '../api/recipeService';
 import UserEditForm from '../components/forms/UserEditForm';
 import { useNavigate } from 'react-router-dom';
+import backspace from "../assets/images/backspace.png";
 
 const Profile: React.FC = () => {
   const [user, setUser ] = useState<UserInfo | null>(null);
@@ -183,7 +184,11 @@ const Profile: React.FC = () => {
 
   return (
     <div className="profile-container">
-      <h1>Профиль пользователя</h1>
+      <button className='backspace-button' onClick={()=>navigate("/main")}>
+        <img src={backspace} alt="Назад" />
+        <p className='backspace-text'>Назад</p> 
+      </button>
+      <p className="profile-title">Мой профиль</p>
       <div className="user-info">
         <p><strong>Имя:</strong> {user.name}</p>
         <p><strong>Логин:</strong> {user.login}</p>
