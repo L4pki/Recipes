@@ -55,8 +55,8 @@ export const RecipeCard: React.FC<RecipeFormProps> = ({
                 <div className="recipe-about">
                     <div className="recipe-info-first">
                         <div className="recipe-tags">
-                            {recipe.tags?.$values?.length > 0 ? (
-                                recipe.tags.$values.map((tag) => (
+                            {recipe.tags?.length > 0 ? (
+                                recipe.tags.map((tag) => (
                                     <div className="recipe-tag" key={tag.id}>
                                         {" "}
                                         <span className="recipe-tag-text">

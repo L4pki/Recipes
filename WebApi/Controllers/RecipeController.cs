@@ -189,8 +189,6 @@ public class RecipeController : ControllerBase
     }
 
     [HttpGet( "detail/{id}" )]
-    [ProducesResponseType( typeof( RecipeDetailResult ), StatusCodes.Status200OK )]
-    [ProducesResponseType( typeof( string ), StatusCodes.Status400BadRequest )]
     public async Task<IActionResult> RecipeDetailAsync( int id )
     {
         try

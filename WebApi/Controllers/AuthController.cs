@@ -25,8 +25,6 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost( "register" )]
-    [ProducesResponseType( typeof( string[] ), StatusCodes.Status200OK )]
-    [ProducesResponseType( typeof( UserResult ), StatusCodes.Status400BadRequest )]
     public async Task<IActionResult> Register( [FromBody] CreateUserDto user )
     {
         var newRefreshToken = _authService.GenerateRefreshToken();
@@ -41,8 +39,6 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost( "login" )]
-    [ProducesResponseType( typeof( string[] ), StatusCodes.Status200OK )]
-    [ProducesResponseType( typeof( UserResult ), StatusCodes.Status400BadRequest )]
     public async Task<IActionResult> Login( [FromBody] LoginUserDto user )
     {
         UserResult serviceAnswer = await _mediator.Send( new LoginUserCommand( user.Login, user.Password ) );
@@ -56,7 +52,6 @@ public class AuthController : ControllerBase
 
     [Authorize]
     [HttpGet( "token" )]
-    [ProducesResponseType( typeof( string ), StatusCodes.Status200OK )]
     public async Task<IActionResult> RefreshToken()
     {
         string token = HttpContext.Request.Headers[ "Authorization" ].ToString().Replace( "Bearer ", "" );

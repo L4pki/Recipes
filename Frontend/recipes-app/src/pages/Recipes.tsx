@@ -32,7 +32,7 @@ const Recipes: React.FC = () => {
         try {
             const response = await GetMostLikedRecipes();
             if (response) {
-                const recipesArray = response.recipes.$values || [];
+                const recipesArray = response.recipes || [];
                 setRecipes(recipesArray);
                 const statuses = await Promise.all(recipesArray.map(recipe => checkStatusLikeStarRecipe(recipe.id)));
                 const statusesMap = recipesArray.reduce((acc, recipe, index) => {
@@ -56,7 +56,7 @@ const Recipes: React.FC = () => {
         try {
             const response = await SearchRecipes(searchTerm);
             if (response && response.recipes) {
-                const recipesArray = response.recipes.$values || [];
+                const recipesArray = response.recipes || [];
                 setRecipes(recipesArray);
                 const statuses = await Promise.all(recipesArray.map(recipe => checkStatusLikeStarRecipe(recipe.id)));
                 const statusesMap = recipesArray.reduce((acc, recipe, index) => {
