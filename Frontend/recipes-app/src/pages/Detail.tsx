@@ -29,7 +29,6 @@ const Detail: React.FC = () => {
             try {
                 const userInfo = await infoUser ();
                 const personalRecipes = userInfo.personalRecipes.$values;
-                // Проверяем, есть ли текущий рецепт в списке персональных рецептов
                 const isPersonal = personalRecipes.some((personalRecipe: Recipe) => personalRecipe.id === Number(id));
                 setIsPersonalRecipe(isPersonal);
             } catch (err) {
@@ -62,8 +61,8 @@ const Detail: React.FC = () => {
             <p>Количество порций: {recipe.numberOfPersons}</p>
             <h3>Ингредиенты:</h3>
             <ul className="recipes-list">
-                {recipe.ingridientForCooking && recipe.ingridientForCooking.$values ? (
-                    recipe.ingridientForCooking.$values.map((ingredient) => (
+                {recipe.ingridientForCooking && recipe.ingridientForCooking ? (
+                    recipe.ingridientForCooking.map((ingredient) => (
                         <li className="recipe-item" key={ingredient.id}>{ingredient.title}</li>
                     ))
                 ) : (
@@ -72,8 +71,8 @@ const Detail: React.FC = () => {
             </ul>
             <h3>Шаги приготовления:</h3>
             <ol className="recipes-list">
-                {recipe.stepOfCooking && recipe.stepOfCooking.$values ? (
-                    recipe.stepOfCooking.$values.map((step, index) => (
+                {recipe.stepOfCooking && recipe.stepOfCooking ? (
+                    recipe.stepOfCooking.map((step, index) => (
                         <li className="recipe-item" key={index}>{step.description}</li>
                     ))
                 ) : (
@@ -82,8 +81,8 @@ const Detail: React.FC = () => {
             </ol>
             <h3>Теги:</h3>
             <ul className="recipes-list">
-                {recipe.tags && recipe.tags.$values ? (
-                    recipe.tags.$values.map((tag) => (
+                {recipe.tags && recipe.tags ? (
+                    recipe.tags.map((tag) => (
                         <li className="recipe-item" key={tag.id}>{tag.name}</li>
                     ))
                 ) : (
@@ -93,8 +92,6 @@ const Detail: React.FC = () => {
             <p>Количество лайков: {recipe.usersLikesCount}</p>
             <p>Количество звезд: {recipe.usersStarsCount}</p>
             <button onClick={() => navigate(-1)}>Назад</button>
-
-            {/* Кнопка редактирования, если рецепт персональный */}
             {isPersonalRecipe && (
                 <button onClick={() => navigate(`/RecipeEdit/${id}`)}>Редактировать рецепт</button>
             )}

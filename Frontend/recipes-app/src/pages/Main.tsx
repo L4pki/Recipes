@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './styles/Favorite.css'; // Добавьте стили, если нужно
-import { Recipe, RecipeStatus, Tag } from '../types/recipe';
-import { checkStatusLikeStarRecipe, GetMostLikedRecipes, likeRecipe, starRecipe, SearchRecipes, GetPopularTagList } from '../api/recipeService';
-import RecipeCard from '../components/RecipeCard/RecipeCard';
+import './styles/Favorite.css';
+import { Recipe, Tag } from '../types/recipe';
+import { GetMostLikedRecipes, SearchRecipes, GetPopularTagList } from '../api/recipeService';
+import { BestRecipeCard } from '../components/RecipeCard/RecipeCard';
 import PopularTags from '../components/forms/TagForm';
 
 const Main: React.FC = () => {
     const navigate = useNavigate();
     const [recipes, setRecipes] = useState<Recipe[]>([]);
-    const [recipeStatuses, setRecipeStatuses] = useState<{ [key: number]: RecipeStatus | undefined }>({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [searchString, setSearchString] = useState<string>('');
@@ -35,14 +34,8 @@ const Main: React.FC = () => {
         try {
             const response = await GetMostLikedRecipes();
             if (response) {
-                const recipesArray = response.recipes.$values || [];
+                const recipesArray = response.recipes || [];
                 setRecipes(recipesArray);
-                const statuses = await Promise.all(recipesArray.map(recipe => checkStatusLikeStarRecipe(recipe.id)));
-                const statusesMap = recipesArray.reduce((acc, recipe, index) => {
-                    acc[recipe.id] = statuses[index]; 
-                    return acc;
-                }, {} as { [key: number]: RecipeStatus | undefined });
-                setRecipeStatuses(statusesMap);
             } else {
                 setError('Не удалось получить избранные рецепты');
             }
@@ -58,61 +51,14 @@ const Main: React.FC = () => {
         fetchPopularTags();
     }, []);
 
-    const handleLike = async (recipeId: number) => {
-        try {
-            const currentStatus = recipeStatuses[recipeId]?.recipeLiked;
-            await likeRecipe(recipeId);
-            setRecipes(prevRecipes =>
-                prevRecipes.map(recipe => recipe.id === recipeId ? { 
-                    ...recipe, 
-                    usersLikesCount: currentStatus ? (recipe.usersLikesCount || 0) - 1 : (recipe.usersLikesCount || 0) + 1 
-                } : recipe)
-            );
-            setRecipeStatuses(prevStatuses => ({
-                ...prevStatuses,
-                [recipeId]: { ...prevStatuses[recipeId], recipeLiked: !currentStatus }
-            }));
-        } catch {
-            setError('Ошибка при установке лайка');
-        }
-    };
-
-    const handleStar = async (recipeId: number) => {
-        try {
-            const currentStatus = recipeStatuses[recipeId]?.recipeStarred;
-            await starRecipe(recipeId);
-            const updatedRecipeStatus = await checkStatusLikeStarRecipe(recipeId);
-            if (updatedRecipeStatus) {
-                setRecipes(prevRecipes =>
-                    prevRecipes.map(recipe => recipe.id === recipeId ? { 
-                        ...recipe, 
-                        usersStarsCount: currentStatus ? (recipe.usersStarsCount || 0) - 1 : (recipe.usersStarsCount || 0) + 1 
-                    } : recipe)
-                );
-                setRecipeStatuses(prevStatuses => ({
-                    ...prevStatuses,
-                    [recipeId]: { ...prevStatuses[recipeId], recipeStarred: updatedRecipeStatus.recipeStarred }
-                }));
-            }
-        } catch {
-            setError('Ошибка при установке звезды');
-        }
-    };
-
     const handleSearch = async (searchTerm: string) => {
         setLoading(true);
         setError(null);
         try {
             const response = await SearchRecipes(searchTerm);
             if (response && response.recipes) {
-                const recipesArray = response.recipes.$values || [];
+                const recipesArray = response.recipes || [];
                 setRecipes(recipesArray);
-                const statuses = await Promise.all(recipesArray.map(recipe => checkStatusLikeStarRecipe(recipe.id)));
-                const statusesMap = recipesArray.reduce((acc, recipe, index) => {
-                    acc[recipe.id] = statuses[index]; 
-                    return acc;
-                }, {} as { [key: number]: RecipeStatus | undefined });
-                setRecipeStatuses(statusesMap);
             } else {
                 setError('Не удалось найти рецепты по вашему запросу');
             }
@@ -124,8 +70,8 @@ const Main: React.FC = () => {
     };
 
     const handleTagClick = (tag: string) => {
-        setSearchString(tag); // Устанавливаем строку поиска на выбранный тег
-        handleSearch(tag); // Передаем новый тег в функцию поиска
+        setSearchString(tag);
+        handleSearch(tag);
     };
 
     const fetchPopularTags = async () => {
@@ -173,12 +119,9 @@ const Main: React.FC = () => {
                     <h2>Рецепты дня</h2>
                     <ul>
                         {recipes.map(recipe => (
-                            <RecipeCard
+                            <BestRecipeCard
                                 key={recipe.id}
                                 recipe={recipe}
-                                recipeStatus={recipeStatuses[recipe.id]}
-                                onLike={handleLike}
-                                onStar={handleStar}
                             />
                         ))}
                     </ul>

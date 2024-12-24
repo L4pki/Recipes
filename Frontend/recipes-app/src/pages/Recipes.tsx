@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './styles/Favorite.css'; // Добавьте стили, если нужно
+import './styles/Favorite.css';
 import { Recipe, RecipeStatus, Tag } from '../types/recipe';
 import { checkStatusLikeStarRecipe, GetMostLikedRecipes, likeRecipe, starRecipe, SearchRecipes, GetPopularTagList } from '../api/recipeService';
-import RecipeForm from '../components/RecipeCard/RecipeCard';
+import { RecipeCard } from '../components/RecipeCard/RecipeCard';
 import PopularTags from '../components/forms/TagForm';
 
 const Recipes: React.FC = () => {
@@ -32,7 +32,7 @@ const Recipes: React.FC = () => {
         try {
             const response = await GetMostLikedRecipes();
             if (response) {
-                const recipesArray = response.recipes.$values || [];
+                const recipesArray = response.recipes || [];
                 setRecipes(recipesArray);
                 const statuses = await Promise.all(recipesArray.map(recipe => checkStatusLikeStarRecipe(recipe.id)));
                 const statusesMap = recipesArray.reduce((acc, recipe, index) => {
@@ -56,7 +56,7 @@ const Recipes: React.FC = () => {
         try {
             const response = await SearchRecipes(searchTerm);
             if (response && response.recipes) {
-                const recipesArray = response.recipes.$values || [];
+                const recipesArray = response.recipes || [];
                 setRecipes(recipesArray);
                 const statuses = await Promise.all(recipesArray.map(recipe => checkStatusLikeStarRecipe(recipe.id)));
                 const statusesMap = recipesArray.reduce((acc, recipe, index) => {
@@ -173,7 +173,7 @@ const Recipes: React.FC = () => {
                     <h2>Рецепты</h2>
                     <ul>
                         {recipes.slice(0, visibleCount).map(recipe => (
-                            <RecipeForm
+                            <RecipeCard
                                 key={recipe.id}
                                 recipe={recipe}
                                 recipeStatus={recipeStatuses[recipe.id]}

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { infoUser , recipesUser, UpdateUser } from '../api/userService';
 import './styles/Profile.css';
 import { UserInfo, User } from '../types/user';
-import RecipeForm from '../components/RecipeCard/RecipeCard';
+import { RecipeCard } from '../components/RecipeCard/RecipeCard';
 import { Recipe, RecipeStatus } from '../types/recipe';
 import { likeRecipe, starRecipe, checkStatusLikeStarRecipe } from '../api/recipeService';
 import UserEditForm from '../components/forms/UserEditForm';
@@ -210,7 +210,7 @@ const Profile: React.FC = () => {
       <ul className="personal-recipes-list">
         {personalRecipes.length > 0 ? (
           personalRecipes.map(recipe => (
-            <RecipeForm
+            <RecipeCard
               key={recipe.id}
               recipe={recipe}
               recipeStatus={recipeStatuses[recipe.id]}

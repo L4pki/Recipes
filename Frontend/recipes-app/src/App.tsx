@@ -1,6 +1,6 @@
 //import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Authorization from "./pages/Authorization";
+//import Authorization from "./pages/Authorization";
 import Main from "./pages/Main";
 import Recipes from "./pages/Recipes";
 import Detail from "./pages/Detail";
@@ -39,7 +39,6 @@ function App() {
               <Header />
               <main className="content">
                   <Routes>
-                      <Route path="/authorization" element={<Authorization />} />
                       <Route path="/main" element={<Main />} />
                       <Route path="/recipes" element={<Recipes />} />
                       <Route path="/detail/:id" element={<Detail />} />
