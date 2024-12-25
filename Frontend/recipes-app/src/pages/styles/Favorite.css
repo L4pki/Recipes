@@ -1,0 +1,35 @@
+.favorite-recipes {
+    display: flex;
+    flex-direction: column;
+    width: 1200px;
+    justify-content: space-between;
+}
+
+.favorite-title {
+    font-family: Montserrat;
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 62px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(37, 41, 45, 1);
+}
+
+.recipes-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.recipe-list-clear {
+    margin-top: 60px;
+    font-family: Montserrat;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 30px;
+    text-align: center;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(253, 177, 0, 1);
+}
