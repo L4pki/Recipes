@@ -72,7 +72,7 @@ const Favorite = () => {
 
     return (
         <div className="favorite-recipes">
-            <h2>Избранные рецепты</h2>
+            <h2 className='favorite-title'>Избранное</h2>
             {error && <p className="error">{error}</p>}
             <ul className="recipes-list">
                 {favoriteRecipes.length > 0 ? (
@@ -86,7 +86,7 @@ const Favorite = () => {
                         />
                     ))
                 ) : (
-                    <li>Нет избранных рецептов.</li>
+                    <p className='recipe-list-clear'>Ваш список пуст</p>
                 )}
             </ul>
         </div>
