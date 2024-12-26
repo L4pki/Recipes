@@ -111,9 +111,23 @@ export const UpdateRecipeApi = async (
     }
 };
 
-export const CreateRecipeApi = async (recipe: CreateRecipe) => {
+export const CreateRecipeApi = async (recipe: CreateRecipe, imageFile: File): Promise<ApiResponseRecipe | undefined> => {
+    const formData = new FormData();
+    
+    formData.append("Name", recipe.name);
+    formData.append("ShortDescription", recipe.shortDescription);
+    formData.append("TimeCosts", recipe.timeCosts.toString());
+    formData.append("NumberOfPersons", recipe.numberOfPersons.toString());
+    formData.append("Ingridients", JSON.stringify(recipe.ingridients));
+    formData.append("Steps", JSON.stringify(recipe.steps));
+    formData.append("Tags", JSON.stringify(recipe.tags));
+    formData.append("Image", imageFile);
     try {
-        const response = await axiosInstance.post(`/recipe/create`, recipe);
+        const response = await axiosInstance.post<ApiResponseRecipe>(`/recipe/create`, recipe, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        });
         console.log("Рецепт обновлен:", response.data);
         return response.data;
     } catch (error: any) {

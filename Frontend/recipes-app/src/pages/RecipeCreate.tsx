@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-    GetTagAllList,
-    CreateRecipeApi,
-} from "../api/recipeService";
+import { GetTagAllList, CreateRecipeApi } from "../api/recipeService";
 import {
     UpdateIngredient,
     UpdateRecipe,
     UpdateStep,
     UpdateTag,
 } from "../types/recipe";
-import "./styles/Detail.css";
+import "./styles/RecipeCreate.css";
+import backspace from "../assets/images/backspace.png";
+import download from "../assets/images/download.png";
 
 const RecipeCreate: React.FC = () => {
     const navigate = useNavigate();
@@ -27,7 +26,8 @@ const RecipeCreate: React.FC = () => {
         steps: [],
         tags: [],
     });
-    
+    const [imageFile, setImageFile] = useState<File | null>(null);
+
     useEffect(() => {
         const fetchTags = async () => {
             try {
@@ -41,7 +41,7 @@ const RecipeCreate: React.FC = () => {
         };
 
         fetchTags();
-    },[]);
+    }, []);
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -53,9 +53,27 @@ const RecipeCreate: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         console.log(formData);
-        const createRecipeResponse = await CreateRecipeApi(formData);
-        if (createRecipeResponse) {
-            navigate(`/profile`);
+        if (imageFile) {
+            const createRecipeResponse = await CreateRecipeApi(
+                formData,
+                imageFile
+            );
+            if (createRecipeResponse) {
+                navigate(`/profile`);
+            }
+        } else {
+            console.error("Необходимо выбрать изображение.");
+        }
+    };
+
+    const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setImageFile(file);
+            setFormData((prevData) => ({
+                ...prevData,
+                photoUrl: URL.createObjectURL(file),
+            }));
         }
     };
 
@@ -216,43 +234,86 @@ const RecipeCreate: React.FC = () => {
     };
 
     return (
-        <div className="favorite-recipes">
-            <h2 className="recipe-name">Создать рецепт: {formData.name}</h2>
-            <form onSubmit={handleSubmit}>
-                <img
-                    className="recipe-image"
-                    src={formData.photoUrl}
-                    alt={formData.name}
+        <div className="create-recipe-page">
+            <button
+                className="backspace-button"
+                onClick={() => navigate("/main")}
+            >
+                <img src={backspace} alt="Назад" />
+                <p className="backspace-text">Назад</p>
+            </button>
+            <div className="title-button-block">
+                <h2 className="create-recipe-title">Добавить новый рецепт</h2>
+                <button className="create-recipe-button">Опубликовать</button>
+            </div>
+
+            <form className="create-recipe-form" onSubmit={handleSubmit}>
+                <div
+                    className="create-recipe-image-block"
+                    onClick={() =>
+                        document.getElementById("imageInput")?.click()
+                    }
+                >
+                    {formData.photoUrl.length > 0 ? (
+                        <img
+                            className="create-recipe-image"
+                            src={formData.photoUrl}
+                            alt={formData.name}
+                        />
+                    ) : (
+                        <div className="create-recipe-image">
+                            <div className="import-image-rectangle">
+                                <img src={download} alt="download" />
+                                <div className="import-image-text">
+                                    <p>Загрузите фото</p>
+                                    <p>готового блюда</p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+                <input
+                    id="imageInput"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    style={{ display: "none" }}
                 />
-                <div>
-                    <label>URL Фото:</label>
-                    <input
-                        type="text"
-                        name="photoUrl"
-                        value={formData.photoUrl}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Название:</label>
-                    <input
-                        type="text"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Краткое описание:</label>
-                    <textarea
-                        name="shortDescription"
-                        value={formData.shortDescription}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
+                <ul className="create-recipe-info-block">
+                    <li>
+                        <input
+                            className="recipe-info-name"
+                            type="text"
+                            placeholder="Название рецепта"
+                            value={formData.name}
+                            onChange={handleChange}
+                            required
+                        />
+                    </li>
+                    <li>
+                        <input
+                            className="recipe-info-about"
+                            type="text"
+                            placeholder="Краткое описание рецепта (150 символов)"
+                            value={formData.shortDescription}
+                            onChange={handleChange}
+                            required
+                            
+                        />
+                    </li>
+                    <li className="recipe-info-tags">
+                        
+                    </li>
+                    <li className="recipe-info-name">
+                        <input
+                            type="text"
+                            name="Название рецепта"
+                            value={formData.name}
+                            onChange={handleChange}
+                            required
+                        />
+                    </li>
+                </ul>
                 <div>
                     <label>Время приготовления:</label>
                     <div>
@@ -383,22 +444,17 @@ const RecipeCreate: React.FC = () => {
                     Добавить тег
                 </button>
                 <ul>
-                    {formData.tags.map(
-                        (
-                            tag,
-                            index 
-                        ) => (
-                            <li key={index}>
-                                {tag.name}
-                                <button
-                                    type="button"
-                                    onClick={() => handleRemoveTag(index)}
-                                >
-                                    Удалить
-                                </button>
-                            </li>
-                        )
-                    )}
+                    {formData.tags.map((tag, index) => (
+                        <li key={index}>
+                            {tag.name}
+                            <button
+                                type="button"
+                                onClick={() => handleRemoveTag(index)}
+                            >
+                                Удалить
+                            </button>
+                        </li>
+                    ))}
                 </ul>
 
                 <button type="submit">Сохранить рецепт</button>

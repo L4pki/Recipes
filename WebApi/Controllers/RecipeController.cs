@@ -26,18 +26,24 @@ public class RecipeController : ControllerBase
 
     [Authorize]
     [HttpPost( "create" )]
-    public async Task<IActionResult> CreateRecipeAsync( [FromBody] CreateRecipeDto recipe )
+    public async Task<IActionResult> CreateRecipeAsync( [FromForm] CreateRecipeRequest request )
     {
+        var recipe = request.Recipe;
+        var image = request.Image;
+
         string token = HttpContext.Request.Headers[ "Authorization" ].ToString().Replace( "Bearer ", "" );
 
         try
         {
             UserClaimsDto userClaims = _authService.GetUserClaims( token );
+
+            string imageUrl = await SaveImageAsync( image );
+
             RecipeResult newRecipe = await _mediator.Send(
                     new CreateRecipeCommand(
                         recipe.Name,
                         recipe.ShortDescription,
-                        recipe.PhotoUrl,
+                        imageUrl,
                         userClaims.Id,
                         userClaims.Login,
                         recipe.TimeCosts,
@@ -52,10 +58,26 @@ public class RecipeController : ControllerBase
         {
             return BadRequest( "Недействительный токен." );
         }
-        catch
+       /* catch
         {
             return BadRequest( "Неизвестная ошибка" );
+        }*/
+    }
+
+    private async Task<string> SaveImageAsync( IFormFile image )
+    {
+        if ( image == null || image.Length == 0 )
+            throw new ArgumentException( "Изображение не может быть пустым." );
+
+        var fileName = Path.GetFileName( image.FileName );
+        var filePath = Path.Combine( "wwwroot/images/recipes", fileName );
+
+        using ( var stream = new FileStream( filePath, FileMode.Create ) )
+        {
+            await image.CopyToAsync( stream );
         }
+
+        return $"/images/recipes/{fileName}";
     }
 
     [Authorize]
