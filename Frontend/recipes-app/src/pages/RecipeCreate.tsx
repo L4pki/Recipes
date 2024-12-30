@@ -14,7 +14,6 @@ import download from "../assets/images/download.png";
 const RecipeCreate: React.FC = () => {
     const navigate = useNavigate();
     const [tags, setTags] = useState<UpdateTag[]>([]);
-    const [selectedTag, setSelectedTag] = useState<UpdateTag | null>(null);
     const [formData, setFormData] = useState<UpdateRecipe>({
         idRecipe: 0,
         name: "",
@@ -27,13 +26,16 @@ const RecipeCreate: React.FC = () => {
         tags: [],
     });
     const [imageFile, setImageFile] = useState<File | null>(null);
+    const [inputValue, setInputValue] = useState("");
+    const [suggestions, setSuggestions] = useState<UpdateTag[]>([]);
+    const [isFocused, setIsFocused] = useState(false);
 
     useEffect(() => {
         const fetchTags = async () => {
             try {
                 const response = await GetTagAllList();
                 console.log("Полученные теги:", response);
-                const tagsList: { name: string }[] = response.$values;
+                const tagsList: { name: string }[] = response;
                 setTags(tagsList);
             } catch (error) {
                 console.error("Ошибка при получении тегов:", error);
@@ -66,6 +68,15 @@ const RecipeCreate: React.FC = () => {
         }
     };
 
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { value } = e.target;
+        setInputValue(value);
+        const filteredSuggestions = tags.filter((tag) =>
+            tag.name.toLowerCase().includes(value.toLowerCase())
+        );
+        setSuggestions(filteredSuggestions);
+    };
+
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
@@ -77,48 +88,22 @@ const RecipeCreate: React.FC = () => {
         }
     };
 
-    const handleTimeChange = (
-        e: React.ChangeEvent<HTMLInputElement>,
-        type: "hours" | "minutes" | "seconds"
-    ) => {
+    const handleMinutesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-
-        // Преобразуем введенное значение в число
         const numericValue = Number(value);
-
-        // Проверяем, является ли введенное значение числом
-        if (isNaN(numericValue)) {
-            return; // Если не число, ничего не делаем
+        if (isNaN(numericValue) || numericValue < 0) {
+            return;
         }
+        const hours = Math.floor(numericValue / 60);
+        const minutes = numericValue % 60;
+        const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes
+            .toString()
+            .padStart(2, "0")}:00`;
 
-        setFormData((prevData) => {
-            const timeParts = prevData.timeCosts.split(":");
-
-            // В зависимости от типа поля, устанавливаем новое значение
-            if (type === "hours") {
-                // Устанавливаем часы, не ограничивая их
-                timeParts[0] = Math.max(0, numericValue)
-                    .toString()
-                    .padStart(2, "0");
-            } else if (type === "minutes") {
-                // Устанавливаем минуты, не ограничивая их
-                timeParts[1] = Math.max(0, numericValue)
-                    .toString()
-                    .padStart(2, "0");
-            } else if (type === "seconds") {
-                // Устанавливаем секунды, не ограничивая их
-                timeParts[2] = Math.max(0, numericValue)
-                    .toString()
-                    .padStart(2, "0");
-            }
-
-            // Преобразуем значения в формат "00:00:00"
-            const formattedTime = timeParts
-                .map((part) => part.padStart(2, "0"))
-                .join(":");
-
-            return { ...prevData, timeCosts: formattedTime };
-        });
+        setFormData((prevData) => ({
+            ...prevData,
+            timeCosts: formattedTime,
+        }));
     };
 
     const handleChangeIngredient = (
@@ -181,35 +166,21 @@ const RecipeCreate: React.FC = () => {
         }
     };
 
-    const handleTagChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const selectedValue = e.target.value;
-        const selectedTagObject = tags.find(
-            (tag) => tag.name === selectedValue
-        );
-        if (selectedTagObject) {
-            setSelectedTag(selectedTagObject);
-        } else {
-            setSelectedTag(null);
-        }
-    };
-
-    const handleAddTag = () => {
-        if (selectedTag) {
-            setFormData((prevData) => ({
-                ...prevData,
-                tags: [...(prevData.tags || []), selectedTag],
+    const addTag = (tag: UpdateTag) => {
+        if (!formData.tags.includes(tag)) {
+            setFormData((prevState) => ({
+                ...prevState,
+                tags: [...prevState.tags, tag],
             }));
-            setSelectedTag(null);
+            setInputValue("");
+            setSuggestions([]);
         }
     };
 
-    const handleRemoveTag = (index: number) => {
-        const updatedTags = formData.tags.filter(
-            (_, tagIndex) => tagIndex !== index
-        );
-        setFormData((prevData) => ({
-            ...prevData,
-            tags: updatedTags,
+    const removeTag = (tagToRemove: UpdateTag) => {
+        setFormData((prevState) => ({
+            ...prevState,
+            tags: prevState.tags.filter((tag) => tag !== tagToRemove),
         }));
     };
 
@@ -284,6 +255,7 @@ const RecipeCreate: React.FC = () => {
                         <input
                             className="recipe-info-name"
                             type="text"
+                            name="name"
                             placeholder="Название рецепта"
                             value={formData.name}
                             onChange={handleChange}
@@ -291,177 +263,152 @@ const RecipeCreate: React.FC = () => {
                         />
                     </li>
                     <li>
-                        <input
+                        <textarea
                             className="recipe-info-about"
-                            type="text"
+                            name="shortDescription"
                             placeholder="Краткое описание рецепта (150 символов)"
                             value={formData.shortDescription}
                             onChange={handleChange}
                             required
-                            
                         />
                     </li>
-                    <li className="recipe-info-tags">
-                        
+                    <li>
+                        <div className="recipe-tags-rectangle">
+                            <ul>
+                                {formData.tags.map((tag, index) => (
+                                    <li key={index} className="tag">
+                                        {tag.name}
+                                        <button
+                                            type="button"
+                                            onClick={() => removeTag(tag)}
+                                        >
+                                            x
+                                        </button>
+                                    </li>
+                                ))}
+                            </ul>
+                            <input
+                                type="text"
+                                value={inputValue}
+                                onChange={handleInputChange}
+                                placeholder="Добавьте тег"
+                                onFocus={() => setIsFocused(true)}
+                                onBlur={() => setIsFocused(false)}
+                            />
+                        </div>
+                        {isFocused && suggestions.length > 0 && (
+                            <ul className="suggestions">
+                                {suggestions.map((tag, index) => (
+                                    <li
+                                        key={index}
+                                        onMouseDown={() => addTag(tag)}
+                                    >
+                                        {tag.name}
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
                     </li>
-                    <li className="recipe-info-name">
-                        <input
-                            type="text"
-                            name="Название рецепта"
-                            value={formData.name}
-                            onChange={handleChange}
-                            required
-                        />
+                    <li className="recipe-info-time-person">
+                        <div className="recipe-info-time">
+                            <input
+                                className="recipe-time"
+                                name="timeCosts"
+                                type="number"
+                                onChange={handleMinutesChange}
+                                placeholder="Время готовки"
+                            />
+                            <p>Минут</p>
+                        </div>
+                        <div className="recipe-info-time">
+                            <input
+                                className="recipe-time"
+                                name="numberOfPersons"
+                                type="number"
+                                value={formData.numberOfPersons}
+                                onChange={handleChange}
+                                placeholder="Порций в блюде"
+                            />
+                            <p>Персон</p>
+                        </div>
                     </li>
                 </ul>
-                <div>
-                    <label>Время приготовления:</label>
-                    <div>
-                        <input
-                            type="number"
-                            placeholder="Часы"
-                            value={formData.timeCosts.split(":")[0] || ""}
-                            onChange={(e) => handleTimeChange(e, "hours")}
-                        />
-                        <input
-                            type="number"
-                            placeholder="Минуты"
-                            value={formData.timeCosts.split(":")[1] || ""}
-                            onChange={(e) => handleTimeChange(e, "minutes")}
-                        />
-                        <input
-                            type="number"
-                            placeholder="Секунды"
-                            value={formData.timeCosts.split(":")[2] || ""}
-                            onChange={(e) => handleTimeChange(e, "seconds")}
-                        />
-                    </div>
-                </div>
-                <div>
-                    <label>Количество порций:</label>
-                    <input
-                        type="number"
-                        name="numberOfPersons"
-                        value={formData.numberOfPersons}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <h3>Ингредиенты:</h3>
-                <ul className="recipes-list">
-                    {Array.isArray(formData?.ingridients) ? (
-                        formData.ingridients.map((ingredient, index) => (
-                            <li key={index}>
-                                <input
-                                    type="text"
-                                    placeholder="Название"
-                                    value={ingredient.title}
-                                    onChange={(e) =>
-                                        handleChangeIngredient(
-                                            e,
-                                            index,
-                                            "title"
-                                        )
-                                    }
-                                    required
-                                />
-                                <input
-                                    type="text"
-                                    placeholder="Описание"
-                                    value={ingredient.description}
-                                    onChange={(e) =>
-                                        handleChangeIngredient(
-                                            e,
-                                            index,
-                                            "description"
-                                        )
-                                    }
-                                    required
-                                />
-                                <button
-                                    type="button"
-                                    onClick={() => removeIngredient(index)}
-                                >
-                                    Удалить
-                                </button>
-                            </li>
-                        ))
-                    ) : (
-                        <li>Нет ингредиентов для отображения.</li>
-                    )}
-                </ul>
-                <button type="button" onClick={addIngredient}>
-                    Добавить ингредиент
-                </button>
-
-                <h3>Шаги приготовления:</h3>
-                <ol className="recipes-list">
-                    {Array.isArray(formData?.steps) &&
-                    formData.steps.length > 0 ? (
-                        formData.steps.map((step, index) => (
-                            <li key={index}>
-                                <span>{step.numberOfStep}</span>
-                                <textarea
-                                    value={step.description}
-                                    onChange={(e) => handleChangeStep(e, index)}
-                                    required
-                                />
-                                <button
-                                    type="button"
-                                    onClick={() => removeStep(index)}
-                                >
-                                    Удалить
-                                </button>
-                            </li>
-                        ))
-                    ) : (
-                        <li>Нет шагов приготовления для отображения.</li>
-                    )}
-                </ol>
-
-                <button type="button" onClick={addStep}>
-                    Добавить шаг
-                </button>
-
-                <h3>Теги:</h3>
-                <select
-                    value={selectedTag ? selectedTag.name : ""}
-                    onChange={handleTagChange}
-                >
-                    <option value="">Выберите тег</option>
-                    {Array.isArray(tags) && tags.length > 0 ? (
-                        tags.map((tag, index) => (
-                            <option key={index} value={tag.name}>
-                                {tag.name}
-                            </option>
-                        ))
-                    ) : (
-                        <option disabled>Нет доступных тегов</option>
-                    )}
-                </select>
-
-                <button type="button" onClick={handleAddTag}>
-                    Добавить тег
-                </button>
-                <ul>
-                    {formData.tags.map((tag, index) => (
+            </form>
+            <h3>Ингредиенты:</h3>
+            <ul className="recipes-list">
+                {Array.isArray(formData?.ingridients) ? (
+                    formData.ingridients.map((ingredient, index) => (
                         <li key={index}>
-                            {tag.name}
+                            <input
+                                type="text"
+                                placeholder="Название"
+                                value={ingredient.title}
+                                onChange={(e) =>
+                                    handleChangeIngredient(e, index, "title")
+                                }
+                                required
+                            />
+                            <input
+                                type="text"
+                                placeholder="Описание"
+                                value={ingredient.description}
+                                onChange={(e) =>
+                                    handleChangeIngredient(
+                                        e,
+                                        index,
+                                        "description"
+                                    )
+                                }
+                                required
+                            />
                             <button
                                 type="button"
-                                onClick={() => handleRemoveTag(index)}
+                                onClick={() => removeIngredient(index)}
                             >
                                 Удалить
                             </button>
                         </li>
-                    ))}
-                </ul>
+                    ))
+                ) : (
+                    <li>Нет ингредиентов для отображения.</li>
+                )}
+            </ul>
+            <button type="button" onClick={addIngredient}>
+                Добавить ингредиент
+            </button>
 
-                <button type="submit">Сохранить рецепт</button>
-                <button type="button" onClick={() => navigate(-1)}>
-                    Назад
-                </button>
-            </form>
+            <h3>Шаги приготовления:</h3>
+            <ol className="recipes-list">
+                {Array.isArray(formData?.steps) && formData.steps.length > 0 ? (
+                    formData.steps.map((step, index) => (
+                        <li key={index}>
+                            <span>{step.numberOfStep}</span>
+                            <textarea
+                                value={step.description}
+                                onChange={(e) => handleChangeStep(e, index)}
+                                required
+                            />
+                            <button
+                                type="button"
+                                onClick={() => removeStep(index)}
+                            >
+                                Удалить
+                            </button>
+                        </li>
+                    ))
+                ) : (
+                    <li>Нет шагов приготовления для отображения.</li>
+                )}
+            </ol>
+
+            <button type="button" onClick={addStep}>
+                Добавить шаг
+            </button>
+
+            <button type="submit">Сохранить рецепт</button>
+            <button type="button" onClick={() => navigate(-1)}>
+                Назад
+            </button>
         </div>
     );
 };
