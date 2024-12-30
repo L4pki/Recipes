@@ -21,7 +21,7 @@ const RecipeCreate: React.FC = () => {
         photoUrl: "",
         timeCosts: "0:0:0",
         numberOfPersons: 0,
-        ingridients: [],
+        ingridients: [{ title: "", description: "" }],
         steps: [],
         tags: [],
     });
@@ -107,7 +107,7 @@ const RecipeCreate: React.FC = () => {
     };
 
     const handleChangeIngredient = (
-        e: React.ChangeEvent<HTMLInputElement>,
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
         index: number,
         field: "title" | "description"
     ) => {
@@ -219,196 +219,205 @@ const RecipeCreate: React.FC = () => {
             </div>
 
             <form className="create-recipe-form" onSubmit={handleSubmit}>
-                <div
-                    className="create-recipe-image-block"
-                    onClick={() =>
-                        document.getElementById("imageInput")?.click()
-                    }
-                >
-                    {formData.photoUrl.length > 0 ? (
-                        <img
-                            className="create-recipe-image"
-                            src={formData.photoUrl}
-                            alt={formData.name}
-                        />
-                    ) : (
-                        <div className="create-recipe-image">
-                            <div className="import-image-rectangle">
-                                <img src={download} alt="download" />
-                                <div className="import-image-text">
-                                    <p>Загрузите фото</p>
-                                    <p>готового блюда</p>
+                <div className="create-recipe-first-block">
+                    <div
+                        className="create-recipe-image-block"
+                        onClick={() =>
+                            document.getElementById("imageInput")?.click()
+                        }
+                    >
+                        {formData.photoUrl.length > 0 ? (
+                            <img
+                                className="create-recipe-image"
+                                src={formData.photoUrl}
+                                alt={formData.name}
+                            />
+                        ) : (
+                            <div className="create-recipe-image">
+                                <div className="import-image-rectangle">
+                                    <img src={download} alt="download" />
+                                    <div className="import-image-text">
+                                        <p>Загрузите фото</p>
+                                        <p>готового блюда</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    )}
+                        )}
+                    </div>
+                    <input
+                        id="imageInput"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        style={{ display: "none" }}
+                    />
+                    <ul className="create-recipe-info-block">
+                        <li>
+                            <input
+                                className="recipe-info-name"
+                                type="text"
+                                name="name"
+                                placeholder="Название рецепта"
+                                value={formData.name}
+                                onChange={handleChange}
+                                required
+                            />
+                        </li>
+                        <li>
+                            <textarea
+                                className="recipe-info-about"
+                                name="shortDescription"
+                                placeholder="Краткое описание рецепта (150 символов)"
+                                value={formData.shortDescription}
+                                onChange={handleChange}
+                                required
+                            />
+                        </li>
+                        <li>
+                            <div className="recipe-tags-rectangle">
+                                <ul>
+                                    {formData.tags.map((tag, index) => (
+                                        <li key={index} className="tag">
+                                            {tag.name}
+                                            <button
+                                                type="button"
+                                                onClick={() => removeTag(tag)}
+                                            >
+                                                x
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                                <input
+                                    type="text"
+                                    value={inputValue}
+                                    onChange={handleInputChange}
+                                    placeholder="Добавьте тег"
+                                    onFocus={() => setIsFocused(true)}
+                                    onBlur={() => setIsFocused(false)}
+                                />
+                            </div>
+                            {isFocused && suggestions.length > 0 && (
+                                <ul className="suggestions">
+                                    {suggestions.map((tag, index) => (
+                                        <li
+                                            key={index}
+                                            onMouseDown={() => addTag(tag)}
+                                        >
+                                            {tag.name}
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                        </li>
+                        <li className="recipe-info-time-person">
+                            <div className="recipe-info-time">
+                                <input
+                                    className="recipe-time"
+                                    name="timeCosts"
+                                    type="number"
+                                    onChange={handleMinutesChange}
+                                    placeholder="Время готовки"
+                                />
+                                <p>Минут</p>
+                            </div>
+                            <div className="recipe-info-time">
+                                <input
+                                    className="recipe-time"
+                                    name="numberOfPersons"
+                                    type="number"
+                                    value={formData.numberOfPersons}
+                                    onChange={handleChange}
+                                    placeholder="Порций в блюде"
+                                />
+                                <p>Персон</p>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
-                <input
-                    id="imageInput"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    style={{ display: "none" }}
-                />
-                <ul className="create-recipe-info-block">
-                    <li>
-                        <input
-                            className="recipe-info-name"
-                            type="text"
-                            name="name"
-                            placeholder="Название рецепта"
-                            value={formData.name}
-                            onChange={handleChange}
-                            required
-                        />
-                    </li>
-                    <li>
-                        <textarea
-                            className="recipe-info-about"
-                            name="shortDescription"
-                            placeholder="Краткое описание рецепта (150 символов)"
-                            value={formData.shortDescription}
-                            onChange={handleChange}
-                            required
-                        />
-                    </li>
-                    <li>
-                        <div className="recipe-tags-rectangle">
-                            <ul>
-                                {formData.tags.map((tag, index) => (
-                                    <li key={index} className="tag">
-                                        {tag.name}
+                <div className="create-recipe-second-block">
+                    <div className="create-recipe-ingridients">
+                        <h3 className="ingridients-title">Ингредиенты</h3>
+                        <div className="ingridient-list">
+                            {formData.ingridients.map((ingredient, index) => (
+                                <div
+                                    key={index}
+                                    className="ingredient-item"
+                                >
+                                    <input
+                                        className="recipe-ingredient-name"
+                                        type="text"
+                                        placeholder="Загаловок для ингридиентов"
+                                        value={ingredient.title}
+                                        onChange={(e) =>
+                                            handleChangeIngredient(
+                                                e,
+                                                index,
+                                                "title"
+                                            )
+                                        }
+                                        required
+                                    />
+                                    <textarea
+                                        className="recipe-ingredient-description"
+                                        placeholder="Список продуктов для категории"
+                                        value={ingredient.description}
+                                        onChange={(e) =>
+                                            handleChangeIngredient(
+                                                e,
+                                                index,
+                                                "description"
+                                            )
+                                        }
+                                        required
+                                    />
+                                    
+                                </div>
+                    
+                            ))}
+                            
+                            
+                        </div>
+                        <button type="button" onClick={addIngredient}>
+                                Добавить ингредиент
+                            </button>
+                    </div>
+                    <div className="create-recipe-steps">
+                        <h3>Шаги приготовления:</h3>
+                        <ol className="recipes-list">
+                            {Array.isArray(formData?.steps) &&
+                            formData.steps.length > 0 ? (
+                                formData.steps.map((step, index) => (
+                                    <li key={index}>
+                                        <span>{step.numberOfStep}</span>
+                                        <textarea
+                                            value={step.description}
+                                            onChange={(e) =>
+                                                handleChangeStep(e, index)
+                                            }
+                                            required
+                                        />
                                         <button
                                             type="button"
-                                            onClick={() => removeTag(tag)}
+                                            onClick={() => removeStep(index)}
                                         >
-                                            x
+                                            Удалить
                                         </button>
                                     </li>
-                                ))}
-                            </ul>
-                            <input
-                                type="text"
-                                value={inputValue}
-                                onChange={handleInputChange}
-                                placeholder="Добавьте тег"
-                                onFocus={() => setIsFocused(true)}
-                                onBlur={() => setIsFocused(false)}
-                            />
-                        </div>
-                        {isFocused && suggestions.length > 0 && (
-                            <ul className="suggestions">
-                                {suggestions.map((tag, index) => (
-                                    <li
-                                        key={index}
-                                        onMouseDown={() => addTag(tag)}
-                                    >
-                                        {tag.name}
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
-                    </li>
-                    <li className="recipe-info-time-person">
-                        <div className="recipe-info-time">
-                            <input
-                                className="recipe-time"
-                                name="timeCosts"
-                                type="number"
-                                onChange={handleMinutesChange}
-                                placeholder="Время готовки"
-                            />
-                            <p>Минут</p>
-                        </div>
-                        <div className="recipe-info-time">
-                            <input
-                                className="recipe-time"
-                                name="numberOfPersons"
-                                type="number"
-                                value={formData.numberOfPersons}
-                                onChange={handleChange}
-                                placeholder="Порций в блюде"
-                            />
-                            <p>Персон</p>
-                        </div>
-                    </li>
-                </ul>
+                                ))
+                            ) : (
+                                <li>
+                                    Нет шагов приготовления для отображения.
+                                </li>
+                            )}
+                        </ol>
+
+                        <button type="button" onClick={addStep}>
+                            Добавить шаг
+                        </button>
+                    </div>
+                </div>
             </form>
-            <h3>Ингредиенты:</h3>
-            <ul className="recipes-list">
-                {Array.isArray(formData?.ingridients) ? (
-                    formData.ingridients.map((ingredient, index) => (
-                        <li key={index}>
-                            <input
-                                type="text"
-                                placeholder="Название"
-                                value={ingredient.title}
-                                onChange={(e) =>
-                                    handleChangeIngredient(e, index, "title")
-                                }
-                                required
-                            />
-                            <input
-                                type="text"
-                                placeholder="Описание"
-                                value={ingredient.description}
-                                onChange={(e) =>
-                                    handleChangeIngredient(
-                                        e,
-                                        index,
-                                        "description"
-                                    )
-                                }
-                                required
-                            />
-                            <button
-                                type="button"
-                                onClick={() => removeIngredient(index)}
-                            >
-                                Удалить
-                            </button>
-                        </li>
-                    ))
-                ) : (
-                    <li>Нет ингредиентов для отображения.</li>
-                )}
-            </ul>
-            <button type="button" onClick={addIngredient}>
-                Добавить ингредиент
-            </button>
-
-            <h3>Шаги приготовления:</h3>
-            <ol className="recipes-list">
-                {Array.isArray(formData?.steps) && formData.steps.length > 0 ? (
-                    formData.steps.map((step, index) => (
-                        <li key={index}>
-                            <span>{step.numberOfStep}</span>
-                            <textarea
-                                value={step.description}
-                                onChange={(e) => handleChangeStep(e, index)}
-                                required
-                            />
-                            <button
-                                type="button"
-                                onClick={() => removeStep(index)}
-                            >
-                                Удалить
-                            </button>
-                        </li>
-                    ))
-                ) : (
-                    <li>Нет шагов приготовления для отображения.</li>
-                )}
-            </ol>
-
-            <button type="button" onClick={addStep}>
-                Добавить шаг
-            </button>
-
-            <button type="submit">Сохранить рецепт</button>
-            <button type="button" onClick={() => navigate(-1)}>
-                Назад
-            </button>
         </div>
     );
 };
