@@ -217,7 +217,7 @@ const RecipeCreate: React.FC = () => {
             </button>
             <div className="title-button-block">
                 <h2 className="create-recipe-title">Добавить новый рецепт</h2>
-                <button className="create-recipe-button">Опубликовать</button>
+                <button className="create-recipe-button" onClick={handleSubmit}>Опубликовать</button>
             </div>
 
             <form className="create-recipe-form" onSubmit={handleSubmit}>

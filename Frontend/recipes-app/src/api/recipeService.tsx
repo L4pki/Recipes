@@ -114,16 +114,16 @@ export const UpdateRecipeApi = async (
 export const CreateRecipeApi = async (recipe: CreateRecipe, imageFile: File): Promise<ApiResponseRecipe | undefined> => {
     const formData = new FormData();
     
-    formData.append("Name", recipe.name);
-    formData.append("ShortDescription", recipe.shortDescription);
-    formData.append("TimeCosts", recipe.timeCosts.toString());
-    formData.append("NumberOfPersons", recipe.numberOfPersons.toString());
-    formData.append("Ingridients", JSON.stringify(recipe.ingridients));
-    formData.append("Steps", JSON.stringify(recipe.steps));
-    formData.append("Tags", JSON.stringify(recipe.tags));
+    formData.append("Recipe.Name", recipe.name);
+    formData.append("Recipe.ShortDescription", recipe.shortDescription);
+    formData.append("Recipe.TimeCosts", recipe.timeCosts.toString());
+    formData.append("Recipe.NumberOfPersons", recipe.numberOfPersons.toString());
+    formData.append("Recipe.Ingridients", JSON.stringify(recipe.ingridients));
+    formData.append("Recipe.Steps", JSON.stringify(recipe.steps));
+    formData.append("Recipe.Tags", JSON.stringify(recipe.tags));
     formData.append("Image", imageFile);
     try {
-        const response = await axiosInstance.post<ApiResponseRecipe>(`/recipe/create`, recipe, {
+        const response = await axiosInstance.post<ApiResponseRecipe>(`/recipe/create`, formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },

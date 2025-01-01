@@ -70,14 +70,14 @@ public class RecipeController : ControllerBase
             throw new ArgumentException( "Изображение не может быть пустым." );
 
         var fileName = Path.GetFileName( image.FileName );
-        var filePath = Path.Combine( "wwwroot/images/recipes", fileName );
+        var filePath = Path.Combine( Directory.GetCurrentDirectory(), "wwwroot/images/recipes", fileName );
+        Directory.CreateDirectory( Path.GetDirectoryName( filePath ) );
 
         using ( var stream = new FileStream( filePath, FileMode.Create ) )
         {
             await image.CopyToAsync( stream );
         }
-
-        return $"/images/recipes/{fileName}";
+        return $"https://localhost:7217/images/recipes/{fileName}";
     }
 
     [Authorize]
