@@ -9,7 +9,9 @@ import {
 } from "../types/recipe";
 import "./styles/RecipeCreate.css";
 import backspace from "../assets/images/backspace.png";
+import close from "../assets/images/Close.png";
 import download from "../assets/images/download.png";
+import plus from "../assets/images/plus.png";
 
 const RecipeCreate: React.FC = () => {
     const navigate = useNavigate();
@@ -340,10 +342,14 @@ const RecipeCreate: React.FC = () => {
                         <h3 className="ingridients-title">Ингредиенты</h3>
                         <div className="ingridient-list">
                             {formData.ingridients.map((ingredient, index) => (
-                                <div
-                                    key={index}
-                                    className="ingredient-item"
-                                >
+                                <div key={index} className="ingredient-item">
+                                    <button
+                                        type="button"
+                                        className="remove-ingredient-button"
+                                        onClick={() => removeIngredient(index)}
+                                    >
+                                        <img src={close} alt="Закрыть" />
+                                    </button>
                                     <input
                                         className="recipe-ingredient-name"
                                         type="text"
@@ -371,48 +377,50 @@ const RecipeCreate: React.FC = () => {
                                         }
                                         required
                                     />
-                                    
                                 </div>
-                    
                             ))}
-                            
-                            
                         </div>
-                        <button type="button" onClick={addIngredient}>
-                                Добавить ингредиент
-                            </button>
+                        <button
+                            className="button-add-new-ingr-step"
+                            onClick={addIngredient}
+                        >
+                            <img src={plus} alt="plus" />
+                            Добавить загаловок
+                        </button>
                     </div>
                     <div className="create-recipe-steps">
-                        <h3>Шаги приготовления:</h3>
-                        <ol className="recipes-list">
-                            {Array.isArray(formData?.steps) &&
-                            formData.steps.length > 0 ? (
-                                formData.steps.map((step, index) => (
-                                    <li key={index}>
-                                        <span>{step.numberOfStep}</span>
-                                        <textarea
-                                            value={step.description}
-                                            onChange={(e) =>
-                                                handleChangeStep(e, index)
-                                            }
-                                            required
-                                        />
+                        <div className="step-list">
+                            {formData.steps.map((step, index) => (
+                                <div key={index} className="step-item">
+                                    <div className="step-title">
+                                        <p className="step-number">
+                                            Шаг {index+1}
+                                        </p>
                                         <button
                                             type="button"
+                                            className="remove-step-button"
                                             onClick={() => removeStep(index)}
                                         >
-                                            Удалить
+                                            <img src={close} alt="Закрыть" />
                                         </button>
-                                    </li>
-                                ))
-                            ) : (
-                                <li>
-                                    Нет шагов приготовления для отображения.
-                                </li>
-                            )}
-                        </ol>
-
-                        <button type="button" onClick={addStep}>
+                                    </div>
+                                    <textarea
+                                        className="recipe-step-description"
+                                        placeholder="Описание шага"
+                                        value={step.description}
+                                        onChange={(e) =>
+                                            handleChangeStep(e, index)
+                                        }
+                                        required
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                        <button
+                            className="button-add-new-ingr-step"
+                            onClick={addStep}
+                        >
+                            <img src={plus} alt="plus" />
                             Добавить шаг
                         </button>
                     </div>
