@@ -10,7 +10,7 @@ import Favorite from "./pages/Favorite";
 import "./App.css";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
-import EditRecipe from "./pages/RecipeEdit";
+//import EditRecipe from "./pages/RecipeEdit";
 import RecipeCreate from "./pages/RecipeCreate";
 import { useEffect } from "react";
 import { refreshAccessToken } from "./api/authService";
@@ -42,7 +42,7 @@ function App() {
                       <Route path="/main" element={<Main />} />
                       <Route path="/recipes" element={<Recipes />} />
                       <Route path="/detail/:id" element={<Detail />} />
-                      <Route path="/RecipeEdit/:id" element={<EditRecipe />} />
+                      <Route path="/RecipeEdit/:id" element={<RecipeCreate />} />
                       <Route path="/RecipeCreate/" element={<RecipeCreate />} />
                       <Route path="/profile" element={<Profile />} />
                       <Route path="/favorite" element={<Favorite />} />

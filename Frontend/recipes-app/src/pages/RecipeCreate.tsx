@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { GetTagAllList, CreateRecipeApi } from "../api/recipeService";
+import { useNavigate, useParams } from "react-router-dom";
+import { GetTagAllList, CreateRecipeApi, UpdateRecipeApi, getRecipeDetail } from "../api/recipeService";
 import {
     UpdateIngredient,
     UpdateRecipe,
@@ -15,16 +15,17 @@ import plus from "../assets/images/plus.png";
 
 const RecipeCreate: React.FC = () => {
     const navigate = useNavigate();
+    const { id } = useParams<{ id: string }>();
     const [tags, setTags] = useState<UpdateTag[]>([]);
     const [formData, setFormData] = useState<UpdateRecipe>({
         idRecipe: 0,
         name: "",
         shortDescription: "",
         photoUrl: "",
-        timeCosts: "0:0:0",
+        timeCosts: "",
         numberOfPersons: 0,
         ingridients: [{ title: "", description: "" }],
-        steps: [],
+        steps: [{ numberOfStep: 1, description: "" }],
         tags: [],
     });
     const [imageFile, setImageFile] = useState<File | null>(null);
@@ -45,7 +46,50 @@ const RecipeCreate: React.FC = () => {
         };
 
         fetchTags();
-    }, []);
+
+        if (id) {
+            const fetchRecipe = async () => {
+                const recipeData = await getRecipeDetail(Number(id));
+                
+                if (recipeData) {
+                    const transformedData: UpdateRecipe = {
+                        name: recipeData.recipe.name,
+                        photoUrl: recipeData.recipe.photoUrl,
+                        shortDescription: recipeData.recipe.shortDescription,
+                        numberOfPersons: recipeData.recipe.numberOfPersons,
+                        timeCosts: String(convertTimeToMinutes(recipeData.recipe.timeCosts)),
+                        ingridients: recipeData.recipe.ingridientForCooking?.map((ingredient: UpdateIngredient) => ({
+                            title: ingredient.title,
+                            description: ingredient.description,
+                        })),
+                        steps: recipeData.recipe.stepOfCooking?.map((step: UpdateStep) => ({
+                            numberOfStep: step.numberOfStep,
+                            description: step.description,
+                        })),
+                        idRecipe: Number(id),
+                        tags: recipeData.recipe.tags
+                    };
+                    console.log(transformedData);
+                    setFormData(transformedData);
+                }
+            };
+            fetchRecipe();
+        }
+    }, [id]);
+
+    const convertTimeToMinutes = (timeString?: string) => {
+        if (!timeString) {
+            return 0;
+        }
+    
+        const parts = timeString.split(':').map(Number);
+        if (parts.length < 2) {
+            return 0;
+        }
+    
+        const [hours, minutes] = parts;
+        return (hours || 0) * 60 + (minutes || 0);
+    };
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -57,16 +101,21 @@ const RecipeCreate: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         console.log(formData);
-        if (imageFile) {
-            const createRecipeResponse = await CreateRecipeApi(
-                formData,
-                imageFile
-            );
-            if (createRecipeResponse) {
+        
+        if (formData.idRecipe) {
+            const updateRecipeResponse = await UpdateRecipeApi(formData.idRecipe, formData, imageFile || undefined);
+            if (updateRecipeResponse) {
                 navigate(`/profile`);
             }
         } else {
-            console.error("Необходимо выбрать изображение.");
+            if (!imageFile) {
+                alert("Пожалуйста, загрузите изображение для нового рецепта.");
+                return;
+            }
+            const createRecipeResponse = await CreateRecipeApi(formData, imageFile);
+            if (createRecipeResponse) {
+                navigate(`/profile`);
+            }
         }
     };
 
@@ -85,27 +134,39 @@ const RecipeCreate: React.FC = () => {
             setImageFile(file);
             setFormData((prevData) => ({
                 ...prevData,
-                photoUrl: URL.createObjectURL(file),
+                photoUrl: URL.createObjectURL(file), 
             }));
         }
     };
 
     const handleMinutesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
+
+        if (value === "") {
+            setFormData((prevData) => ({
+                ...prevData,
+                timeCosts: "",
+            }));
+            return;
+        }
+
         const numericValue = Number(value);
         if (isNaN(numericValue) || numericValue < 0) {
             return;
         }
+
         const hours = Math.floor(numericValue / 60);
         const minutes = numericValue % 60;
         const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes
             .toString()
             .padStart(2, "0")}:00`;
 
-        setFormData((prevData) => ({
-            ...prevData,
-            timeCosts: formattedTime,
-        }));
+        if (!isNaN(Number(formattedTime))) {
+            setFormData((prevData) => ({
+                ...prevData,
+                timeCosts: formattedTime,
+            }));
+        }
     };
 
     const handleChangeIngredient = (
@@ -216,8 +277,12 @@ const RecipeCreate: React.FC = () => {
                 <p className="backspace-text">Назад</p>
             </button>
             <div className="title-button-block">
-                <h2 className="create-recipe-title">Добавить новый рецепт</h2>
-                <button className="create-recipe-button" onClick={handleSubmit}>Опубликовать</button>
+                <h2 className="create-recipe-title">
+                    {formData.idRecipe ? "Обновить рецепт" : "Добавить новый рецепт"}
+                </h2>
+                <button className="create-recipe-button" onClick={handleSubmit}>
+                    Опубликовать
+                </button>
             </div>
 
             <form className="create-recipe-form" onSubmit={handleSubmit}>
@@ -228,7 +293,7 @@ const RecipeCreate: React.FC = () => {
                             document.getElementById("imageInput")?.click()
                         }
                     >
-                        {formData.photoUrl.length > 0 ? (
+                        {formData.photoUrl && formData.photoUrl.length > 0 ? (
                             <img
                                 className="create-recipe-image"
                                 src={formData.photoUrl}
@@ -278,7 +343,7 @@ const RecipeCreate: React.FC = () => {
                         <li>
                             <div className="recipe-tags-rectangle">
                                 <ul>
-                                    {formData.tags.map((tag, index) => (
+                                    {formData.tags?.map((tag, index) => (
                                         <li key={index} className="tag">
                                             {tag.name}
                                             <button
@@ -317,7 +382,8 @@ const RecipeCreate: React.FC = () => {
                                 <input
                                     className="recipe-time"
                                     name="timeCosts"
-                                    type="number"
+                                    type="text"
+                                    value={formData.timeCosts ? Number(formData.timeCosts) : 0}
                                     onChange={handleMinutesChange}
                                     placeholder="Время готовки"
                                 />
@@ -341,7 +407,7 @@ const RecipeCreate: React.FC = () => {
                     <div className="create-recipe-ingridients">
                         <h3 className="ingridients-title">Ингредиенты</h3>
                         <div className="ingridient-list">
-                            {formData.ingridients.map((ingredient, index) => (
+                            {formData.ingridients?.map((ingredient, index) => (
                                 <div key={index} className="ingredient-item">
                                     <button
                                         type="button"
@@ -390,11 +456,11 @@ const RecipeCreate: React.FC = () => {
                     </div>
                     <div className="create-recipe-steps">
                         <div className="step-list">
-                            {formData.steps.map((step, index) => (
+                            {formData.steps?.map((step, index) => (
                                 <div key={index} className="step-item">
                                     <div className="step-title">
                                         <p className="step-number">
-                                            Шаг {index+1}
+                                            Шаг {index + 1}
                                         </p>
                                         <button
                                             type="button"

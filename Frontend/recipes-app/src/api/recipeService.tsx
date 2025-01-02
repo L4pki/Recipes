@@ -92,12 +92,34 @@ export const getRecipeDetail = async (id: number) => {
 
 export const UpdateRecipeApi = async (
     id: number,
-    updatedRecipe: UpdateRecipe
+    updatedRecipe: UpdateRecipe,
+    newImageFile?: File
 ) => {
     try {
+        const formData = new FormData();
+        
+        formData.append("Recipe.Name", updatedRecipe.name);
+    formData.append("Recipe.ShortDescription", updatedRecipe.shortDescription);
+    formData.append("Recipe.TimeCosts", updatedRecipe.timeCosts.toString());
+    formData.append("Recipe.NumberOfPersons", updatedRecipe.numberOfPersons.toString());
+    formData.append("Recipe.Ingridients", JSON.stringify(updatedRecipe.ingridients));
+    formData.append("Recipe.Steps", JSON.stringify(updatedRecipe.steps));
+    formData.append("Recipe.Tags", JSON.stringify(updatedRecipe.tags));
+
+        if (newImageFile) {
+            formData.append("photo", newImageFile);
+        } else {
+            formData.append("photoUrl", updatedRecipe.photoUrl || '');
+        }
+
         const response = await axiosInstance.post(
             `/recipe/update/${id}`,
-            updatedRecipe
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            }
         );
         console.log("Рецепт обновлен:", response.data);
         return response.data;
