@@ -33,7 +33,6 @@ export const checkStatusLikeStarRecipe = async (
         const response = await axiosInstance.get<RecipeStatus>(
             `/recipe/status/${id}`
         );
-        console.log("Рецепт:", "id", id, response.data);
         return response.data;
     } catch (error: any) {
         handleError(error);
@@ -100,18 +99,31 @@ export const UpdateRecipeApi = async (
         
         formData.append("Recipe.Name", updatedRecipe.name);
     formData.append("Recipe.ShortDescription", updatedRecipe.shortDescription);
-    formData.append("Recipe.TimeCosts", updatedRecipe.timeCosts.toString());
+    formData.append("Recipe.TimeCosts", "00:30:00");
     formData.append("Recipe.NumberOfPersons", updatedRecipe.numberOfPersons.toString());
-    formData.append("Recipe.Ingridients", JSON.stringify(updatedRecipe.ingridients));
-    formData.append("Recipe.Steps", JSON.stringify(updatedRecipe.steps));
-    formData.append("Recipe.Tags", JSON.stringify(updatedRecipe.tags));
+    updatedRecipe.ingridients.forEach((ingredient, index) => {
+        formData.append(`Recipe.Ingridients[${index}].Title`, ingredient.title);
+        formData.append(`Recipe.Ingridients[${index}].Description`, ingredient.description);
+    });
+    
+    updatedRecipe.steps.forEach((step, index) => {
+        formData.append(`Recipe.Steps[${index}].NumberOfStep`, step.numberOfStep.toString());
+        formData.append(`Recipe.Steps[${index}].Description`, step.description);
+    });
+    
+    updatedRecipe.tags.forEach((tag, index) => {
+        formData.append(`Recipe.Tags[${index}].Name`, tag.name);
+    });
 
         if (newImageFile) {
-            formData.append("photo", newImageFile);
+            formData.append("Image", newImageFile);
         } else {
             formData.append("photoUrl", updatedRecipe.photoUrl || '');
         }
-
+        console.log("Рецепт =======:", formData);
+        Array.from(formData.entries()).forEach(([key, value]) => {
+            console.log(`${key}: ${value}`);
+        });
         const response = await axiosInstance.post(
             `/recipe/update/${id}`,
             formData,
@@ -138,11 +150,21 @@ export const CreateRecipeApi = async (recipe: CreateRecipe, imageFile: File): Pr
     
     formData.append("Recipe.Name", recipe.name);
     formData.append("Recipe.ShortDescription", recipe.shortDescription);
-    formData.append("Recipe.TimeCosts", recipe.timeCosts.toString());
+    formData.append("Recipe.TimeCosts", "00:30:00");
     formData.append("Recipe.NumberOfPersons", recipe.numberOfPersons.toString());
-    formData.append("Recipe.Ingridients", JSON.stringify(recipe.ingridients));
-    formData.append("Recipe.Steps", JSON.stringify(recipe.steps));
-    formData.append("Recipe.Tags", JSON.stringify(recipe.tags));
+    recipe.ingridients.forEach((ingredient, index) => {
+        formData.append(`Recipe.Ingridients[${index}].Title`, ingredient.title);
+        formData.append(`Recipe.Ingridients[${index}].Description`, ingredient.description);
+    });
+    
+    recipe.steps.forEach((step, index) => {
+        formData.append(`Recipe.Steps[${index}].NumberOfStep`, step.numberOfStep.toString());
+        formData.append(`Recipe.Steps[${index}].Description`, step.description);
+    });
+    
+    recipe.tags.forEach((tag, index) => {
+        formData.append(`Recipe.Tags[${index}].Name`, tag.name);
+    });
     formData.append("Image", imageFile);
     try {
         const response = await axiosInstance.post<ApiResponseRecipe>(`/recipe/create`, formData, {

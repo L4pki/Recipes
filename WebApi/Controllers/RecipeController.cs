@@ -58,10 +58,10 @@ public class RecipeController : ControllerBase
         {
             return BadRequest( "Недействительный токен." );
         }
-       /* catch
-        {
-            return BadRequest( "Неизвестная ошибка" );
-        }*/
+        /* catch
+         {
+             return BadRequest( "Неизвестная ошибка" );
+         }*/
     }
 
     private async Task<string> SaveImageAsync( IFormFile image )
@@ -82,32 +82,39 @@ public class RecipeController : ControllerBase
 
     [Authorize]
     [HttpPost( "update/{id}" )]
-    public async Task<IActionResult> UpdateRecipeAsync( [FromBody] UpdateRecipeDto recipe, int id )
+    public async Task<IActionResult> UpdateRecipeAsync( [FromForm] UpdateRecipeRequest request, int id )
     {
-
         string token = HttpContext.Request.Headers[ "Authorization" ].ToString().Replace( "Bearer ", "" );
 
         try
         {
             UserClaimsDto userClaims = _authService.GetUserClaims( token );
             RecipeResult recipeInDb = await _mediator.Send( new GetRecipeByIdQuery( id ) );
+
             if ( recipeInDb.Recipe != null )
             {
                 if ( recipeInDb.Recipe.IdAuthor == userClaims.Id )
                 {
+                    string imageUrl = recipeInDb.Recipe.PhotoUrl;
+                    var recipe = request.Recipe;
+
+                    if ( request.Image != null )
+                    {
+                        imageUrl = await SaveImageAsync( request.Image );
+                    }
 
                     RecipeResult newRecipe = await _mediator.Send( new UpdateRecipeCommand(
                         id,
                         recipe.Name,
                         recipe.ShortDescription,
-                        recipe.PhotoUrl,
+                        imageUrl,
                         userClaims.Id,
                         recipe.TimeCosts,
                         recipe.NumberOfPersons,
                         recipe.Ingridients.ToArray(),
                         recipe.Steps.ToArray(),
-                        recipe.Tags.ToArray() ) );
-
+                        recipe.Tags.ToArray()
+                    ) );
 
                     return Ok( newRecipe );
                 }

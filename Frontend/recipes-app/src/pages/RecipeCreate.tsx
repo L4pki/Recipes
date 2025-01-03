@@ -103,6 +103,7 @@ const RecipeCreate: React.FC = () => {
         console.log(formData);
         
         if (formData.idRecipe) {
+            console.log("------------------------",formData);
             const updateRecipeResponse = await UpdateRecipeApi(formData.idRecipe, formData, imageFile || undefined);
             if (updateRecipeResponse) {
                 navigate(`/profile`);
