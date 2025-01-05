@@ -96,29 +96,47 @@ export const UpdateRecipeApi = async (
 ) => {
     try {
         const formData = new FormData();
-        
+
         formData.append("Recipe.Name", updatedRecipe.name);
-    formData.append("Recipe.ShortDescription", updatedRecipe.shortDescription);
-    formData.append("Recipe.TimeCosts", "00:30:00");
-    formData.append("Recipe.NumberOfPersons", updatedRecipe.numberOfPersons.toString());
-    updatedRecipe.ingridients.forEach((ingredient, index) => {
-        formData.append(`Recipe.Ingridients[${index}].Title`, ingredient.title);
-        formData.append(`Recipe.Ingridients[${index}].Description`, ingredient.description);
-    });
-    
-    updatedRecipe.steps.forEach((step, index) => {
-        formData.append(`Recipe.Steps[${index}].NumberOfStep`, step.numberOfStep.toString());
-        formData.append(`Recipe.Steps[${index}].Description`, step.description);
-    });
-    
-    updatedRecipe.tags.forEach((tag, index) => {
-        formData.append(`Recipe.Tags[${index}].Name`, tag.name);
-    });
+        formData.append(
+            "Recipe.ShortDescription",
+            updatedRecipe.shortDescription
+        );
+        formData.append("Recipe.TimeCosts", "00:30:00");
+        formData.append(
+            "Recipe.NumberOfPersons",
+            updatedRecipe.numberOfPersons.toString()
+        );
+        updatedRecipe.ingridients.forEach((ingredient, index) => {
+            formData.append(
+                `Recipe.Ingridients[${index}].Title`,
+                ingredient.title
+            );
+            formData.append(
+                `Recipe.Ingridients[${index}].Description`,
+                ingredient.description
+            );
+        });
+
+        updatedRecipe.steps.forEach((step, index) => {
+            formData.append(
+                `Recipe.Steps[${index}].NumberOfStep`,
+                step.numberOfStep.toString()
+            );
+            formData.append(
+                `Recipe.Steps[${index}].Description`,
+                step.description
+            );
+        });
+
+        updatedRecipe.tags.forEach((tag, index) => {
+            formData.append(`Recipe.Tags[${index}].Name`, tag.name);
+        });
 
         if (newImageFile) {
             formData.append("Image", newImageFile);
         } else {
-            formData.append("photoUrl", updatedRecipe.photoUrl || '');
+            formData.append("photoUrl", updatedRecipe.photoUrl || "");
         }
         console.log("Рецепт =======:", formData);
         Array.from(formData.entries()).forEach(([key, value]) => {
@@ -129,7 +147,7 @@ export const UpdateRecipeApi = async (
             formData,
             {
                 headers: {
-                    'Content-Type': 'multipart/form-data',
+                    "Content-Type": "multipart/form-data",
                 },
             }
         );
@@ -145,33 +163,49 @@ export const UpdateRecipeApi = async (
     }
 };
 
-export const CreateRecipeApi = async (recipe: CreateRecipe, imageFile: File): Promise<ApiResponseRecipe | undefined> => {
+export const CreateRecipeApi = async (
+    recipe: CreateRecipe,
+    imageFile: File
+): Promise<ApiResponseRecipe | undefined> => {
     const formData = new FormData();
-    
+
     formData.append("Recipe.Name", recipe.name);
     formData.append("Recipe.ShortDescription", recipe.shortDescription);
     formData.append("Recipe.TimeCosts", "00:30:00");
-    formData.append("Recipe.NumberOfPersons", recipe.numberOfPersons.toString());
+    formData.append(
+        "Recipe.NumberOfPersons",
+        recipe.numberOfPersons.toString()
+    );
     recipe.ingridients.forEach((ingredient, index) => {
         formData.append(`Recipe.Ingridients[${index}].Title`, ingredient.title);
-        formData.append(`Recipe.Ingridients[${index}].Description`, ingredient.description);
+        formData.append(
+            `Recipe.Ingridients[${index}].Description`,
+            ingredient.description
+        );
     });
-    
+
     recipe.steps.forEach((step, index) => {
-        formData.append(`Recipe.Steps[${index}].NumberOfStep`, step.numberOfStep.toString());
+        formData.append(
+            `Recipe.Steps[${index}].NumberOfStep`,
+            step.numberOfStep.toString()
+        );
         formData.append(`Recipe.Steps[${index}].Description`, step.description);
     });
-    
+
     recipe.tags.forEach((tag, index) => {
         formData.append(`Recipe.Tags[${index}].Name`, tag.name);
     });
     formData.append("Image", imageFile);
     try {
-        const response = await axiosInstance.post<ApiResponseRecipe>(`/recipe/create`, formData, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        });
+        const response = await axiosInstance.post<ApiResponseRecipe>(
+            `/recipe/create`,
+            formData,
+            {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            }
+        );
         console.log("Рецепт обновлен:", response.data);
         return response.data;
     } catch (error: any) {
@@ -233,9 +267,9 @@ export const GetMostLikedRecipes = async (): Promise<
     }
 };
 
-export const SearchRecipes = async (searchString: string): Promise<
-    ApiResponseRecipe | undefined
-> => {
+export const SearchRecipes = async (
+    searchString: string
+): Promise<ApiResponseRecipe | undefined> => {
     try {
         const response = await axiosInstance.get<ApiResponseRecipe>(
             `/recipe/search/${searchString}`
