@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getRecipeDetail } from '../api/recipeService';
-import { infoUser  } from '../api/userService'; // Импортируем функцию infoUser 
+import { infoUser  } from '../api/userService';
 import { Recipe, RecipeDetail } from '../types/recipe';
 import './styles/Detail.css';
 
@@ -28,7 +28,7 @@ const Detail: React.FC = () => {
         const checkIfPersonalRecipe = async () => {
             try {
                 const userInfo = await infoUser ();
-                const personalRecipes = userInfo.personalRecipes.$values;
+                const personalRecipes = userInfo.personalRecipes;
                 const isPersonal = personalRecipes.some((personalRecipe: Recipe) => personalRecipe.id === Number(id));
                 setIsPersonalRecipe(isPersonal);
             } catch (err) {

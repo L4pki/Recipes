@@ -105,9 +105,13 @@ if ( app.Environment.IsDevelopment() )
     app.UseSwaggerUI();
 }
 
+app.UseStaticFiles();
+
 app.UseHttpsRedirection();
 
 app.UseCors( "AllowSpecificOrigin" );
+
+app.UseCors( "AllowFrontend" );
 
 app.UseAuthorization();
 

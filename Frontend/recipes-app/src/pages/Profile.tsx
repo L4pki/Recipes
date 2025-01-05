@@ -36,7 +36,7 @@ const Profile: React.FC = () => {
           console.log('Полученные рецепты:', response); // Логируем полученные рецепты
       
           // Извлекаем массив рецептов из ответа
-          const recipesArray = response.recipes.$values;
+          const recipesArray = response.recipes;
       
           // Проверяем, является ли recipesArray массивом
           if (!Array.isArray(recipesArray)) {

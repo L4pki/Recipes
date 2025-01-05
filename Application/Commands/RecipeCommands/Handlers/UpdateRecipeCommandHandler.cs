@@ -26,16 +26,56 @@ public class UpdateRecipeCommandHandler : IRequestHandler<UpdateRecipeCommand, R
 
     public async Task<RecipeResult> Handle( UpdateRecipeCommand request, CancellationToken cancellationToken )
     {
-        if ( string.IsNullOrWhiteSpace( request.Name ) ||
-        string.IsNullOrWhiteSpace( request.ShortDescription ) ||
-        string.IsNullOrWhiteSpace( request.PhotoUrl ) ||
-        request.NumberOfPersons == 0 ||
-        request.TimeCosts == TimeSpan.Zero ||
-        request.Ingridients.Length == 0 ||
-        request.Steps.Length == 0 ||
-        request.Tags.Length == 0 )
+        /*if ( string.IsNullOrWhiteSpace( request.Name ) ||
+         string.IsNullOrWhiteSpace( request.ShortDescription ) ||
+         string.IsNullOrWhiteSpace( request.PhotoUrl ) ||
+         request.NumberOfPersons == 0 ||
+         request.TimeCosts == TimeSpan.Zero ||
+         request.Ingridients.Length == 0 ||
+         request.Steps.Length == 0 ||
+         request.Tags.Length == 0 )
+         {
+
+             return new RecipeResult( null, "Ошибка: Все поля обязательны для заполнения." );
+         }*/
+        if ( string.IsNullOrWhiteSpace( request.Name ) )
         {
-            return new RecipeResult( null, "Ошибка: Все поля обязательны для заполнения." );
+            return new RecipeResult( null, "Название рецепта обязательно для заполнения." );
+        }
+
+        if ( string.IsNullOrWhiteSpace( request.ShortDescription ) )
+        {
+            return new RecipeResult( null, "Краткое описание рецепта обязательно для заполнения." );
+        }
+
+        if ( string.IsNullOrWhiteSpace( request.PhotoUrl ) )
+        {
+            return new RecipeResult( null, "URL изображения обязателен для заполнения." );
+        }
+
+        if ( request.NumberOfPersons <= 0 )
+        {
+            return new RecipeResult( null, "Количество персон должно быть больше нуля." );
+        }
+
+        if ( request.TimeCosts == TimeSpan.Zero )
+        {
+            return new RecipeResult( null, "Время приготовления должно быть указано." );
+        }
+
+        if ( request.Ingridients == null )
+        {
+            return new RecipeResult( null, "Ингредиенты обязательны для заполнения." );
+        }
+
+        if ( request.Steps == null )
+        {
+             return new RecipeResult( null, "Шаги приготовления обязательны для заполнения." );
+        }
+
+        if ( request.Tags == null )
+        {
+            return new RecipeResult( null, "Теги обязательны для заполнения." );
         }
 
         Recipe newRecipe = await _recipeRepository.GetByIdAsync( request.IdRecipe, cancellationToken );

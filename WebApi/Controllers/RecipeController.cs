@@ -26,18 +26,24 @@ public class RecipeController : ControllerBase
 
     [Authorize]
     [HttpPost( "create" )]
-    public async Task<IActionResult> CreateRecipeAsync( [FromBody] CreateRecipeDto recipe )
+    public async Task<IActionResult> CreateRecipeAsync( [FromForm] CreateRecipeRequest request )
     {
+        var recipe = request.Recipe;
+        var image = request.Image;
+
         string token = HttpContext.Request.Headers[ "Authorization" ].ToString().Replace( "Bearer ", "" );
 
         try
         {
             UserClaimsDto userClaims = _authService.GetUserClaims( token );
+
+            string imageUrl = await SaveImageAsync( image );
+
             RecipeResult newRecipe = await _mediator.Send(
                     new CreateRecipeCommand(
                         recipe.Name,
                         recipe.ShortDescription,
-                        recipe.PhotoUrl,
+                        imageUrl,
                         userClaims.Id,
                         userClaims.Login,
                         recipe.TimeCosts,
@@ -52,40 +58,63 @@ public class RecipeController : ControllerBase
         {
             return BadRequest( "Недействительный токен." );
         }
-        catch
+        /* catch
+         {
+             return BadRequest( "Неизвестная ошибка" );
+         }*/
+    }
+
+    private async Task<string> SaveImageAsync( IFormFile image )
+    {
+        if ( image == null || image.Length == 0 )
+            throw new ArgumentException( "Изображение не может быть пустым." );
+
+        var fileName = Path.GetFileName( image.FileName );
+        var filePath = Path.Combine( Directory.GetCurrentDirectory(), "wwwroot/images/recipes", fileName );
+        Directory.CreateDirectory( Path.GetDirectoryName( filePath ) );
+
+        using ( var stream = new FileStream( filePath, FileMode.Create ) )
         {
-            return BadRequest( "Неизвестная ошибка" );
+            await image.CopyToAsync( stream );
         }
+        return $"https://localhost:7217/images/recipes/{fileName}";
     }
 
     [Authorize]
     [HttpPost( "update/{id}" )]
-    public async Task<IActionResult> UpdateRecipeAsync( [FromBody] UpdateRecipeDto recipe, int id )
+    public async Task<IActionResult> UpdateRecipeAsync( [FromForm] UpdateRecipeRequest request, int id )
     {
-
         string token = HttpContext.Request.Headers[ "Authorization" ].ToString().Replace( "Bearer ", "" );
 
         try
         {
             UserClaimsDto userClaims = _authService.GetUserClaims( token );
             RecipeResult recipeInDb = await _mediator.Send( new GetRecipeByIdQuery( id ) );
+
             if ( recipeInDb.Recipe != null )
             {
                 if ( recipeInDb.Recipe.IdAuthor == userClaims.Id )
                 {
+                    string imageUrl = recipeInDb.Recipe.PhotoUrl;
+                    var recipe = request.Recipe;
+
+                    if ( request.Image != null )
+                    {
+                        imageUrl = await SaveImageAsync( request.Image );
+                    }
 
                     RecipeResult newRecipe = await _mediator.Send( new UpdateRecipeCommand(
                         id,
                         recipe.Name,
                         recipe.ShortDescription,
-                        recipe.PhotoUrl,
+                        imageUrl,
                         userClaims.Id,
                         recipe.TimeCosts,
                         recipe.NumberOfPersons,
                         recipe.Ingridients.ToArray(),
                         recipe.Steps.ToArray(),
-                        recipe.Tags.ToArray() ) );
-
+                        recipe.Tags.ToArray()
+                    ) );
 
                     return Ok( newRecipe );
                 }

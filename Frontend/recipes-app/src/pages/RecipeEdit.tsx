@@ -49,13 +49,13 @@ const RecipeEdit: React.FC = () => {
                         numberOfPersons:
                             recipeDetail.recipe.numberOfPersons || 1,
                         ingridients:
-                            recipeDetail.recipe.ingridientForCooking?.$values ||
+                            recipeDetail.recipe.ingridientForCooking ||
                             [],
                         tags:
-                            recipeDetail.recipe.tags?.$values.map(
+                            recipeDetail.recipe.tags?.map(
                                 (tag: { name: string }) => tag
                             ) || [],
-                        steps: recipeDetail.recipe.stepOfCooking?.$values || [],
+                        steps: recipeDetail.recipe.stepOfCooking || [],
                     });
                 }
             } catch (err) {
@@ -71,7 +71,7 @@ const RecipeEdit: React.FC = () => {
                 console.log("Полученные теги:", response); // Лог для проверки
 
                 // Извлечение массива тегов из объекта
-                const tagsList: { name: string }[] = response.$values; // Указываем тип для tagsList
+                const tagsList: { name: string }[] = response; // Указываем тип для tagsList
 
                 // Преобразование тегов в массив строк
                 //const formattedTags: string[] = tagsList.map((tag) => tag.name); // Исправлено на строку

@@ -1,0 +1,380 @@
+.create-recipe-page {
+    display: flex;
+    flex-direction: column;
+    width: 1200px;
+    justify-content: center;
+    margin: auto;
+}
+
+.create-recipe-page input,
+.create-recipe-page textarea {
+    font-family: Montserrat;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 28px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(37, 41, 45, 0.5);
+}
+
+.backspace-text {
+    font-family: Montserrat;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 21.94px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(253, 177, 0, 1);
+    margin: 5px;
+}
+
+.backspace-button {
+    display: flex;
+    width: 85px;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    margin: 0px;
+}
+
+.title-button-block {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.create-recipe-title {
+    margin: 0px;
+    font-family: Montserrat;
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 62px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(37, 41, 45, 1);
+}
+
+.create-recipe-button {
+    width: 278px;
+    height: 60px;
+    border-radius: 16px;
+    background: rgba(253, 177, 0, 1);
+    font-family: Montserrat;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 28px;
+    text-align: center;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(255, 255, 255, 1);
+}
+
+.create-recipe-form {
+    width: 1200px;
+    margin-top: 35px;
+    display: flex;
+    flex-direction: column;
+}
+
+.create-recipe-first-block {
+    width: 1200px;
+    height: 430px;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 16px 72px 0px rgba(34, 39, 47, 0.05);
+    border-radius: 72px 24px 24px 0px;
+    margin-top: 35px;
+    display: flex;
+}
+
+.create-recipe-second-block {
+    width: 1200px;
+    margin-top: 35px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.create-recipe-image-block {
+    width: 430px;
+    height: 430px;
+}
+
+.create-recipe-image {
+    width: 430px;
+    height: 430px;
+    border-radius: 72px 0px 72px 0px;
+    background: linear-gradient(0deg, #fffcf7, #fffcf7),
+        linear-gradient(0deg, #ffefcc, #ffefcc);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.import-image-rectangle {
+    width: 269px;
+    height: 269px;
+    border-radius: 20px;
+    border: 1px dashed rgba(242, 158, 31, 1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.import-image-rectangle img {
+    margin-bottom: 30px;
+}
+
+.import-image-text p {
+    font-family: Montserrat;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19.5px;
+    text-align: center;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(242, 158, 31, 1);
+    margin: 0px;
+}
+
+.create-recipe-info-block {
+    width: 647px;
+    margin: 61px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.recipe-info-name {
+    padding-left: 15px;
+    width: 647px;
+    height: 50px;
+    border-radius: 16px;
+    border: 1px solid rgba(145, 150, 161, 0.4);
+    box-sizing: border-box;
+}
+
+.recipe-info-about {
+    padding: 10px 15px;
+    width: 647px;
+    height: 117px;
+    border-radius: 16px;
+    border: 1px solid rgba(145, 150, 161, 0.4);
+    line-height: 1.2;
+    box-sizing: border-box;
+    text-align: left;
+    vertical-align: top;
+    resize: none;
+}
+
+.recipe-tags-rectangle {
+    width: 647px;
+    height: 50px;
+    border-radius: 16px;
+    border: 1px solid rgba(145, 150, 161, 0.4);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.recipe-tags-rectangle input,
+.recipe-tags-rectangle input:focus {
+    border: 0px;
+    outline: none;
+    margin-left: 10px;
+}
+
+.tag {
+    display: inline-block;
+    background-color: rgba(253, 177, 0, 1);
+    border-radius: 15px;
+    padding: 5px 10px;
+    margin: 5px;
+    position: relative;
+    color: white;
+}
+
+.tag button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: 5px;
+    color: white;
+}
+
+.suggestions {
+    border: 1px solid #ccc;
+    max-height: 150px;
+    overflow-y: auto;
+    position: absolute;
+    background-color: white;
+    z-index: 1;
+}
+
+.suggestions li {
+    padding: 5px;
+    cursor: pointer;
+}
+
+.suggestions li:hover {
+    background-color: #f0f0f0;
+}
+
+.recipe-info-time-person {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start;
+}
+
+.recipe-info-time {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 12px;
+}
+
+.recipe-time {
+    width: 220px;
+    height: 50px;
+    margin-right: 20px;
+    border-radius: 16px;
+    border: 1px;
+    border: 1px solid rgba(145, 150, 161, 0.4);
+    padding-left: 15px;
+}
+
+.create-recipe-ingridients {
+    width: 380px;
+    display: flex;
+    flex-direction: column;
+}
+
+.ingridients-title {
+    font-family: Montserrat;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 30px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(74, 82, 90, 1);
+}
+
+.button-add-new-ingr-step {
+    width: 380px;
+    height: 60px;
+    border-radius: 16px;
+    border: 1px solid rgba(253, 177, 0, 1);
+    font-family: Montserrat;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 28px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(253, 177, 0, 1);
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 0px 50px;
+    box-sizing: border-box;
+}
+
+.ingredient-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 380px;
+    height: 371px;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 16px 72px 0px rgba(34, 39, 47, 0.05);
+    margin-bottom: 40px;
+}
+
+.remove-ingredient-button {
+    position: absolute;
+    top: -30px;
+    right: 0px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.recipe-ingredient-name {
+    width: 320px;
+    height: 50px;
+    border-radius: 16px;
+    border: 1px solid rgba(145, 150, 161, 0.4);
+    padding-left: 15px;
+    box-sizing: border-box;
+}
+
+.recipe-ingredient-description {
+    width: 320px;
+    height: 229px;
+    border-radius: 16px;
+    border: 1px solid rgba(145, 150, 161, 0.4);
+    padding-left: 15px;
+    padding-top: 10px;
+    box-sizing: border-box;
+    resize: none;
+}
+
+.create-recipe-steps {
+    width: 790px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.step-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 790px;
+    height: 329px;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 16px 72px 0px rgba(34, 39, 47, 0.05);
+    margin-bottom: 40px;
+}
+
+.step-title {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 650px;
+}
+
+.step-number {
+    font-family: Montserrat;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 30px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(74, 82, 90, 1);
+}
+
+.recipe-step-description {
+    border: 1px solid rgba(145, 150, 161, 0.4);
+    width: 650px;
+    height: 166px;
+    border-radius: 16px;
+    padding-left: 15px;
+    padding-top: 10px;
+    box-sizing: border-box;
+    resize: none;
+}
