@@ -13,10 +13,10 @@ import {
     UpdateTag,
 } from "../types/recipe";
 import "./styles/RecipeCreate.css";
-import backspace from "../assets/images/backspace.png";
 import close from "../assets/images/Close.png";
 import download from "../assets/images/download.png";
 import plus from "../assets/images/plus.png";
+import Backspace from "../components/forms/Backspace";
 
 const RecipeCreate: React.FC = () => {
     const navigate = useNavigate();
@@ -289,13 +289,7 @@ const RecipeCreate: React.FC = () => {
 
     return (
         <div className="create-recipe-page">
-            <button
-                className="backspace-button"
-                onClick={() => navigate("/main")}
-            >
-                <img src={backspace} alt="Назад" />
-                <p className="backspace-text">Назад</p>
-            </button>
+            <Backspace/>
             <div className="title-button-block">
                 <h2 className="create-recipe-title">
                     {formData.idRecipe
