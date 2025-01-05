@@ -6,9 +6,20 @@
     list-style-type: none;
 }
 
+.bestrecipe-content {
+    border-radius: 72px 24px 24px 0px;
+    width: 1200px;
+    height: 540px;
+}
+
 .recipe-link {
     width: 430px;
     height: 430px;
+}
+
+.bestrecipe-link {
+    width: 543px;
+    height: 543px;
 }
 
 .recipe-item {
@@ -21,6 +32,15 @@
     box-shadow: 0px 16px 72px 0px rgba(34, 39, 47, 0.1);
     border-radius: 72px 24px 24px 0px;
     margin: 20px 0px;
+}
+
+.bestrecipe-item {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    background: rgba(255, 255, 255, 1);
+    width: 1200px;
+    height: 540px;
 }
 
 .recipe-container {
@@ -40,20 +60,29 @@
     object-fit: cover;
 }
 
+.bestrecipe-image {
+    width: 543px;
+    height: 543px;
+    border-radius: 72px 0px 72px 0px;
+    background: rgba(255, 255, 255, 1);
+    margin: 0px;
+    object-fit: cover;
+}
+
 .recipe-author {
     position: absolute;
-    bottom: 10px; 
+    bottom: 10px;
     width: auto;
-    height: auto; 
-    background: rgba(255, 255, 255, 1); 
+    height: auto;
+    background: rgba(255, 255, 255, 1);
     font-family: Montserrat;
     font-size: 16px;
     font-weight: 600;
     line-height: 28px;
     text-align: left;
     color: rgba(253, 177, 0, 1);
-    padding: 5px; 
-    border-radius: 0px 5px 5px 0px; 
+    padding: 5px;
+    border-radius: 0px 5px 5px 0px;
 }
 
 .recipe-about {
@@ -66,11 +95,42 @@
     border-radius: 72px 24px 24px 0px;
 }
 
+.bestrecipe-about {
+    width: 100%;
+    height: 100%;
+    color: black;
+    padding: 0px 40px;
+}
+
 .recipe-info-first {
     display: flex;
-    justify-content: space-between;
+    justify-content: right;
     align-items: center;
     height: 50px;
+}
+
+.bestrecipe-likesTime {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.bestrecipe-timeLike-text {
+    font-family: Montserrat;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 28px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(37, 41, 45, 1);
+    margin-left: 5px;
+    margin-right: 15px;
+}
+
+.img-bestrecipe {
+    width: 100px;
+    height: auto;
 }
 
 .recipe-tag {
