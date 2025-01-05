@@ -280,7 +280,7 @@ const Profile: React.FC = () => {
     <h2 className='personal-recipe-title'>Мои рецепты</h2>
     <ul className="personal-recipes-list">
       {personalRecipes.map(recipe => (
-        <RecipeForm
+        <RecipeCard
           key={recipe.id}
           recipe={recipe}
           recipeStatus={recipeStatuses[recipe.id]}

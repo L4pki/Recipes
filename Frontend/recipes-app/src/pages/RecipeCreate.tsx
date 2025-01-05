@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { GetTagAllList, CreateRecipeApi, UpdateRecipeApi, getRecipeDetail } from "../api/recipeService";
+import {
+    GetTagAllList,
+    CreateRecipeApi,
+    UpdateRecipeApi,
+    getRecipeDetail,
+} from "../api/recipeService";
 import {
     UpdateIngredient,
     UpdateRecipe,
@@ -50,24 +55,31 @@ const RecipeCreate: React.FC = () => {
         if (id) {
             const fetchRecipe = async () => {
                 const recipeData = await getRecipeDetail(Number(id));
-                
+
                 if (recipeData) {
                     const transformedData: UpdateRecipe = {
                         name: recipeData.recipe.name,
                         photoUrl: recipeData.recipe.photoUrl,
                         shortDescription: recipeData.recipe.shortDescription,
                         numberOfPersons: recipeData.recipe.numberOfPersons,
-                        timeCosts: String(convertTimeToMinutes(recipeData.recipe.timeCosts)),
-                        ingridients: recipeData.recipe.ingridientForCooking?.map((ingredient: UpdateIngredient) => ({
-                            title: ingredient.title,
-                            description: ingredient.description,
-                        })),
-                        steps: recipeData.recipe.stepOfCooking?.map((step: UpdateStep) => ({
-                            numberOfStep: step.numberOfStep,
-                            description: step.description,
-                        })),
+                        timeCosts: String(
+                            convertTimeToMinutes(recipeData.recipe.timeCosts)
+                        ),
+                        ingridients:
+                            recipeData.recipe.ingridientForCooking?.map(
+                                (ingredient: UpdateIngredient) => ({
+                                    title: ingredient.title,
+                                    description: ingredient.description,
+                                })
+                            ),
+                        steps: recipeData.recipe.stepOfCooking?.map(
+                            (step: UpdateStep) => ({
+                                numberOfStep: step.numberOfStep,
+                                description: step.description,
+                            })
+                        ),
                         idRecipe: Number(id),
-                        tags: recipeData.recipe.tags
+                        tags: recipeData.recipe.tags,
                     };
                     console.log(transformedData);
                     setFormData(transformedData);
@@ -81,12 +93,12 @@ const RecipeCreate: React.FC = () => {
         if (!timeString) {
             return 0;
         }
-    
-        const parts = timeString.split(':').map(Number);
+
+        const parts = timeString.split(":").map(Number);
         if (parts.length < 2) {
             return 0;
         }
-    
+
         const [hours, minutes] = parts;
         return (hours || 0) * 60 + (minutes || 0);
     };
@@ -101,10 +113,14 @@ const RecipeCreate: React.FC = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         console.log(formData);
-        
+
         if (formData.idRecipe) {
-            console.log("------------------------",formData);
-            const updateRecipeResponse = await UpdateRecipeApi(formData.idRecipe, formData, imageFile || undefined);
+            console.log("------------------------", formData);
+            const updateRecipeResponse = await UpdateRecipeApi(
+                formData.idRecipe,
+                formData,
+                imageFile || undefined
+            );
             if (updateRecipeResponse) {
                 navigate(`/profile`);
             }
@@ -113,7 +129,10 @@ const RecipeCreate: React.FC = () => {
                 alert("Пожалуйста, загрузите изображение для нового рецепта.");
                 return;
             }
-            const createRecipeResponse = await CreateRecipeApi(formData, imageFile);
+            const createRecipeResponse = await CreateRecipeApi(
+                formData,
+                imageFile
+            );
             if (createRecipeResponse) {
                 navigate(`/profile`);
             }
@@ -135,7 +154,7 @@ const RecipeCreate: React.FC = () => {
             setImageFile(file);
             setFormData((prevData) => ({
                 ...prevData,
-                photoUrl: URL.createObjectURL(file), 
+                photoUrl: URL.createObjectURL(file),
             }));
         }
     };
@@ -279,7 +298,9 @@ const RecipeCreate: React.FC = () => {
             </button>
             <div className="title-button-block">
                 <h2 className="create-recipe-title">
-                    {formData.idRecipe ? "Обновить рецепт" : "Добавить новый рецепт"}
+                    {formData.idRecipe
+                        ? "Обновить рецепт"
+                        : "Добавить новый рецепт"}
                 </h2>
                 <button className="create-recipe-button" onClick={handleSubmit}>
                     Опубликовать
@@ -343,7 +364,7 @@ const RecipeCreate: React.FC = () => {
                         </li>
                         <li>
                             <div className="recipe-tags-rectangle">
-                                <ul>
+                                <ul className="tags-list">
                                     {formData.tags?.map((tag, index) => (
                                         <li key={index} className="tag">
                                             {tag.name}
@@ -356,27 +377,31 @@ const RecipeCreate: React.FC = () => {
                                         </li>
                                     ))}
                                 </ul>
-                                <input
-                                    type="text"
-                                    value={inputValue}
-                                    onChange={handleInputChange}
-                                    placeholder="Добавьте тег"
-                                    onFocus={() => setIsFocused(true)}
-                                    onBlur={() => setIsFocused(false)}
-                                />
+                                <div>
+                                    <input
+                                        type="text"
+                                        value={inputValue}
+                                        onChange={handleInputChange}
+                                        placeholder="Добавьте тег"
+                                        onFocus={() => setIsFocused(true)}
+                                        onBlur={() => setIsFocused(false)}
+                                    />
+                                    {isFocused && suggestions.length > 0 && (
+                                        <ul className="suggestions">
+                                            {suggestions.map((tag, index) => (
+                                                <li
+                                                    key={index}
+                                                    onMouseDown={() =>
+                                                        addTag(tag)
+                                                    }
+                                                >
+                                                    {tag.name}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </div>
                             </div>
-                            {isFocused && suggestions.length > 0 && (
-                                <ul className="suggestions">
-                                    {suggestions.map((tag, index) => (
-                                        <li
-                                            key={index}
-                                            onMouseDown={() => addTag(tag)}
-                                        >
-                                            {tag.name}
-                                        </li>
-                                    ))}
-                                </ul>
-                            )}
                         </li>
                         <li className="recipe-info-time-person">
                             <div className="recipe-info-time">
@@ -384,7 +409,11 @@ const RecipeCreate: React.FC = () => {
                                     className="recipe-time"
                                     name="timeCosts"
                                     type="text"
-                                    value={formData.timeCosts ? Number(formData.timeCosts) : 0}
+                                    value={
+                                        formData.timeCosts
+                                            ? Number(formData.timeCosts)
+                                            : 0
+                                    }
                                     onChange={handleMinutesChange}
                                     placeholder="Время готовки"
                                 />
