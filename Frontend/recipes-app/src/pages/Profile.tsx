@@ -7,6 +7,9 @@ import { Recipe, RecipeStatus } from '../types/recipe';
 import { likeRecipe, starRecipe, checkStatusLikeStarRecipe } from '../api/recipeService';
 import UserEditForm from '../components/forms/UserEditForm';
 import { useNavigate } from 'react-router-dom';
+import backspace from "../assets/images/backspace.png";
+import edit from "../assets/images/edit.png";
+import icmenu from "../assets/images/ic-menu.png";
 
 const Profile: React.FC = () => {
   const [user, setUser ] = useState<UserInfo | null>(null);
@@ -105,7 +108,7 @@ const Profile: React.FC = () => {
       const currentStatus = recipeStatuses[recipeId]?.recipeLiked;
       await likeRecipe(recipeId);
       const updatedRecipeStatus = await checkStatusLikeStarRecipe(recipeId);
-
+  
       if (updatedRecipeStatus) {
         setPersonalRecipes(prevRecipes =>
           prevRecipes.map(recipe =>
@@ -115,24 +118,34 @@ const Profile: React.FC = () => {
             } : recipe
           )
         );
-      setRecipeStatuses(prevStatuses => {
-        const previousStatus = prevStatuses[recipeId] || {
-          recipeLiked: false,
-          likesCount: 0,
-          starsCount: 0,
-          recipeStarred: false,
-        };
-
-        return {
-          ...prevStatuses,
-          [recipeId]: {
-            ...previousStatus,
-            recipeLiked: !currentStatus,
-            likesCount: updatedRecipeStatus?.recipeLiked || 0,
+  
+        setRecipeStatuses(prevStatuses => {
+          const previousStatus = prevStatuses[recipeId] || {
+            recipeLiked: false,
+            likesCount: 0,
+            starsCount: 0,
+            recipeStarred: false,
+          };
+  
+          return {
+            ...prevStatuses,
+            [recipeId]: {
+              ...previousStatus,
+              recipeLiked: !currentStatus,
+              likesCount: updatedRecipeStatus?.recipeLiked || 0,
+            }
+          };
+        });
+        setUser (prevUser  => {
+          if (prevUser ) {
+            return {
+              ...prevUser ,
+              likeRecipesCount: currentStatus ? (prevUser.likeRecipesCount || 0) - 1 : (prevUser.likeRecipesCount || 0) + 1,
+            };
           }
-        };
-      });
-    }
+          return null;
+        });
+      }
     } catch (err) {
       console.error(err);
       setError('Ошибка при установке лайка');
@@ -144,7 +157,7 @@ const Profile: React.FC = () => {
       const currentStatus = recipeStatuses[recipeId]?.recipeStarred;
       await starRecipe(recipeId);
       const updatedRecipeStatus = await checkStatusLikeStarRecipe(recipeId);
-
+  
       if (updatedRecipeStatus) {
         setPersonalRecipes(prevRecipes =>
           prevRecipes.map(recipe =>
@@ -154,6 +167,7 @@ const Profile: React.FC = () => {
             } : recipe
           )
         );
+  
         setRecipeStatuses(prevStatuses => ({
           ...prevStatuses,
           [recipeId]: {
@@ -162,12 +176,22 @@ const Profile: React.FC = () => {
             starsCount: updatedRecipeStatus?.recipeStarred || 0,
           }
         }));
+        setUser (prevUser  => {
+          if (prevUser ) {
+            return {
+              ...prevUser ,
+              favoriteRecipesCount: currentStatus ? (prevUser.favoriteRecipesCount || 0) - 1 : (prevUser.favoriteRecipesCount || 0) + 1,
+            };
+          }
+          return null;
+        });
       }
     } catch (err) {
       console.error('Error in handleStar:', err);
       setError('Ошибка при установке звезды');
     }
   };
+  
 
   if (loading) {
     return <div className="loading">Загрузка...</div>;
@@ -183,17 +207,61 @@ const Profile: React.FC = () => {
 
   return (
     <div className="profile-container">
-      <h1>Профиль пользователя</h1>
+      <button className='backspace-button' onClick={()=>navigate("/main")}>
+        <img src={backspace} alt="Назад" />
+        <p className='backspace-text'>Назад</p> 
+      </button>
+      <p className="profile-title">Мой профиль</p>
       <div className="user-info">
-        <p><strong>Имя:</strong> {user.name}</p>
-        <p><strong>Логин:</strong> {user.login}</p>
-        <p><strong>О себе:</strong> {user.about}</p>
-        <p><strong>Количество любимых рецептов:</strong> {user.favoriteRecipesCount}</p>
-        <p><strong>Количество лайкнутых рецептов:</strong> {user.likeRecipesCount}</p>
-        <p><strong>Количество собственных рецептов:</strong> {user.personalRecipesCount}</p>
+        <button onClick={() => setIsEditing(true)} className='user-info-edit'><img src={edit} alt="Редактировать" /></button>
+        <div className='user-info-first'>
+          <div className='user-info-first-block'>
+            <p className='user-info-first-title'>Имя</p>
+            <p className='user-info-text'> {user.name}</p>
+          </div>
+          <div className='user-info-first-block'>
+            <p className='user-info-first-title'>Логин</p>
+            <p className='user-info-text'> {user.login}</p>
+          </div>
+          <div className='user-info-first-block'>
+            <p className='user-info-first-title'>Пароль</p>
+            <p className='user-info-text'> ********</p>
+          </div>
+        </div>
+        <div className='user-info-second'>
+          <p className='user-info-title'>Напиши немного о себе</p>
+          <p className='user-info-text'> {user.about}</p>
+        </div>
       </div>
-      <button onClick={() => setIsEditing(true)} className="update-button">Редактировать данные</button>
-      <button onClick={() => navigate(`/RecipeCreate`)}>Добавить рецепт</button>
+      <div className='user-recipe-count-container'>
+        <div className='user-recipe-count'>
+          <div className='user-recipe-about'>
+            <div className='img-rectangle'>
+              <img src={icmenu} alt="icmenu" />
+            </div>
+            <p className='count-text'>Всего рецептов</p>
+          </div>
+          <p className='count'>{user.personalRecipesCount}</p>
+        </div>
+        <div className='user-recipe-count'>
+        <div className='user-recipe-about'>
+            <div className='img-rectangle'>
+              <img src={icmenu} alt="icmenu" />
+            </div>
+            <p className='count-text'>Всего лайков</p>
+          </div>
+          <p className='count'>{user.likeRecipesCount}</p>
+        </div>
+        <div className='user-recipe-count'>
+        <div className='user-recipe-about'>
+            <div className='img-rectangle'>
+              <img src={icmenu} alt="icmenu" />
+            </div>
+            <p className='count-text'>В избранных</p>
+          </div>
+          <p className='count'>{user.favoriteRecipesCount}</p>
+        </div>
+      </div>
 
       {isEditing && editUser  && (
         <UserEditForm
@@ -206,22 +274,27 @@ const Profile: React.FC = () => {
         />
       )}
 
-      <h2>Мои персональные рецепты</h2>
-      <ul className="personal-recipes-list">
-        {personalRecipes.length > 0 ? (
-          personalRecipes.map(recipe => (
-            <RecipeCard
-              key={recipe.id}
-              recipe={recipe}
-              recipeStatus={recipeStatuses[recipe.id]}
-              onLike={handleLike}
-              onStar={handleStar}
-            />
-          ))
-        ) : (
-          <li>Нет персональных рецептов.</li>
-        )}
-      </ul>
+
+{personalRecipes.length > 0 ? (
+  <>
+    <h2 className='personal-recipe-title'>Мои рецепты</h2>
+    <ul className="personal-recipes-list">
+      {personalRecipes.map(recipe => (
+        <RecipeForm
+          key={recipe.id}
+          recipe={recipe}
+          recipeStatus={recipeStatuses[recipe.id]}
+          onLike={handleLike}
+          onStar={handleStar}
+        />
+      ))}
+    </ul>
+  </>
+) : (
+  <>
+    <p className='personal-recipe-title'>Рецептов пока нет</p>
+  </>
+)}
     </div>
   );
 }

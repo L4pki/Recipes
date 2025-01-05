@@ -7,7 +7,7 @@ footer {
     align-items: center;
 }
 
-h1 {
+.footer-title {
     width: 132px;
     height: 39px;
     font-family: Montserrat;

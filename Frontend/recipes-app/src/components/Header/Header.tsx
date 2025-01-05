@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import "./Header.css"; // Импортируем стили
+import "./Header.css";
 import { infoUser } from "../../api/userService";
 import Popup from "../AuthPopup/AuthPopup";
 import { User } from "../../types/user";
+import login from "../../assets/images/login.png";
+import exit from "../../assets/images/exit.png";
 
 const Header: React.FC = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -13,13 +15,13 @@ const Header: React.FC = () => {
     const fetchUserInfo = async () => {
         try {
             const userInfo = await infoUser();
-            setUsername(userInfo.name); // Сохраняем имя пользователя
+            setUsername(userInfo.name);
         } catch (error) {
             console.error(
                 "Ошибка при получении информации о пользователе:",
                 error
             );
-            setUsername(null); // Если произошла ошибка, сбрасываем имя пользователя
+            setUsername(null);
         }
     };
 
@@ -28,7 +30,7 @@ const Header: React.FC = () => {
             const token = localStorage.getItem("token");
             setIsAuthenticated(!!token);
             if (token) {
-                fetchUserInfo(); // Получаем информацию о пользователе
+                fetchUserInfo();
             } else {
                 setUsername(null);
             }
@@ -51,83 +53,87 @@ const Header: React.FC = () => {
 
     const handleSuccessfulAuth = (userInfo: User) => {
         setIsAuthenticated(true);
-        setUsername(userInfo.name); // Устанавливаем имя пользователя
+        setUsername(userInfo.name);
         setIsPopupOpen(false);
         window.location.reload();
     };
 
     return (
         <header>
-            <nav>
-                <ul>
-                    <h1>Recipes</h1>
-                    <div className="header-navigate">
-                        <ul>
-                            <li>
-                                <NavLink
-                                    to="/main"
-                                    className={({ isActive }) =>
-                                        isActive
-                                            ? "nav-link nav-link-active"
-                                            : "nav-link"
-                                    }
-                                >
-                                    Главная
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink
-                                    to="/recipes"
-                                    className={({ isActive }) =>
-                                        isActive
-                                            ? "nav-link nav-link-active"
-                                            : "nav-link"
-                                    }
-                                >
-                                    Рецепты
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink
-                                    to="/favorite"
-                                    className={({ isActive }) =>
-                                        isActive
-                                            ? "nav-link nav-link-active"
-                                            : "nav-link"
-                                    }
-                                >
-                                    Избранные
-                                </NavLink>
-                            </li>
-                        </ul>
-                    </div>
-
+            <ul className="header-block">
+                <div className="header-navigate">
+                    <h1 className="header-title">Recipes</h1>
+                    <li>
+                        <NavLink
+                            to="/main"
+                            className={({ isActive }) =>
+                                isActive
+                                    ? "nav-link nav-link-active"
+                                    : "nav-link"
+                            }
+                        >
+                            Главная
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink
+                            to="/recipes"
+                            className={({ isActive }) =>
+                                isActive
+                                    ? "nav-link nav-link-active"
+                                    : "nav-link"
+                            }
+                        >
+                            Рецепты
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink
+                            to="/favorite"
+                            className={({ isActive }) =>
+                                isActive
+                                    ? "nav-link nav-link-active"
+                                    : "nav-link"
+                            }
+                        >
+                            Избранные
+                        </NavLink>
+                    </li>
+                </div>
+                <div className="header-user">
+                    <div className="header-user-block">
+                    <img className="icon" src={login} alt="Иконка пользователя" />
                     {isAuthenticated ? (
                         <>
+                        
                             <li>
-                                <Link to="/profile">
-                                    {username ? username : "Пользователь"}
+                                <Link className="header-user-text" to="/profile">
+                                    {"Привет, "}{ username ? username : "Пользователь"}
                                 </Link>
                             </li>
+                            <div className="separator"></div>
                             <li>
-                                <button onClick={handleLogout}>Выйти</button>
+                                <img className="icon" src={exit} alt="Иконка выхода" onClick={handleLogout} />
                             </li>
                         </>
+                            
                     ) : (
-                        <div>
-                            <button onClick={() => setIsPopupOpen(true)}>
+                        <>
+                            
+                            <button className="header-user-text" onClick={() => setIsPopupOpen(true)}>
                                 Войти
                             </button>
                             <Popup
                                 isOpen={isPopupOpen}
-                                isLogin={"login"} // Передаем текущий режим
+                                isLogin={"login"}
                                 onClose={() => setIsPopupOpen(false)}
                                 onSuccessfulAuth={handleSuccessfulAuth}
                             />
-                        </div>
+                        </>
                     )}
-                </ul>
-            </nav>
+                    </div>
+                </div>
+            </ul>
         </header>
     );
 };

@@ -1,66 +1,195 @@
 .profile-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  h1 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  .user-info {
-    margin-bottom: 20px;
-    padding: 10px;
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .user-info p {
-    margin: 5px 0;
-  }
-  
-  label {
+    display: flex;
+    flex-direction: column;
+    width: 1200px;
+    margin: 20px auto;
+}
+
+.user-info {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 1200px;
+    height: 311px;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 16px 72px 0px rgba(34, 39, 47, 0.05);
+    border-radius: 65px 20px 20px 20px;
+    margin-top: 40px;
+}
+
+.user-info-edit {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.user-info-first-block {
+    width: 542px;
+    height: 50px;
+    border-radius: 16px;
+    border: 1px;
+    border: 1px solid rgba(145, 150, 161, 0.4);
+}
+
+.user-info-first-title {
+    width: 57px;
+    height: 25px;
+    font-family: Montserrat;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 28px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(37, 41, 45, 0.5);
+    margin: 0px 20px;
+}
+
+.user-info-title {
+    font-family: Montserrat;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 28px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(37, 41, 45, 0.5);
+    margin: 10px 20px 0px 20px;
+}
+
+.user-info-text {
+    font-family: Montserrat;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(74, 82, 90, 1);
+    margin: 0px 20px;
+    height: 28px;
+}
+
+.user-info-first {
+    width: 542px;
+    height: 190px;
+    margin-left: 59px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.user-info-second {
+    width: 472px;
+    height: 191px;
+    border-radius: 16px;
+    border: 1px solid rgba(145, 150, 161, 0.4);
+    margin-right: 59px;
+}
+
+.user-recipe-count-container {
+    width: 1200px;
+    height: 151.18px;
+    margin: 40px 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.user-recipe-count {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 380px;
+    height: 151.18px;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 16px 72px 0px rgba(34, 39, 47, 0.05);
+}
+
+.count {
+    font-family: Montserrat;
+    font-size: 107px;
+    font-weight: 600;
+    line-height: 30px;
+    text-align: right;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(253, 177, 0, 1);
+    margin-right: 30px;
+}
+
+.user-recipe-about {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: 30px;
+}
+
+.img-rectangle {
+    width: 46.34px;
+    height: 47.24px;
+    border-radius: 12px;
+    background: rgb(252, 235, 199);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.count-text {
+    font-family: Montserrat;
+    font-size: 23px;
+    font-weight: 700;
+    line-height: 30px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(37, 41, 45, 1);
+    margin: 15px 0px;
+}
+
+.personal-recipe-title {
+    font-family: Montserrat;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 30px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(37, 41, 45, 1);
+}
+
+.personal-recipes-list {
+    display: inline;
+    width: 1200px;
+    margin-top: 0px;
+    padding: 0px;
+}
+
+label {
     display: block;
     margin-bottom: 10px;
     font-weight: bold;
-  }
-  /*
-  input[type="text"],
-  input[type="password"] {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    transition: border-color 0.3s;
-  }
-  
-  input[type="text"]:focus,
-  input[type="password"]:focus {
-    border-color: #007bff;
-    outline: none;
-  }*/
-  
-  .error {
+}
+
+.error {
     color: red;
     font-size: 0.9em;
-  }
-  
-  .readonly-input {
+}
+
+.readonly-input {
     background-color: #f0f0f0;
     color: #666;
     border: 1px solid #ccc;
     cursor: not-allowed;
-  }
-  
-  .update-button,
-  .cancel-button {
+}
+
+.update-button,
+.cancel-button {
     display: inline-block;
     padding: 10px 15px;
     margin-top: 10px;
@@ -69,33 +198,63 @@
     color: white;
     cursor: pointer;
     transition: background-color 0.3s;
-  }
-  
-  .update-button {
+}
+
+.update-button {
     background-color: #28a745; /* Зеленый цвет для кнопки "Сохранить" */
-  }
-  
-  .update-button:hover {
+}
+
+.update-button:hover {
     background-color: #218838; /* Темнее при наведении */
-  }
-  
-  .cancel-button {
+}
+
+.cancel-button {
     background-color: #dc3545; /* Красный цвет для кнопки "Отменить" */
-  }
-  
-  .cancel-button:hover {
+}
+
+.cancel-button:hover {
     background-color: #c82333; /* Темнее при наведении */
-  }
-  
-  .loading {
+}
+
+.loading {
     text-align: center;
     font-size: 1.5em;
     color: #007bff;
-  }
-  
-  .error {
+}
+
+.error {
     text-align: center;
     color: red;
     margin-top: 20px;
-  }
-  
+}
+
+.backspace-text {
+    font-family: Montserrat;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 21.94px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(253, 177, 0, 1);
+}
+
+.backspace-button {
+    display: flex;
+    width: 85px;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.profile-title {
+    color: rgba(37, 41, 45, 1);
+    font-family: Montserrat;
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 62px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    margin: 0px;
+}
