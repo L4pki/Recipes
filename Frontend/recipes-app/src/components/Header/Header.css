@@ -1,6 +1,11 @@
 header {
-    padding: 20px 30px;
-    background: #fefefb;
+    padding: 0px 120px;
+    margin: auto;
+    width: 1440px;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 1;
+    overflow: visible;
 }
 
 .header-title {
@@ -14,7 +19,6 @@ header {
     text-underline-position: from-font;
     text-decoration-skip-ink: none;
     color: rgba(253, 177, 0, 1);
-    margin-left: 70px;
 }
 
 .header-navigate {
@@ -67,7 +71,6 @@ header {
 .header-user-block {
     display: flex;
     align-items: center;
-    margin-right: 40px;
 }
 
 .header-user-text {
