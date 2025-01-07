@@ -1,9 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { getRecipeDetail } from '../api/recipeService';
-import { infoUser  } from '../api/userService';
-import { Recipe, RecipeDetail } from '../types/recipe';
-import './styles/Detail.css';
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import {
+    checkStatusLikeStarRecipe,
+    getRecipeDetail,
+    likeRecipe,
+    starRecipe,
+} from "../api/recipeService";
+import { infoUser } from "../api/userService";
+import { Recipe, RecipeDetail, RecipeStatus } from "../types/recipe";
+import "./styles/Detail.css";
+import { RecipeCard } from "../components/RecipeCard/RecipeCard";
+import Backspace from "../components/forms/Backspace";
+import edit from "../assets/images/edit-white.png";
+import deleteImg from "../assets/images/delete.png";
 
 const Detail: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -11,6 +20,9 @@ const Detail: React.FC = () => {
     const [recipe, setRecipe] = useState<RecipeDetail | undefined>(undefined);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const [recipeStatuses, setRecipeStatuses] = useState<
+        RecipeStatus | undefined
+    >({});
     const [isPersonalRecipe, setIsPersonalRecipe] = useState<boolean>(false);
 
     useEffect(() => {
@@ -18,8 +30,10 @@ const Detail: React.FC = () => {
             try {
                 const recipeDetail = await getRecipeDetail(Number(id));
                 setRecipe(recipeDetail.recipe);
+                const statuses = await checkStatusLikeStarRecipe(Number(id));
+                setRecipeStatuses(statuses);
             } catch (err) {
-                setError('Ошибка при загрузке данных о рецепте');
+                setError("Ошибка при загрузке данных о рецепте");
             } finally {
                 setLoading(false);
             }
@@ -27,18 +41,63 @@ const Detail: React.FC = () => {
 
         const checkIfPersonalRecipe = async () => {
             try {
-                const userInfo = await infoUser ();
+                const userInfo = await infoUser();
                 const personalRecipes = userInfo.personalRecipes;
-                const isPersonal = personalRecipes.some((personalRecipe: Recipe) => personalRecipe.id === Number(id));
+                const isPersonal = personalRecipes.some(
+                    (personalRecipe: Recipe) => personalRecipe.id === Number(id)
+                );
                 setIsPersonalRecipe(isPersonal);
             } catch (err) {
-                setError('Ошибка при загрузке данных о пользователе');
+                setError("Ошибка при загрузке данных о пользователе");
             }
         };
 
         fetchRecipeDetail();
         checkIfPersonalRecipe();
     }, [id]);
+
+    const handleLike = async (recipeId: number) => {
+        try {
+            const currentStatus = recipeStatuses?.recipeLiked;
+            await likeRecipe(recipeId);
+            setRecipe((prevRecipe) => ({
+                ...prevRecipe!,
+                usersLikesCount: currentStatus
+                    ? (prevRecipe!.usersLikesCount || 0) - 1
+                    : (prevRecipe!.usersLikesCount || 0) + 1,
+            }));
+            setRecipeStatuses((prevStatuses) => ({
+                ...prevStatuses,
+                recipeLiked: !currentStatus,
+            }));
+        } catch {
+            setError("Ошибка при установке лайка");
+        }
+    };
+
+    const handleStar = async (recipeId: number) => {
+        try {
+            const currentStatus = recipeStatuses?.recipeStarred;
+            await starRecipe(recipeId);
+            const updatedRecipeStatus = await checkStatusLikeStarRecipe(
+                recipeId
+            );
+            if (updatedRecipeStatus) {
+                setRecipe((prevRecipe) => ({
+                    ...prevRecipe!,
+                    usersStarsCount: currentStatus
+                        ? (prevRecipe!.usersStarsCount || 0) - 1
+                        : (prevRecipe!.usersStarsCount || 0) + 1,
+                }));
+                setRecipeStatuses((prevStatuses) => ({
+                    ...prevStatuses,
+                    recipeStarred: updatedRecipeStatus.recipeStarred,
+                }));
+            }
+        } catch {
+            setError("Ошибка при установке звезды");
+        }
+    };
 
     if (loading) {
         return <div className="error">Загрузка...</div>;
@@ -53,48 +112,76 @@ const Detail: React.FC = () => {
     }
 
     return (
-        <div className="favorite-recipes">
-            <h2 className="recipe-name">{recipe.name}</h2>
-            <img className="recipe-image" src={recipe.photoUrl} alt={recipe.name} />
-            <p>{recipe.shortDescription}</p>
-            <p>Время приготовления: {recipe.timeCosts || 'Не указано'}</p>
-            <p>Количество порций: {recipe.numberOfPersons}</p>
-            <h3>Ингредиенты:</h3>
-            <ul className="recipes-list">
-                {recipe.ingridientForCooking && recipe.ingridientForCooking ? (
-                    recipe.ingridientForCooking.map((ingredient) => (
-                        <li className="recipe-item" key={ingredient.id}>{ingredient.title}</li>
-                    ))
-                ) : (
-                    <li className="recipe-item">Нет ингредиентов</li>
-                )}
-            </ul>
-            <h3>Шаги приготовления:</h3>
-            <ol className="recipes-list">
-                {recipe.stepOfCooking && recipe.stepOfCooking ? (
-                    recipe.stepOfCooking.map((step, index) => (
-                        <li className="recipe-item" key={index}>{step.description}</li>
-                    ))
-                ) : (
-                    <li className="recipe-item">Нет шагов</li>
-                )}
-            </ol>
-            <h3>Теги:</h3>
-            <ul className="recipes-list">
-                {recipe.tags && recipe.tags ? (
-                    recipe.tags.map((tag) => (
-                        <li className="recipe-item" key={tag.id}>{tag.name}</li>
-                    ))
-                ) : (
-                    <li className="recipe-item">Нет тегов</li>
-                )}
-            </ul>
-            <p>Количество лайков: {recipe.usersLikesCount}</p>
-            <p>Количество звезд: {recipe.usersStarsCount}</p>
-            <button onClick={() => navigate(-1)}>Назад</button>
-            {isPersonalRecipe && (
-                <button onClick={() => navigate(`/RecipeEdit/${id}`)}>Редактировать рецепт</button>
-            )}
+        <div className="detail-page">
+            <Backspace />
+            <div className="detail-header">
+                <h3 className="detail-title">{recipe.name}</h3>
+                <div className="detail-header-buttons">
+                    {isPersonalRecipe && (
+                        <>
+                            <button className="delete-recipe-button">
+                                <img src={deleteImg} alt="Корзина" />
+                            </button>
+                            <button
+                                className="edit-recipe-button"
+                                onClick={() => navigate(`/RecipeEdit/${id}`)}
+                            >
+                                <img src={edit} alt="Редактировать" />
+                                Редактировать
+                            </button>
+                        </>
+                    )}
+                </div>
+            </div>
+            <RecipeCard
+                key={recipe.id}
+                recipe={recipe}
+                recipeStatus={recipeStatuses}
+                onLike={handleLike}
+                onStar={handleStar}
+            />
+            <div className="detail-ingredients-steps">
+                <ul className="detail-ingredients">
+                    <p className="detail-ingredients-title">Ингридиенты</p>
+                    {recipe.ingridientForCooking &&
+                    recipe.ingridientForCooking ? (
+                        recipe.ingridientForCooking.map((ingredient) => (
+                            <li
+                                className="detail-ingredients-item"
+                                key={ingredient.id}
+                            >
+                                <p className="detail-ingredients-name">
+                                    {ingredient.title}
+                                </p>
+                                <p className="detail-ingredients-description">
+                                    {ingredient.description}
+                                </p>
+                            </li>
+                        ))
+                    ) : (
+                        <li className="detail-ingredients-item">
+                            Нет ингредиентов
+                        </li>
+                    )}
+                </ul>
+                <ul className="detail-steps">
+                    {recipe.stepOfCooking && recipe.stepOfCooking ? (
+                        recipe.stepOfCooking.map((step, index) => (
+                            <li className="detail-steps-item" key={index}>
+                                <p className="detail-number-step">
+                                    Шаг {step.numberOfStep}
+                                </p>
+                                <p className="detail-step-description">
+                                    {step.description}
+                                </p>
+                            </li>
+                        ))
+                    ) : (
+                        <li className="recipe-item">Нет шагов</li>
+                    )}
+                    <p className="detail-sentiment">Приятного Аппетита!</p>
+                </ul>
+            </div>
         </div>
     );
 };

@@ -1,0 +1,172 @@
+.detail-header {
+    width: 1200px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.detail-title {
+    color: rgba(37, 41, 45, 1);
+    font-family: Montserrat;
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 62px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    width: 811px;
+    height: 62px;
+}
+
+.detail-header-buttons {
+    width: 390px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.edit-recipe-button {
+    background: rgba(253, 177, 0, 1);
+    width: 278px;
+    height: 60px;
+    border-radius: 16px;
+    color: rgba(255, 255, 255, 1);
+    font-family: Montserrat;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 28px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.delete-recipe-button {
+    border: 1px solid rgba(145, 150, 161, 0.7);
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    align-items: center;
+}
+
+.detail-ingredients-steps {
+    margin-top: 30px;
+    width: 1200px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.detail-ingredients {
+    display: block;
+    width: 390px;
+    padding: 0px;
+    margin: 0px;
+}
+
+.detail-steps {
+    width: 790px;
+    padding: 0px;
+    margin: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.detail-ingredients-title {
+    font-family: Montserrat;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 30px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(253, 177, 0, 1);
+    margin: 0px;
+}
+
+.detail-ingredients-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    margin: 10px 0px;
+}
+
+.detail-steps-item {
+    display: flex;
+    flex-direction: column;
+    border-radius: 24px;
+    width: 790px;
+    justify-content: flex-start;
+    border-radius: 24px;
+    padding: 50px;
+    box-sizing: border-box;
+    margin: 0px;
+    margin-bottom: 10px;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0px 16px 72px 0px rgba(34, 39, 47, 0.05);
+}
+
+.detail-ingredients-name {
+    font-family: Montserrat;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 30px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(74, 82, 90, 1);
+    margin: 0px;
+}
+
+.detail-ingredients-description {
+    font-family: Montserrat;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 30px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(74, 82, 90, 1);
+    margin: 0px;
+}
+
+.detail-number-step {
+    margin: 0px;
+    font-family: Montserrat;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 30px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(74, 82, 90, 1);
+}
+
+.detail-step-description {
+    margin: 0px;
+    font-family: Montserrat;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 30px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(74, 82, 90, 1);
+}
+
+.detail-sentiment {
+    font-family: Montserrat;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 30px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(253, 177, 0, 1);
+}

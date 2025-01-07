@@ -6,14 +6,12 @@ import { RecipeCard } from '../components/RecipeCard/RecipeCard';
 import { Recipe, RecipeStatus } from '../types/recipe';
 import { likeRecipe, starRecipe, checkStatusLikeStarRecipe } from '../api/recipeService';
 import UserEditForm from '../components/forms/UserEditForm';
-import { useNavigate } from 'react-router-dom';
-import backspace from "../assets/images/backspace.png";
+import Backspace from '../components/forms/Backspace';
 import edit from "../assets/images/edit.png";
 import icmenu from "../assets/images/ic-menu.png";
 
 const Profile: React.FC = () => {
   const [user, setUser ] = useState<UserInfo | null>(null);
-  const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -207,10 +205,7 @@ const Profile: React.FC = () => {
 
   return (
     <div className="profile-container">
-      <button className='backspace-button' onClick={()=>navigate("/main")}>
-        <img src={backspace} alt="Назад" />
-        <p className='backspace-text'>Назад</p> 
-      </button>
+      <Backspace/>
       <p className="profile-title">Мой профиль</p>
       <div className="user-info">
         <button onClick={() => setIsEditing(true)} className='user-info-edit'><img src={edit} alt="Редактировать" /></button>
@@ -280,7 +275,7 @@ const Profile: React.FC = () => {
     <h2 className='personal-recipe-title'>Мои рецепты</h2>
     <ul className="personal-recipes-list">
       {personalRecipes.map(recipe => (
-        <RecipeForm
+        <RecipeCard
           key={recipe.id}
           recipe={recipe}
           recipeStatus={recipeStatuses[recipe.id]}
