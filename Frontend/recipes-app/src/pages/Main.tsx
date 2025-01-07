@@ -1,31 +1,41 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './styles/Favorite.css';
-import { Recipe, Tag } from '../types/recipe';
-import { GetMostLikedRecipes, SearchRecipes, GetPopularTagList } from '../api/recipeService';
-import { BestRecipeCard } from '../components/RecipeCard/RecipeCard';
-import PopularTags from '../components/forms/TagForm';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./styles/Main.css";
+import { Recipe, Tag } from "../types/recipe";
+import {
+    GetMostLikedRecipes,
+    SearchRecipes,
+    GetPopularTagList,
+} from "../api/recipeService";
+import { BestRecipeCard } from "../components/RecipeCard/RecipeCard";
+import PopularTags from "../components/forms/TagForm";
+import headerImg from "../assets/images/header-img.png";
+import plus from "../assets/images/plus-white.png";
+import tagIcon1 from "../assets/images/tag-icon1.png";
+import tagIcon2 from "../assets/images/tag-icon2.png";
+import tagIcon3 from "../assets/images/tag-icon3.png";
+import tagIcon4 from "../assets/images/tag-icon4.png";
 
 const Main: React.FC = () => {
     const navigate = useNavigate();
     const [recipes, setRecipes] = useState<Recipe[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
-    const [searchString, setSearchString] = useState<string>('');
+    const [searchString, setSearchString] = useState<string>("");
     const [popularTags, setPopularTags] = useState<Tag[]>([]);
 
-    const isAuthenticated = !!localStorage.getItem('token');
+    const isAuthenticated = !!localStorage.getItem("token");
 
     const handleAddRecipe = () => {
         if (isAuthenticated) {
-            navigate('/RecipeCreate');
+            navigate("/RecipeCreate");
         } else {
-            alert('Необходимо авторизоваться');
+            alert("Необходимо авторизоваться");
         }
     };
 
     const handleAuthorization = () => {
-        navigate('/authorization');
+        navigate("/authorization");
     };
 
     const fetchMostLikedRecipes = async () => {
@@ -37,10 +47,10 @@ const Main: React.FC = () => {
                 const recipesArray = response.recipes || [];
                 setRecipes(recipesArray);
             } else {
-                setError('Не удалось получить избранные рецепты');
+                setError("Не удалось получить избранные рецепты");
             }
         } catch (err) {
-            setError('Ошибка при загрузке рецептов');
+            setError("Ошибка при загрузке рецептов");
         } finally {
             setLoading(false);
         }
@@ -60,10 +70,10 @@ const Main: React.FC = () => {
                 const recipesArray = response.recipes || [];
                 setRecipes(recipesArray);
             } else {
-                setError('Не удалось найти рецепты по вашему запросу');
+                setError("Не удалось найти рецепты по вашему запросу");
             }
         } catch (err) {
-            setError('Ошибка при поиске рецептов');
+            setError("Ошибка при поиске рецептов");
         } finally {
             setLoading(false);
         }
@@ -77,40 +87,142 @@ const Main: React.FC = () => {
     const fetchPopularTags = async () => {
         try {
             const response = await GetPopularTagList();
-            if (response && response.tags && Array.isArray(response.tags.$values)) {
-                setPopularTags(response.tags.$values.map((tag: { id: number; name: string }) => ({
-                    id: tag.id,
-                    name: tag.name
-                })));
+            if (
+                response &&
+                response.tags &&
+                Array.isArray(response.tags.$values)
+            ) {
+                setPopularTags(
+                    response.tags.$values.map(
+                        (tag: { id: number; name: string }) => ({
+                            id: tag.id,
+                            name: tag.name,
+                        })
+                    )
+                );
             } else {
-                setError('Не удалось загрузить теги');
+                setError("Не удалось загрузить теги");
             }
         } catch (err) {
-            setError('Ошибка при загрузке тегов');
+            setError("Ошибка при загрузке тегов");
         }
     };
 
     return (
-        <div>
-            <h1>Главная</h1>
-            <input
-                type="text"
-                value={searchString}
-                onChange={(e) => setSearchString(e.target.value)}
-                placeholder="Поиск рецептов..."
-            />
-            <button onClick={() => handleSearch(searchString)}>Поиск</button>
-            <button onClick={handleAddRecipe}>
-                Добавить рецепт
-            </button>
-            {!isAuthenticated && (
-                <button onClick={handleAuthorization}>
-                    Авторизация
-                </button>
-            )}
-            {!isAuthenticated && <p>Вы не авторизованы. Пожалуйста, авторизуйтесь для добавления рецептов.</p>}
+        <div className="main-page">
+            <div className="main-header-block">
+                <div className="main-header-welcome">
+                    <p className="main-header-title">
+                        Готовь и делись рецептами
+                    </p>
+                    <p className="main-header-text">
+                        Никаких кулинарных книг и блокнотов! Храни все любимые
+                        рецепты в одном месте.
+                    </p>
+                    <div className="main-header-buttons">
+                        <button
+                            className="button-add-recipe"
+                            onClick={handleAddRecipe}
+                        >
+                            <img src={plus} alt="plus" />
+                            Добавить рецепт
+                        </button>
+                        <button
+                            className="button-login"
+                            onClick={handleAuthorization}
+                        >
+                            Войти
+                        </button>
+                    </div>
+                </div>
 
-            <PopularTags tags={popularTags} onTagClick={handleTagClick} />
+                <img
+                    className="main-header-img"
+                    src={headerImg}
+                    alt="Изображение главной страницы"
+                />
+            </div>
+            <p className="tag-title">Умная сортировка по тегам</p>
+            <p className="tag-text">
+                Добавляй рецепты и указывай наиболее популярные теги. Это
+                позволит быстро находить любые категории.
+            </p>
+            <div className="popularTags-block">
+                <button
+                    className="tag-block"
+                    onClick={() => handleSearch("Простые блюда")}
+                >
+                    <div className="tag-icon">
+                        <img src={tagIcon1} alt="" />
+                    </div>
+                    <p className="popular-tag-name">Простые блюда</p>
+                    <p className="popular-tag-text">
+                        Время приготвления таких блюд не более 1 часа
+                    </p>
+                </button>
+                <button
+                    className="tag-block"
+                    onClick={() => handleSearch("Детское")}
+                >
+                    <div className="tag-icon">
+                        <img src={tagIcon2} alt="" />
+                    </div>
+                    <p className="popular-tag-name">Детское</p>
+                    <p className="popular-tag-text">
+                        Самые полезные блюда которые можно детям любого возраста
+                    </p>
+                </button>
+                <button
+                    className="tag-block"
+                    onClick={() => handleSearch("От шеф-поваров")}
+                >
+                    <div className="tag-icon">
+                        <img src={tagIcon3} alt="" />
+                    </div>
+                    <p className="popular-tag-name">От шеф-поваров</p>
+                    <p className="popular-tag-text">
+                        Требуют умения, времени и терпения, зато как в ресторане
+                    </p>
+                </button>
+                <button
+                    className="tag-block"
+                    onClick={() => handleSearch("На праздник")}
+                >
+                    <div className="tag-icon">
+                        <img src={tagIcon4} alt="" />
+                    </div>
+                    <p className="popular-tag-name">На праздник</p>
+                    <p className="popular-tag-text">
+                        Чем удивить гостей, чтобы все были сыты за праздничным
+                        столом
+                    </p>
+                </button>
+            </div>
+            <h1 className="search-block-title">Поиск рецептов</h1>
+            <p className="search-block-text">
+                Введите примерное название блюда, а мы по тегам найдем его
+            </p>
+            <div className="search-block">
+                <div>
+                    <input
+                        className="search-block-input"
+                        type="text"
+                        value={searchString}
+                        onChange={(e) => setSearchString(e.target.value)}
+                        placeholder="Название Блюда..."
+                    />
+                    <PopularTags
+                        tags={popularTags}
+                        onTagClick={handleTagClick}
+                    />
+                </div>
+                <button
+                    className="search-block-button"
+                    onClick={() => handleSearch(searchString)}
+                >
+                    Поиск
+                </button>
+            </div>
 
             {loading && <p>Загрузка рецептов...</p>}
             {error && <p className="error">{error}</p>}
@@ -118,11 +230,8 @@ const Main: React.FC = () => {
                 <div>
                     <h2>Рецепты дня</h2>
                     <ul>
-                        {recipes.map(recipe => (
-                            <BestRecipeCard
-                                key={recipe.id}
-                                recipe={recipe}
-                            />
+                        {recipes.map((recipe) => (
+                            <BestRecipeCard key={recipe.id} recipe={recipe} />
                         ))}
                     </ul>
                 </div>
