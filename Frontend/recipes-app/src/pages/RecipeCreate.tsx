@@ -112,10 +112,28 @@ const RecipeCreate: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        const isEmptyField = Object.values(formData).some(value => {
+            if (Array.isArray(value)) {
+                return value.some(item => {
+                    if (typeof item === 'object' && item !== null) {
+                        return Object.values(item).some((fieldValue) => {
+                            return typeof fieldValue === 'string' && fieldValue.trim() === "";
+                        });
+                    }
+                    return true;
+                });
+            }
+            return typeof value === 'string' && value.trim() === ""; 
+        });
+    
+        if (isEmptyField) {
+            alert("Пожалуйста, заполните все поля.");
+            return;
+        }
+    
         console.log(formData);
-
+    
         if (formData.idRecipe) {
-            console.log("------------------------", formData);
             const updateRecipeResponse = await UpdateRecipeApi(
                 formData.idRecipe,
                 formData,

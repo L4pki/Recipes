@@ -90,10 +90,10 @@ const Main: React.FC = () => {
             if (
                 response &&
                 response.tags &&
-                Array.isArray(response.tags.$values)
+                Array.isArray(response.tags)
             ) {
                 setPopularTags(
-                    response.tags.$values.map(
+                    response.tags.map(
                         (tag: { id: number; name: string }) => ({
                             id: tag.id,
                             name: tag.name,
