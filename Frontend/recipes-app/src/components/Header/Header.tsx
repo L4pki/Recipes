@@ -21,6 +21,8 @@ const Header: React.FC = () => {
                 "Ошибка при получении информации о пользователе:",
                 error
             );
+            localStorage.removeItem("token");
+            setIsAuthenticated(false);
             setUsername(null);
         }
     };

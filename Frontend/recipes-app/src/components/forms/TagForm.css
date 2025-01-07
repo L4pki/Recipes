@@ -1,0 +1,20 @@
+.popular-tag-list {
+    display: flex;
+    flex-direction: row;
+    margin: 0px;
+    padding-left: 10px;
+    margin-top: 5px;
+}
+
+.popular-tag {
+    list-style-type: none;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 18px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(128, 128, 128, 1);
+    cursor: pointer;
+}
