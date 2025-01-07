@@ -146,6 +146,8 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    list-style-type: none;
+    padding: 0px;
 }
 
 .recipe-info-name {
@@ -187,6 +189,10 @@
     margin-left: 10px;
 }
 
+.tags-list {
+    padding: 0px;
+}
+
 .tag {
     display: inline-block;
     background-color: rgba(253, 177, 0, 1);
@@ -212,6 +218,10 @@
     position: absolute;
     background-color: white;
     z-index: 1;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    list-style-type: none;
+    padding: 0px;
 }
 
 .suggestions li {

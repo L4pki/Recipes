@@ -21,8 +21,6 @@ const Favorite = () => {
                     return acc;
                 }, {} as { [key: number]: RecipeStatus | undefined });
                 setRecipeStatuses(statusesMap);
-            } else {
-                setError('Не удалось получить избранные рецепты');
             }
         };
 

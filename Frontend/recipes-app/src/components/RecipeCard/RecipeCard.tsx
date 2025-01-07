@@ -69,50 +69,46 @@ export const RecipeCard: React.FC<RecipeFormProps> = ({
                             )}
                         </div>
                         <div className="recipe-button">
-                            <p>
-                                <button
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        onLike(recipe.id);
-                                    }}
-                                    className="starLike-button"
-                                >
-                                    <img
-                                        className="starLike-button-image"
-                                        src={likeImage}
-                                        alt={
-                                            recipeStatus?.recipeLiked
-                                                ? "Liked"
-                                                : "Not Liked"
-                                        }
-                                    />
-                                    <h3 className="starLike-button-text">
-                                        {recipe.usersLikesCount}
-                                    </h3>
-                                </button>
-                            </p>
-                            <p>
-                                <button
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        onStar(recipe.id);
-                                    }}
-                                    className="starLike-button"
-                                >
-                                    <img
-                                        className="starLike-button-image"
-                                        src={starImage}
-                                        alt={
-                                            recipeStatus?.recipeStarred
-                                                ? "Starred"
-                                                : "Not Starred"
-                                        }
-                                    />
-                                    <h3 className="starLike-button-text">
-                                        {recipe.usersStarsCount}
-                                    </h3>
-                                </button>
-                            </p>
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    onStar(recipe.id);
+                                }}
+                                className="starLike-button"
+                            >
+                                <img
+                                    className="starLike-button-image"
+                                    src={starImage}
+                                    alt={
+                                        recipeStatus?.recipeStarred
+                                            ? "Starred"
+                                            : "Not Starred"
+                                    }
+                                />
+                                <h3 className="starLike-button-text">
+                                    {recipe.usersStarsCount}
+                                </h3>
+                            </button>
+                            <button
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    onLike(recipe.id);
+                                }}
+                                className="starLike-button"
+                            >
+                                <img
+                                    className="starLike-button-image"
+                                    src={likeImage}
+                                    alt={
+                                        recipeStatus?.recipeLiked
+                                            ? "Liked"
+                                            : "Not Liked"
+                                    }
+                                />
+                                <h3 className="starLike-button-text">
+                                    {recipe.usersLikesCount}
+                                </h3>
+                            </button>
                         </div>
                     </div>
                     <div className="recipe-info-second">
@@ -122,7 +118,7 @@ export const RecipeCard: React.FC<RecipeFormProps> = ({
                         </h3>
                     </div>
                     <div className="recipe-info-third">
-                        <div className="recipe-time">
+                        <div className="recipe-time-info">
                             <img src={StopWatch} alt="Часы" />
                             <div className="recipe-time-textbox">
                                 <p className="recipe-time-text">

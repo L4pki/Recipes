@@ -4,12 +4,17 @@
     width: 1200px;
     height: 430px;
     list-style-type: none;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 20px;
 }
 
 .bestrecipe-content {
     border-radius: 72px 24px 24px 0px;
     width: 1200px;
     height: 540px;
+    list-style-type: none;
+    margin-bottom: 20px;
 }
 
 .recipe-link {
@@ -31,7 +36,6 @@
     background: rgba(255, 255, 255, 1);
     box-shadow: 0px 16px 72px 0px rgba(34, 39, 47, 0.1);
     border-radius: 72px 24px 24px 0px;
-    margin: 20px 0px;
 }
 
 .bestrecipe-item {
@@ -104,7 +108,7 @@
 
 .recipe-info-first {
     display: flex;
-    justify-content: right;
+    justify-content: space-between;
     align-items: center;
     height: 50px;
 }
@@ -229,7 +233,7 @@
     align-items: center;
 }
 
-.recipe-time {
+.recipe-time-info {
     width: 236px;
     height: 64px;
     margin-right: 40px;
