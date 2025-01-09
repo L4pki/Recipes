@@ -1,12 +1,19 @@
-import { useEffect, useState } from 'react';
-import { getFavoriteRecipes, checkStatusLikeStarRecipe, likeRecipe, starRecipe } from '../api/recipeService';
-import { Recipe, RecipeStatus } from '../types/recipe';
-import './styles/Favorite.css';
-import { RecipeCard } from '../components/RecipeCard/RecipeCard';
+import { useEffect, useState } from "react";
+import {
+    getFavoriteRecipes,
+    checkStatusLikeStarRecipe,
+    likeRecipe,
+    starRecipe,
+} from "../api/recipeService";
+import { Recipe, RecipeStatus } from "../types/recipe";
+import "./styles/Favorite.css";
+import { RecipeCard } from "../components/RecipeCard/RecipeCard";
 
 const Favorite = () => {
     const [favoriteRecipes, setFavoriteRecipes] = useState<Recipe[]>([]);
-    const [recipeStatuses, setRecipeStatuses] = useState<{ [key: number]: RecipeStatus | undefined }>({});
+    const [recipeStatuses, setRecipeStatuses] = useState<{
+        [key: number]: RecipeStatus | undefined;
+    }>({});
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
@@ -15,11 +22,18 @@ const Favorite = () => {
             if (response) {
                 const recipesArray = response.recipes || [];
                 setFavoriteRecipes(recipesArray);
-                const statuses = await Promise.all(recipesArray.map(recipe => checkStatusLikeStarRecipe(recipe.id)));
-                const statusesMap = recipesArray.reduce((acc, recipe, index) => {
-                    acc[recipe.id] = statuses[index]; 
-                    return acc;
-                }, {} as { [key: number]: RecipeStatus | undefined });
+                const statuses = await Promise.all(
+                    recipesArray.map((recipe) =>
+                        checkStatusLikeStarRecipe(recipe.id)
+                    )
+                );
+                const statusesMap = recipesArray.reduce(
+                    (acc, recipe, index) => {
+                        acc[recipe.id] = statuses[index];
+                        return acc;
+                    },
+                    {} as { [key: number]: RecipeStatus | undefined }
+                );
                 setRecipeStatuses(statusesMap);
             }
         };
@@ -31,18 +45,27 @@ const Favorite = () => {
         try {
             const currentStatus = recipeStatuses[recipeId]?.recipeLiked;
             await likeRecipe(recipeId);
-            setFavoriteRecipes(prevRecipes =>
-                prevRecipes.map(recipe => recipe.id === recipeId ? { 
-                    ...recipe, 
-                    usersLikesCount: currentStatus ? (recipe.usersLikesCount || 0) - 1 : (recipe.usersLikesCount || 0) + 1 
-                } : recipe)
+            setFavoriteRecipes((prevRecipes) =>
+                prevRecipes.map((recipe) =>
+                    recipe.id === recipeId
+                        ? {
+                              ...recipe,
+                              usersLikesCount: currentStatus
+                                  ? (recipe.usersLikesCount || 0) - 1
+                                  : (recipe.usersLikesCount || 0) + 1,
+                          }
+                        : recipe
+                )
             );
-            setRecipeStatuses(prevStatuses => ({
+            setRecipeStatuses((prevStatuses) => ({
                 ...prevStatuses,
-                [recipeId]: { ...prevStatuses[recipeId], recipeLiked: !currentStatus }
+                [recipeId]: {
+                    ...prevStatuses[recipeId],
+                    recipeLiked: !currentStatus,
+                },
             }));
         } catch {
-            setError('Ошибка при установке лайка');
+            setError("Ошибка при установке лайка");
         }
     };
 
@@ -50,31 +73,42 @@ const Favorite = () => {
         try {
             const currentStatus = recipeStatuses[recipeId]?.recipeStarred;
             await starRecipe(recipeId);
-            const updatedRecipeStatus = await checkStatusLikeStarRecipe(recipeId);
+            const updatedRecipeStatus = await checkStatusLikeStarRecipe(
+                recipeId
+            );
             if (updatedRecipeStatus) {
-                setFavoriteRecipes(prevRecipes =>
-                    prevRecipes.map(recipe => recipe.id === recipeId ? { 
-                        ...recipe, 
-                        usersStarsCount: currentStatus ? recipe.usersStarsCount - 1 : recipe.usersStarsCount + 1 
-                    } : recipe)
+                setFavoriteRecipes((prevRecipes) =>
+                    prevRecipes.map((recipe) =>
+                        recipe.id === recipeId
+                            ? {
+                                  ...recipe,
+                                  usersStarsCount: currentStatus
+                                      ? recipe.usersStarsCount - 1
+                                      : recipe.usersStarsCount + 1,
+                              }
+                            : recipe
+                    )
                 );
-                setRecipeStatuses(prevStatuses => ({
+                setRecipeStatuses((prevStatuses) => ({
                     ...prevStatuses,
-                    [recipeId]: { ...prevStatuses[recipeId], recipeStarred: updatedRecipeStatus.recipeStarred }
+                    [recipeId]: {
+                        ...prevStatuses[recipeId],
+                        recipeStarred: updatedRecipeStatus.recipeStarred,
+                    },
                 }));
             }
         } catch {
-            setError('Ошибка при установке звезды');
+            setError("Ошибка при установке звезды");
         }
     };
 
     return (
         <div className="favorite-recipes">
-            <h2 className='favorite-title'>Избранное</h2>
+            <h2 className="favorite-title">Избранное</h2>
             {error && <p className="error">{error}</p>}
             <ul className="recipes-list">
                 {favoriteRecipes.length > 0 ? (
-                    favoriteRecipes.map(recipe => (
+                    favoriteRecipes.map((recipe) => (
                         <RecipeCard
                             key={recipe.id}
                             recipe={recipe}
@@ -84,11 +118,11 @@ const Favorite = () => {
                         />
                     ))
                 ) : (
-                    <p className='recipe-list-clear'>Ваш список пуст</p>
+                    <p className="recipe-list-clear">Ваш список пуст</p>
                 )}
             </ul>
         </div>
     );
-}
+};
 
 export default Favorite;

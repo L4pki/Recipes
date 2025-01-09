@@ -10,7 +10,7 @@ import {
     checkStatusLikeStarRecipe,
 } from "../api/recipeService";
 import Popup from "../components/AuthPopup/AuthPopup";
-import Backspace from "../components/forms/Backspace";
+import Backspace from "../components/Backspace/Backspace";
 import edit from "../assets/images/edit.png";
 import icmenu from "../assets/images/ic-menu.png";
 
@@ -83,7 +83,7 @@ const Profile: React.FC = () => {
                 const updatedUser = await infoUser();
                 setUser(updatedUser);
                 setError(null);
-                setIsPopupOpen(false); 
+                setIsPopupOpen(false);
             } catch (err) {
                 setError("Ошибка при обновлении данных о пользователе");
             }

@@ -119,8 +119,7 @@ export const RecipeCard: React.FC<RecipeFormProps> = ({
                                     Время приготовления:
                                 </p>
                                 <p className="recipe-time-value">
-                                    {recipe.timeCosts}{" "}
-                                    минут
+                                    {recipe.timeCosts} минут
                                 </p>
                             </div>
                         </div>
@@ -153,7 +152,9 @@ export const BestRecipeCard: React.FC<BestRecipeFormProps> = ({ recipe }) => {
                                 className="bestrecipe-image"
                             />
                         )}
-                        <p className="bestrecipe-author">@{recipe.authorName}</p>
+                        <p className="bestrecipe-author">
+                            @{recipe.authorName}
+                        </p>
                     </div>
                 </Link>
                 <div className="bestrecipe-about">

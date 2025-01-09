@@ -165,7 +165,7 @@ export const UpdateRecipeApi = async (
 
 export const DeleteRecipe = async (
     idRecipe: number
-): Promise< string | undefined > => {
+): Promise<string | undefined> => {
     try {
         const response = await axiosInstance.delete<string>(
             `/recipe/delete/${idRecipe}`
@@ -180,7 +180,7 @@ export const DeleteRecipe = async (
         );
         return undefined;
     }
-}
+};
 
 export const CreateRecipeApi = async (
     recipe: CreateRecipe,

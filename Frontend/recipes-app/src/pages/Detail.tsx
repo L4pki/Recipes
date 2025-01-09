@@ -11,7 +11,7 @@ import { infoUser } from "../api/userService";
 import { Recipe, RecipeDetail, RecipeStatus } from "../types/recipe";
 import "./styles/Detail.css";
 import { RecipeCard } from "../components/RecipeCard/RecipeCard";
-import Backspace from "../components/forms/Backspace";
+import Backspace from "../components/Backspace/Backspace";
 import edit from "../assets/images/edit-white.png";
 import deleteImg from "../assets/images/delete.png";
 

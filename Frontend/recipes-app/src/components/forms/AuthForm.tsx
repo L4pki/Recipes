@@ -6,9 +6,9 @@ interface AuthFormProps {
     user: User;
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-    onChangeMode: (mode: "login" | "regist" | "choise" | "change") => void; 
-    isLoginMode: "login" | "regist" | "choise" | "change"; 
-    onClose: () => void; 
+    onChangeMode: (mode: "login" | "regist" | "choise" | "change") => void;
+    isLoginMode: "login" | "regist" | "choise" | "change";
+    onClose: () => void;
 }
 
 const AuthForm: React.FC<AuthFormProps> = ({
@@ -19,8 +19,8 @@ const AuthForm: React.FC<AuthFormProps> = ({
     isLoginMode,
     onClose,
 }) => {
-    const [confirmPassword, setConfirmPassword] = useState(""); 
-    const [passwordError, setPasswordError] = useState(""); 
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [passwordError, setPasswordError] = useState("");
     const [passwordMismatchError, setPasswordMismatchError] = useState("");
 
     const handlePasswordChange = (
@@ -41,7 +41,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
             setPasswordMismatchError("");
         }
     };
-    
+
     const isPasswordsMatch = user.password === confirmPassword;
 
     return (
@@ -219,7 +219,9 @@ const AuthForm: React.FC<AuthFormProps> = ({
                             />
                         </div>
                         <div className="auth-form-buttons">
-                            <button className="auth-button-login">Сохранить изменения</button>
+                            <button className="auth-button-login">
+                                Сохранить изменения
+                            </button>
                             <button
                                 className="auth-button-exit"
                                 onClick={onClose}

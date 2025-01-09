@@ -1,6 +1,6 @@
 export interface Tag {
-    id: string; 
-    name: string; 
+    id: string;
+    name: string;
 }
 
 export interface Ingredient {
@@ -24,7 +24,7 @@ export interface Recipe {
     timeCosts: number;
     numberOfPersons: number;
     tags: Tag[];
-    usersLikesCount: number; 
+    usersLikesCount: number;
     usersStarsCount: number;
 }
 
@@ -39,15 +39,15 @@ export interface RecipeDetail {
     tags: Tag[];
     ingridientForCooking: Ingredient[];
     stepOfCooking: Step[];
-    usersLikesCount: number; 
+    usersLikesCount: number;
     usersStarsCount: number;
 }
 
 export interface UpdateRecipe {
-    idRecipe: number; 
+    idRecipe: number;
     name: string;
-    shortDescription: string; 
-    photoUrl: string; 
+    shortDescription: string;
+    photoUrl: string;
     timeCosts: number;
     numberOfPersons: number;
     ingridients: UpdateIngredient[];
@@ -56,13 +56,13 @@ export interface UpdateRecipe {
 }
 
 export interface CreateRecipe {
-    name: string; 
+    name: string;
     shortDescription: string;
-    photoUrl: string; 
+    photoUrl: string;
     timeCosts: number;
-    numberOfPersons: number; 
+    numberOfPersons: number;
     ingridients: UpdateIngredient[];
-    steps: UpdateStep[]; 
+    steps: UpdateStep[];
     tags: UpdateTag[];
 }
 
@@ -77,15 +77,15 @@ export interface RecipeStatus {
 }
 
 export interface UpdateIngredient {
-    title: string; 
+    title: string;
     description: string;
 }
 
 export interface UpdateStep {
-    numberOfStep: number; 
-    description: string; 
+    numberOfStep: number;
+    description: string;
 }
 
 export interface UpdateTag {
-    name: string; 
+    name: string;
 }

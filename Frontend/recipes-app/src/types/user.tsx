@@ -23,5 +23,5 @@ export interface UserInfo {
         $id: string;
         $values: Recipe[];
     };
-    personalRecipesCount: number; 
+    personalRecipesCount: number;
 }

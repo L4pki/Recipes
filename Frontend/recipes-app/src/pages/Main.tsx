@@ -2,10 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./styles/Main.css";
 import { Recipe, Tag } from "../types/recipe";
-import {
-    GetMostLikedRecipes,
-    GetPopularTagList,
-} from "../api/recipeService";
+import { GetMostLikedRecipes, GetPopularTagList } from "../api/recipeService";
 import { BestRecipeCard } from "../components/RecipeCard/RecipeCard";
 import PopularTags from "../components/forms/TagForm";
 import headerImg from "../assets/images/header-img.png";

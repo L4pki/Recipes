@@ -104,35 +104,48 @@ const Header: React.FC = () => {
                 </div>
                 <div className="header-user">
                     <div className="header-user-block">
-                    <img className="icon" src={login} alt="Иконка пользователя" />
-                    {isAuthenticated ? (
-                        <>
-                        
-                            <li>
-                                <Link className="header-user-text" to="/profile">
-                                    {"Привет, "}{ username ? username : "Пользователь"}
-                                </Link>
-                            </li>
-                            <div className="separator"></div>
-                            <li>
-                                <img className="icon" src={exit} alt="Иконка выхода" onClick={handleLogout} />
-                            </li>
-                        </>
-                            
-                    ) : (
-                        <>
-                            
-                            <button className="header-user-text" onClick={() => setIsPopupOpen(true)}>
-                                Войти
-                            </button>
-                            <Popup
-                                isOpen={isPopupOpen}
-                                isLogin={"login"}
-                                onClose={() => setIsPopupOpen(false)}
-                                onSuccessfulAuth={handleSuccessfulAuth}
-                            />
-                        </>
-                    )}
+                        <img
+                            className="icon"
+                            src={login}
+                            alt="Иконка пользователя"
+                        />
+                        {isAuthenticated ? (
+                            <>
+                                <li>
+                                    <Link
+                                        className="header-user-text"
+                                        to="/profile"
+                                    >
+                                        {"Привет, "}
+                                        {username ? username : "Пользователь"}
+                                    </Link>
+                                </li>
+                                <div className="separator"></div>
+                                <li>
+                                    <img
+                                        className="icon"
+                                        src={exit}
+                                        alt="Иконка выхода"
+                                        onClick={handleLogout}
+                                    />
+                                </li>
+                            </>
+                        ) : (
+                            <>
+                                <button
+                                    className="header-user-text"
+                                    onClick={() => setIsPopupOpen(true)}
+                                >
+                                    Войти
+                                </button>
+                                <Popup
+                                    isOpen={isPopupOpen}
+                                    isLogin={"login"}
+                                    onClose={() => setIsPopupOpen(false)}
+                                    onSuccessfulAuth={handleSuccessfulAuth}
+                                />
+                            </>
+                        )}
                     </div>
                 </div>
             </ul>

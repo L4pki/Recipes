@@ -7,7 +7,7 @@ import Favorite from "./pages/Favorite";
 import "./App.css";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
-import RecipeCreate from "./pages/RecipeCreate";
+import RecipeCreate from "./pages/RecipeCreateUpdate";
 import { useEffect } from "react";
 import { refreshAccessToken } from "./api/authService";
 

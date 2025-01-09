@@ -30,4 +30,4 @@ export const recipesUser = async () => {
     } catch (error: any) {
         handleError(error);
     }
-}
+};

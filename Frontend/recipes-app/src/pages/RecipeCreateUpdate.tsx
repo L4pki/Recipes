@@ -16,7 +16,7 @@ import "./styles/RecipeCreate.css";
 import close from "../assets/images/Close.png";
 import download from "../assets/images/download.png";
 import plus from "../assets/images/plus.png";
-import Backspace from "../components/forms/Backspace";
+import Backspace from "../components/Backspace/Backspace";
 
 const RecipeCreate: React.FC = () => {
     const navigate = useNavigate();
@@ -96,27 +96,30 @@ const RecipeCreate: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const isEmptyField = Object.values(formData).some(value => {
+        const isEmptyField = Object.values(formData).some((value) => {
             if (Array.isArray(value)) {
-                return value.some(item => {
-                    if (typeof item === 'object' && item !== null) {
+                return value.some((item) => {
+                    if (typeof item === "object" && item !== null) {
                         return Object.values(item).some((fieldValue) => {
-                            return typeof fieldValue === 'string' && fieldValue.trim() === "";
+                            return (
+                                typeof fieldValue === "string" &&
+                                fieldValue.trim() === ""
+                            );
                         });
                     }
                     return true;
                 });
             }
-            return typeof value === 'string' && value.trim() === ""; 
+            return typeof value === "string" && value.trim() === "";
         });
-    
+
         if (isEmptyField) {
             alert("Пожалуйста, заполните все поля.");
             return;
         }
-    
+
         console.log(formData);
-    
+
         if (formData.idRecipe) {
             const updateRecipeResponse = await UpdateRecipeApi(
                 formData.idRecipe,
@@ -261,7 +264,7 @@ const RecipeCreate: React.FC = () => {
 
     return (
         <div className="create-recipe-page">
-            <Backspace/>
+            <Backspace />
             <div className="title-button-block">
                 <h2 className="create-recipe-title">
                     {formData.idRecipe

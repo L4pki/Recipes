@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation  } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./styles/Recipes.css";
 import { Recipe, RecipeStatus, Tag } from "../types/recipe";
 import {
@@ -128,18 +128,12 @@ const Recipes: React.FC = () => {
     const fetchPopularTags = async () => {
         try {
             const response = await GetPopularTagList();
-            if (
-                response &&
-                response.tags &&
-                Array.isArray(response.tags)
-            ) {
+            if (response && response.tags && Array.isArray(response.tags)) {
                 setPopularTags(
-                    response.tags.map(
-                        (tag: { id: number; name: string }) => ({
-                            id: tag.id,
-                            name: tag.name,
-                        })
-                    )
+                    response.tags.map((tag: { id: number; name: string }) => ({
+                        id: tag.id,
+                        name: tag.name,
+                    }))
                 );
             } else {
                 setError("Не удалось загрузить теги");
@@ -241,25 +235,37 @@ const Recipes: React.FC = () => {
                 )}
             </div>
             <div className="popularTags-block">
-                <button className="tag-block" onClick={() => handleSearch("Простые блюда")}>
+                <button
+                    className="tag-block"
+                    onClick={() => handleSearch("Простые блюда")}
+                >
                     <div className="tag-icon">
                         <img src={tagIcon1} alt="" />
                     </div>
                     <p className="popular-tag-name">Простые блюда</p>
                 </button>
-                <button className="tag-block" onClick={() => handleSearch("Детское")}>
+                <button
+                    className="tag-block"
+                    onClick={() => handleSearch("Детское")}
+                >
                     <div className="tag-icon">
                         <img src={tagIcon2} alt="" />
                     </div>
                     <p className="popular-tag-name">Детское</p>
                 </button>
-                <button className="tag-block" onClick={() => handleSearch("От шеф-поваров")}>
+                <button
+                    className="tag-block"
+                    onClick={() => handleSearch("От шеф-поваров")}
+                >
                     <div className="tag-icon">
                         <img src={tagIcon3} alt="" />
                     </div>
                     <p className="popular-tag-name">От шеф-поваров</p>
                 </button>
-                <button className="tag-block" onClick={() => handleSearch("На праздник")}>
+                <button
+                    className="tag-block"
+                    onClick={() => handleSearch("На праздник")}
+                >
                     <div className="tag-icon">
                         <img src={tagIcon4} alt="" />
                     </div>
@@ -276,9 +282,17 @@ const Recipes: React.FC = () => {
                         onChange={(e) => setSearchString(e.target.value)}
                         placeholder="Название Блюда..."
                     />
-                    <PopularTags tags={popularTags} onTagClick={handleTagClick} />
+                    <PopularTags
+                        tags={popularTags}
+                        onTagClick={handleTagClick}
+                    />
                 </div>
-                <button className="search-block-button" onClick={() => handleSearch(searchString)}>Поиск</button>
+                <button
+                    className="search-block-button"
+                    onClick={() => handleSearch(searchString)}
+                >
+                    Поиск
+                </button>
             </div>
             {loading && <p>Загрузка рецептов...</p>}
             {error && <p className="error">{error}</p>}
@@ -296,7 +310,12 @@ const Recipes: React.FC = () => {
                         ))}
                     </ul>
                     {visibleCount < recipes.length && (
-                        <button className="button-more-loading" onClick={loadMoreRecipes}>Загрузить еще</button>
+                        <button
+                            className="button-more-loading"
+                            onClick={loadMoreRecipes}
+                        >
+                            Загрузить еще
+                        </button>
                     )}
                 </div>
             ) : (
