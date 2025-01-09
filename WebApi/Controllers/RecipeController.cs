@@ -133,20 +133,20 @@ public class RecipeController : ControllerBase
     }
 
     [Authorize]
-    [HttpDelete( "delete" )]
-    public async Task<IActionResult> DeleteRecipeAsync( [FromBody] int recipeId )
+    [HttpDelete( "delete/{id}" )]
+    public async Task<IActionResult> DeleteRecipeAsync( int id )
     {
         string token = HttpContext.Request.Headers[ "Authorization" ].ToString().Replace( "Bearer ", "" );
 
         try
         {
             UserClaimsDto userClaims = _authService.GetUserClaims( token );
-            RecipeResult recipe = await _mediator.Send( new GetRecipeByIdQuery( recipeId ) );
+            RecipeResult recipe = await _mediator.Send( new GetRecipeByIdQuery( id ) );
             if ( recipe.Recipe != null )
             {
                 if ( recipe.Recipe.IdAuthor == userClaims.Id )
                 {
-                    return Ok( await _mediator.Send( new DeleteRecipeCommand( recipeId, userClaims.Id ) ) );
+                    return Ok( await _mediator.Send( new DeleteRecipeCommand( id, userClaims.Id ) ) );
                 }
                 return BadRequest( "Не является вашим рецептом!" );
             }

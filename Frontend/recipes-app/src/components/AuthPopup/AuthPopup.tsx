@@ -8,7 +8,7 @@ import Close from "../../assets/images/Close.png";
 
 interface PopupProps {
     isOpen: boolean;
-    isLogin: "login" | "regist" | "choise"; // Передаем режим
+    isLogin: "login" | "regist" | "choise" | "change";
     onClose: () => void;
     onSuccessfulAuth: (userInfo: User) => void;
 }
@@ -20,7 +20,7 @@ const Popup: React.FC<PopupProps> = ({
     onSuccessfulAuth,
 }) => {
     const [isLoginMode, setIsLoginMode] = useState<
-        "login" | "regist" | "choise"
+        "login" | "regist" | "choise" | "change"
     >("choise");
     const [user, setUser] = useState<User>({
         login: "",
@@ -28,11 +28,11 @@ const Popup: React.FC<PopupProps> = ({
         name: "",
         about: "",
     });
-    const [errorMessage, setErrorMessage] = useState<string>(""); // Состояние для хранения сообщения об ошибке
+    const [errorMessage, setErrorMessage] = useState<string>("");
 
     useEffect(() => {
         setIsLoginMode(isLogin);
-        setErrorMessage(""); // Сбросить сообщение об ошибке при открытии попапа
+        setErrorMessage("");
     }, [isOpen, isLogin]);
 
     if (!isOpen) return null;
@@ -41,7 +41,7 @@ const Popup: React.FC<PopupProps> = ({
         event: React.FormEvent<HTMLFormElement>
     ) => {
         event.preventDefault();
-        setErrorMessage(""); // Сбросить сообщение об ошибке перед новой попыткой аутентификации
+        setErrorMessage("");
         try {
             let userInfo;
             if (isLoginMode === "login") {
@@ -50,26 +50,36 @@ const Popup: React.FC<PopupProps> = ({
                     password: user.password,
                 });
                 if (loginResult && loginResult.status) {
-                    setErrorMessage(loginResult.message); // Устанавливаем сообщение об ошибке
-                    return; // Выходим из функции, если произошла ошибка
+                    setErrorMessage(loginResult.message);
+                    return;
+                }
+                userInfo = await infoUser();
+            } else if (isLoginMode === "change") {
+                const loginResult = await loginUser({
+                    login: user.login,
+                    password: user.password,
+                });
+                if (loginResult && loginResult.status) {
+                    setErrorMessage(loginResult.message);
+                    return;
                 }
                 userInfo = await infoUser();
             } else {
                 const registerResult = await registerUser(user);
                 if (registerResult && registerResult.status) {
-                    setErrorMessage(registerResult.message); // Устанавливаем сообщение об ошибке
-                    return; // Выходим из функции, если произошла ошибка
+                    setErrorMessage(registerResult.message);
+                    return;
                 }
                 userInfo = await infoUser();
             }
             setUser(userInfo);
-            onClose(); // Закрываем попап после аутентификации
-            onSuccessfulAuth(userInfo); // Обновляем состояние в Header
+            onClose();
+            onSuccessfulAuth(userInfo);
         } catch (error) {
             console.error("Ошибка аутентификации:", error);
             setErrorMessage(
                 "Произошла ошибка при аутентификации. Пожалуйста, попробуйте еще раз."
-            ); // Общая ошибка
+            );
         }
     };
 
@@ -81,11 +91,13 @@ const Popup: React.FC<PopupProps> = ({
         });
     };
 
-    const handleChangeMode = (mode: "login" | "regist" | "choise") => {
+    const handleChangeMode = (
+        mode: "login" | "regist" | "choise" | "change"
+    ) => {
         setIsLoginMode(mode);
         setErrorMessage("");
         if (mode === "regist") {
-            setUser({ login: "", password: "", name: "", about: "" }); // Сбросить поля при переключении на регистрацию
+            setUser({ login: "", password: "", name: "", about: "" });
         }
     };
 
@@ -102,11 +114,11 @@ const Popup: React.FC<PopupProps> = ({
                 </div>
 
                 <AuthForm
-                    user={user} // Передаем пользователя
-                    onChange={handleChange} // Обработчик изменения
+                    user={user}
+                    onChange={handleChange}
                     onSubmit={handleAuthenticate}
-                    onChangeMode={handleChangeMode} // Передаем onChangeMode
-                    isLoginMode={isLoginMode} // Передаем режим
+                    onChangeMode={handleChangeMode}
+                    isLoginMode={isLoginMode}
                     onClose={onClose}
                 />
             </div>

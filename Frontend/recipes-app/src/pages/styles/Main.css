@@ -182,7 +182,7 @@
     margin-bottom: 0px;
 }
 
-.search-block-title {
+.search-block-title-main {
     font-family: Montserrat;
     font-size: 42px;
     font-weight: 700;
@@ -205,8 +205,8 @@
     color: rgba(74, 82, 90, 1);
 }
 
-.search-block-input {
-    width: 779px;
+.search-block-input-main {
+    width: 716px;
     height: 73px;
     border-radius: 16px;
     background: rgba(255, 255, 255, 1);
@@ -248,4 +248,10 @@
     width: 884px;
     height: 115px;
     margin: auto;
+}
+
+.bestRecipe-list {
+    margin-top: 120px;
+    margin-bottom: 90px;
+    padding: 0px;
 }

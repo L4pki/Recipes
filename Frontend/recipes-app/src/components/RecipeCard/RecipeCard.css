@@ -48,8 +48,8 @@
 }
 
 .recipe-container {
-    position: relative; 
-    display: inline-block; 
+    position: relative;
+    display: inline-block;
     height: 430px;
     background: rgba(255, 255, 255, 1);
     border-radius: 72px 0px 0px 0px;
@@ -89,6 +89,22 @@
     border-radius: 0px 5px 5px 0px;
 }
 
+.bestrecipe-author {
+    position: absolute;
+    bottom: -40px;
+    width: auto;
+    height: auto;
+    background: rgba(255, 255, 255, 1);
+    font-family: Montserrat;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 28px;
+    text-align: left;
+    color: rgba(253, 177, 0, 1);
+    padding: 5px;
+    border-radius: 0px 5px 5px 0px;
+}
+
 .recipe-about {
     width: 100%;
     height: 100%;
@@ -109,6 +125,13 @@
 .recipe-info-first {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    height: 50px;
+}
+
+.bestrecipe-likes-times {
+    display: flex;
+    justify-content: end;
     align-items: center;
     height: 50px;
 }
@@ -201,6 +224,12 @@
     margin-bottom: 50px;
 }
 
+.bestrecipe-info-second {
+    width: 523px;
+    height: 390px;
+    margin: auto;
+}
+
 .recipe-name {
     color: rgba(37, 41, 45, 1);
     width: 693px;
@@ -212,6 +241,28 @@
     text-align: left;
     text-underline-position: from-font;
     text-decoration-skip-ink: none;
+}
+
+.bestrecipe-name {
+    font-family: Montserrat;
+    font-size: 42px;
+    font-weight: 700;
+    line-height: 60px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(37, 41, 45, 1);
+}
+
+.bestrecipe-description {
+    font-family: Montserrat;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 32px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: rgba(74, 82, 90, 1);
 }
 
 .recipe-description {

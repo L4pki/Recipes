@@ -8,7 +8,7 @@ const Backspace: React.FC<{}> = () => {
         <div>
             <button
                 className="backspace-button"
-                onClick={() => navigate("/main")}
+                onClick={() => navigate(-1)}
             >
                 <img src={backspace} alt="Назад" />
                 <p className="backspace-text">Назад</p>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation  } from "react-router-dom";
 import "./styles/Recipes.css";
 import { Recipe, RecipeStatus, Tag } from "../types/recipe";
 import {
@@ -19,6 +19,7 @@ import tagIcon3 from "../assets/images/tag-icon3.png";
 import tagIcon4 from "../assets/images/tag-icon4.png";
 
 const Recipes: React.FC = () => {
+    const location = useLocation();
     const navigate = useNavigate();
     const [recipes, setRecipes] = useState<Recipe[]>([]);
     const [recipeStatuses, setRecipeStatuses] = useState<{
@@ -28,7 +29,24 @@ const Recipes: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [searchString, setSearchString] = useState<string>("");
     const [popularTags, setPopularTags] = useState<Tag[]>([]);
-    const [visibleCount, setVisibleCount] = useState<number>(4); // Количество видимых рецептов
+    const [visibleCount, setVisibleCount] = useState<number>(4);
+
+    const performSearch = async (searchTerm: string) => {
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await SearchRecipes(searchTerm);
+            if (response && response.recipes) {
+                setRecipes(response.recipes || []);
+            } else {
+                setError("Не удалось найти рецепты по вашему запросу");
+            }
+        } catch (err) {
+            setError("Ошибка при поиске рецептов");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const isAuthenticated = !!localStorage.getItem("token");
 
@@ -132,7 +150,7 @@ const Recipes: React.FC = () => {
     };
 
     const loadMoreRecipes = () => {
-        setVisibleCount((prevCount) => prevCount + 4); // Увеличиваем количество видимых рецептов на 4
+        setVisibleCount((prevCount) => prevCount + 4);
     };
 
     const handleLike = async (recipeId: number) => {
@@ -197,9 +215,16 @@ const Recipes: React.FC = () => {
     };
 
     useEffect(() => {
-        fetchMostLikedRecipes();
         fetchPopularTags();
-    }, []);
+        const queryParams = new URLSearchParams(location.search);
+        const query = queryParams.get("query");
+
+        if (query) {
+            performSearch(query);
+        } else {
+            fetchMostLikedRecipes();
+        }
+    }, [location.search]);
 
     return (
         <div className="recipes-page">

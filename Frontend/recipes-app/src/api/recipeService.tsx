@@ -163,6 +163,25 @@ export const UpdateRecipeApi = async (
     }
 };
 
+export const DeleteRecipe = async (
+    idRecipe: number
+): Promise< string | undefined > => {
+    try {
+        const response = await axiosInstance.delete<string>(
+            `/recipe/delete/${idRecipe}`
+        );
+        console.log("Рецепт удален:", response.data);
+        return response.data;
+    } catch (error: any) {
+        handleError(error);
+        console.error(
+            "Ошибка удаления рецепта:",
+            error.response ? error.response.data : error.message
+        );
+        return undefined;
+    }
+}
+
 export const CreateRecipeApi = async (
     recipe: CreateRecipe,
     imageFile: File

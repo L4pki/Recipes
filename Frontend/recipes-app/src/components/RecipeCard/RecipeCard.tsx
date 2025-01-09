@@ -7,7 +7,7 @@ import LikeOff from "../../assets/images/LikeOff.png";
 import LikeOn from "../../assets/images/LikeOn.png";
 import Like from "../../assets/images/Like.png";
 import Time from "../../assets/images/Time.png";
-import BestRecipe from "../../assets/images/BestRecipe.png";
+import BestRecipe from "../../assets/images/best-recipe.png";
 import StopWatch from "../../assets/images/Stopwatch.png";
 import Person from "../../assets/images/Person.png";
 import "../RecipeCard/RecipeCard.css";
@@ -148,7 +148,7 @@ export const RecipeCard: React.FC<RecipeFormProps> = ({
 
 export const BestRecipeCard: React.FC<BestRecipeFormProps> = ({ recipe }) => {
     return (
-        <li key={recipe.id} className="bestrecipe-content">
+        <div key={recipe.id} className="bestrecipe-content">
             <div className="bestrecipe-item">
                 <Link to={`/detail/${recipe.id}`} className="bestrecipe-link">
                     <div className="recipe-container">
@@ -159,11 +159,11 @@ export const BestRecipeCard: React.FC<BestRecipeFormProps> = ({ recipe }) => {
                                 className="bestrecipe-image"
                             />
                         )}
-                        <p className="recipe-author">@{recipe.authorName}</p>
+                        <p className="bestrecipe-author">@{recipe.authorName}</p>
                     </div>
                 </Link>
                 <div className="bestrecipe-about">
-                    <div className="recipe-info-first">
+                    <div className="bestrecipe-likes-times">
                         <div className="bestrecipe-likesTime">
                             <img src={Like} alt="Сердечко" />
                             <p className="bestrecipe-timeLike-text">
@@ -177,19 +177,19 @@ export const BestRecipeCard: React.FC<BestRecipeFormProps> = ({ recipe }) => {
                             </p>
                         </div>
                     </div>
-                    <div className="recipe-info-second">
+                    <div className="bestrecipe-info-second">
                         <img
                             className="img-bestrecipe"
                             src={BestRecipe}
                             alt="Рецепт дня"
                         />
-                        <h3 className="recipe-name">{recipe.name}</h3>
-                        <h3 className="recipe-description">
+                        <p className="bestrecipe-name">{recipe.name}</p>
+                        <p className="bestrecipe-description">
                             {recipe.shortDescription}
-                        </h3>
+                        </p>
                     </div>
                 </div>
             </div>
-        </li>
+        </div>
     );
 };
