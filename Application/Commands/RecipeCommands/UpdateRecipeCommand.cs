@@ -11,7 +11,7 @@ public class UpdateRecipeCommand : IRequest<RecipeResult>
     public string ShortDescription { get; set; }
     public string PhotoUrl { get; set; }
     public int IdAuthor { get; set; }
-    public TimeSpan TimeCosts { get; set; }
+    public int TimeCosts { get; set; }
     public int NumberOfPersons { get; set; }
     public IngridientDto[] Ingridients { get; set; }
     public StepDto[] Steps { get; set; }
@@ -23,7 +23,7 @@ public class UpdateRecipeCommand : IRequest<RecipeResult>
         string shortDescription,
         string photoUrl,
         int idAuthor,
-        TimeSpan timeCosts,
+        int timeCosts,
         int numberOfPersons,
         IngridientDto[] ingridients,
         StepDto[] steps,

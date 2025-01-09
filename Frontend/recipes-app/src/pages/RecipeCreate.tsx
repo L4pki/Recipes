@@ -27,7 +27,7 @@ const RecipeCreate: React.FC = () => {
         name: "",
         shortDescription: "",
         photoUrl: "",
-        timeCosts: "",
+        timeCosts: 0,
         numberOfPersons: 0,
         ingridients: [{ title: "", description: "" }],
         steps: [{ numberOfStep: 1, description: "" }],
@@ -62,9 +62,7 @@ const RecipeCreate: React.FC = () => {
                         photoUrl: recipeData.recipe.photoUrl,
                         shortDescription: recipeData.recipe.shortDescription,
                         numberOfPersons: recipeData.recipe.numberOfPersons,
-                        timeCosts: String(
-                            convertTimeToMinutes(recipeData.recipe.timeCosts)
-                        ),
+                        timeCosts: recipeData.recipe.timeCosts,
                         ingridients:
                             recipeData.recipe.ingridientForCooking?.map(
                                 (ingredient: UpdateIngredient) => ({
@@ -88,20 +86,6 @@ const RecipeCreate: React.FC = () => {
             fetchRecipe();
         }
     }, [id]);
-
-    const convertTimeToMinutes = (timeString?: string) => {
-        if (!timeString) {
-            return 0;
-        }
-
-        const parts = timeString.split(":").map(Number);
-        if (parts.length < 2) {
-            return 0;
-        }
-
-        const [hours, minutes] = parts;
-        return (hours || 0) * 60 + (minutes || 0);
-    };
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -173,36 +157,6 @@ const RecipeCreate: React.FC = () => {
             setFormData((prevData) => ({
                 ...prevData,
                 photoUrl: URL.createObjectURL(file),
-            }));
-        }
-    };
-
-    const handleMinutesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-
-        if (value === "") {
-            setFormData((prevData) => ({
-                ...prevData,
-                timeCosts: "",
-            }));
-            return;
-        }
-
-        const numericValue = Number(value);
-        if (isNaN(numericValue) || numericValue < 0) {
-            return;
-        }
-
-        const hours = Math.floor(numericValue / 60);
-        const minutes = numericValue % 60;
-        const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes
-            .toString()
-            .padStart(2, "0")}:00`;
-
-        if (!isNaN(Number(formattedTime))) {
-            setFormData((prevData) => ({
-                ...prevData,
-                timeCosts: formattedTime,
             }));
         }
     };
@@ -426,7 +380,7 @@ const RecipeCreate: React.FC = () => {
                                             ? Number(formData.timeCosts)
                                             : 0
                                     }
-                                    onChange={handleMinutesChange}
+                                    onChange={handleChange}
                                     placeholder="Время готовки"
                                 />
                                 <p>Минут</p>

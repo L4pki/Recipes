@@ -58,10 +58,6 @@ public class RecipeController : ControllerBase
         {
             return BadRequest( "Недействительный токен." );
         }
-        /* catch
-         {
-             return BadRequest( "Неизвестная ошибка" );
-         }*/
     }
 
     private async Task<string> SaveImageAsync( IFormFile image )

@@ -23,12 +23,6 @@ interface BestRecipeFormProps {
     recipe: Recipe;
 }
 
-const minutesFromTimeString = (timeString: string) => {
-    const [hours, minutes, seconds] = timeString.split(":").map(Number);
-    const totalMinutes = hours * 60 + minutes + Math.floor(seconds / 60);
-    return totalMinutes.toString();
-};
-
 export const RecipeCard: React.FC<RecipeFormProps> = ({
     recipe,
     recipeStatus,
@@ -125,7 +119,7 @@ export const RecipeCard: React.FC<RecipeFormProps> = ({
                                     Время приготовления:
                                 </p>
                                 <p className="recipe-time-value">
-                                    {minutesFromTimeString(recipe.timeCosts)}{" "}
+                                    {recipe.timeCosts}{" "}
                                     минут
                                 </p>
                             </div>
@@ -173,7 +167,7 @@ export const BestRecipeCard: React.FC<BestRecipeFormProps> = ({ recipe }) => {
                         <div className="bestrecipe-likesTime">
                             <img src={Time} alt="Часы" />
                             <p className="bestrecipe-timeLike-text">
-                                {minutesFromTimeString(recipe.timeCosts)} минут
+                                {recipe.timeCosts} минут
                             </p>
                         </div>
                     </div>

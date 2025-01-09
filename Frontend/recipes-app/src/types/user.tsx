@@ -8,20 +8,20 @@ export interface User {
 }
 
 export interface PopupStatus {
-    status: "login" | "regist" | "choise";
+    status: "login" | "regist" | "choise" | "change";
 }
 
 export interface UserInfo {
-    id: string; // Добавляем идентификатор пользователя
+    id: string;
     login: string;
-    passwordHash: string | null; // Используем passwordHash вместо password
+    passwordHash: string | null;
     name: string;
     about: string;
     favoriteRecipesCount: number;
     likeRecipesCount: number;
     personalRecipes: {
-        $id: string; // Или другой тип, в зависимости от вашего API
+        $id: string;
         $values: Recipe[];
     };
-    personalRecipesCount: number; // Количество личных рецептов
+    personalRecipesCount: number; 
 }

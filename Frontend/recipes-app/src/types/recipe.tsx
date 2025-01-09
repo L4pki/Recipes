@@ -21,7 +21,7 @@ export interface Recipe {
     name: string;
     shortDescription: string;
     photoUrl: string;
-    timeCosts: string;
+    timeCosts: number;
     numberOfPersons: number;
     tags: Tag[];
     usersLikesCount: number; 
@@ -34,7 +34,7 @@ export interface RecipeDetail {
     name: string;
     shortDescription: string;
     photoUrl: string;
-    timeCosts: string;
+    timeCosts: number;
     numberOfPersons: number;
     tags: Tag[];
     ingridientForCooking: Ingredient[];
@@ -48,7 +48,7 @@ export interface UpdateRecipe {
     name: string;
     shortDescription: string; 
     photoUrl: string; 
-    timeCosts: string;
+    timeCosts: number;
     numberOfPersons: number;
     ingridients: UpdateIngredient[];
     steps: UpdateStep[];
@@ -59,7 +59,7 @@ export interface CreateRecipe {
     name: string; 
     shortDescription: string;
     photoUrl: string; 
-    timeCosts: string;
+    timeCosts: number;
     numberOfPersons: number; 
     ingridients: UpdateIngredient[];
     steps: UpdateStep[]; 
