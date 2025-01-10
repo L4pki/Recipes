@@ -16,7 +16,7 @@ public class IngridientConfiguration : IEntityTypeConfiguration<Ingridient>
                .IsRequired();
 
         builder.Property( i => i.Description )
-               .HasMaxLength( 200 )
+               .HasMaxLength( 300 )
                .IsRequired();
 
         builder.HasOne( i => i.Recipe )

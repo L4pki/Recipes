@@ -14,7 +14,7 @@ public class StepConfiguration : IEntityTypeConfiguration<Step>
                .IsRequired();
 
         builder.Property( s => s.Description )
-               .HasMaxLength( 200 )
+               .HasMaxLength( 400 )
                .IsRequired();
 
         builder.HasOne( s => s.Recipe )

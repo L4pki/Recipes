@@ -30,7 +30,7 @@ public class CreateRecipeCommandHandler : IRequestHandler<CreateRecipeCommand, R
         string.IsNullOrWhiteSpace( request.ShortDescription ) ||
         string.IsNullOrWhiteSpace( request.PhotoUrl ) ||
         request.NumberOfPersons <= 0 ||
-        request.TimeCosts == TimeSpan.Zero ||
+        request.TimeCosts == 0 ||
         request.Ingridients == null ||
         request.Steps == null ||
         request.Tags == null )

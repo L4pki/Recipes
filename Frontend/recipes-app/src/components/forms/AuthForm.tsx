@@ -6,9 +6,9 @@ interface AuthFormProps {
     user: User;
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-    onChangeMode: (mode: "login" | "regist" | "choise") => void; // Добавлен пропс для изменения режима
-    isLoginMode: "login" | "regist" | "choise"; // Тип для режима
-    onClose: () => void; // Пропс для закрытия попапа
+    onChangeMode: (mode: "login" | "regist" | "choise" | "change") => void;
+    isLoginMode: "login" | "regist" | "choise" | "change";
+    onClose: () => void;
 }
 
 const AuthForm: React.FC<AuthFormProps> = ({
@@ -19,8 +19,8 @@ const AuthForm: React.FC<AuthFormProps> = ({
     isLoginMode,
     onClose,
 }) => {
-    const [confirmPassword, setConfirmPassword] = useState(""); // Состояние для повторного пароля
-    const [passwordError, setPasswordError] = useState(""); // Состояние для ошибки пароля
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [passwordError, setPasswordError] = useState("");
     const [passwordMismatchError, setPasswordMismatchError] = useState("");
 
     const handlePasswordChange = (
@@ -29,7 +29,6 @@ const AuthForm: React.FC<AuthFormProps> = ({
         const { value } = event.target;
         setConfirmPassword(value);
 
-        // Проверка длины пароля
         if (value.length < 8) {
             setPasswordError("Минимум 8 символов");
         } else {
@@ -42,7 +41,9 @@ const AuthForm: React.FC<AuthFormProps> = ({
             setPasswordMismatchError("");
         }
     };
+
     const isPasswordsMatch = user.password === confirmPassword;
+
     return (
         <form onSubmit={onSubmit} className="auth-form">
             {isLoginMode === "choise" && (
@@ -188,6 +189,44 @@ const AuthForm: React.FC<AuthFormProps> = ({
                                 onClick={() => onChangeMode("login")}
                             >
                                 У меня уже есть аккаунт
+                            </button>
+                        </div>
+                    </div>
+                </>
+            )}
+            {isLoginMode === "change" && (
+                <>
+                    <div className="auth-container">
+                        <h2 className="auth-title">Подтверждение данных</h2>
+                        <div className="auth-input-container">
+                            <input
+                                className="auth-input"
+                                type="text"
+                                name="login"
+                                placeholder="Логин"
+                                value={user.login}
+                                onChange={onChange}
+                                required
+                            />
+                            <input
+                                className="auth-input"
+                                type="password"
+                                name="password"
+                                placeholder="Пароль"
+                                value={user.password}
+                                onChange={onChange}
+                                required
+                            />
+                        </div>
+                        <div className="auth-form-buttons">
+                            <button className="auth-button-login">
+                                Сохранить изменения
+                            </button>
+                            <button
+                                className="auth-button-exit"
+                                onClick={onClose}
+                            >
+                                Отмена
                             </button>
                         </div>
                     </div>

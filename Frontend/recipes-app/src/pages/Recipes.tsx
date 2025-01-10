@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./styles/Recipes.css";
 import { Recipe, RecipeStatus, Tag } from "../types/recipe";
 import {
@@ -19,6 +19,7 @@ import tagIcon3 from "../assets/images/tag-icon3.png";
 import tagIcon4 from "../assets/images/tag-icon4.png";
 
 const Recipes: React.FC = () => {
+    const location = useLocation();
     const navigate = useNavigate();
     const [recipes, setRecipes] = useState<Recipe[]>([]);
     const [recipeStatuses, setRecipeStatuses] = useState<{
@@ -28,7 +29,24 @@ const Recipes: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [searchString, setSearchString] = useState<string>("");
     const [popularTags, setPopularTags] = useState<Tag[]>([]);
-    const [visibleCount, setVisibleCount] = useState<number>(4); // Количество видимых рецептов
+    const [visibleCount, setVisibleCount] = useState<number>(4);
+
+    const performSearch = async (searchTerm: string) => {
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await SearchRecipes(searchTerm);
+            if (response && response.recipes) {
+                setRecipes(response.recipes || []);
+            } else {
+                setError("Не удалось найти рецепты по вашему запросу");
+            }
+        } catch (err) {
+            setError("Ошибка при поиске рецептов");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const isAuthenticated = !!localStorage.getItem("token");
 
@@ -110,18 +128,12 @@ const Recipes: React.FC = () => {
     const fetchPopularTags = async () => {
         try {
             const response = await GetPopularTagList();
-            if (
-                response &&
-                response.tags &&
-                Array.isArray(response.tags)
-            ) {
+            if (response && response.tags && Array.isArray(response.tags)) {
                 setPopularTags(
-                    response.tags.map(
-                        (tag: { id: number; name: string }) => ({
-                            id: tag.id,
-                            name: tag.name,
-                        })
-                    )
+                    response.tags.map((tag: { id: number; name: string }) => ({
+                        id: tag.id,
+                        name: tag.name,
+                    }))
                 );
             } else {
                 setError("Не удалось загрузить теги");
@@ -132,32 +144,37 @@ const Recipes: React.FC = () => {
     };
 
     const loadMoreRecipes = () => {
-        setVisibleCount((prevCount) => prevCount + 4); // Увеличиваем количество видимых рецептов на 4
+        setVisibleCount((prevCount) => prevCount + 4);
     };
 
     const handleLike = async (recipeId: number) => {
         try {
             const currentStatus = recipeStatuses[recipeId]?.recipeLiked;
             await likeRecipe(recipeId);
-            setRecipes((prevRecipes) =>
-                prevRecipes.map((recipe) =>
-                    recipe.id === recipeId
-                        ? {
-                              ...recipe,
-                              usersLikesCount: currentStatus
-                                  ? (recipe.usersLikesCount || 0) - 1
-                                  : (recipe.usersLikesCount || 0) + 1,
-                          }
-                        : recipe
-                )
+            const updatedRecipeStatus = await checkStatusLikeStarRecipe(
+                recipeId
             );
-            setRecipeStatuses((prevStatuses) => ({
-                ...prevStatuses,
-                [recipeId]: {
-                    ...prevStatuses[recipeId],
-                    recipeLiked: !currentStatus,
-                },
-            }));
+            if (updatedRecipeStatus) {
+                setRecipes((prevRecipes) =>
+                    prevRecipes.map((recipe) =>
+                        recipe.id === recipeId
+                            ? {
+                                  ...recipe,
+                                  usersLikesCount: currentStatus
+                                      ? (recipe.usersLikesCount || 0) - 1
+                                      : (recipe.usersLikesCount || 0) + 1,
+                              }
+                            : recipe
+                    )
+                );
+                setRecipeStatuses((prevStatuses) => ({
+                    ...prevStatuses,
+                    [recipeId]: {
+                        ...prevStatuses[recipeId],
+                        recipeLiked: !currentStatus,
+                    },
+                }));
+            }
         } catch {
             setError("Ошибка при установке лайка");
         }
@@ -197,9 +214,16 @@ const Recipes: React.FC = () => {
     };
 
     useEffect(() => {
-        fetchMostLikedRecipes();
         fetchPopularTags();
-    }, []);
+        const queryParams = new URLSearchParams(location.search);
+        const query = queryParams.get("query");
+
+        if (query) {
+            performSearch(query);
+        } else {
+            fetchMostLikedRecipes();
+        }
+    }, [location.search]);
 
     return (
         <div className="recipes-page">
@@ -216,25 +240,37 @@ const Recipes: React.FC = () => {
                 )}
             </div>
             <div className="popularTags-block">
-                <button className="tag-block" onClick={() => handleSearch("Простые блюда")}>
+                <button
+                    className="tag-block"
+                    onClick={() => handleSearch("Простые блюда")}
+                >
                     <div className="tag-icon">
                         <img src={tagIcon1} alt="" />
                     </div>
                     <p className="popular-tag-name">Простые блюда</p>
                 </button>
-                <button className="tag-block" onClick={() => handleSearch("Детское")}>
+                <button
+                    className="tag-block"
+                    onClick={() => handleSearch("Детское")}
+                >
                     <div className="tag-icon">
                         <img src={tagIcon2} alt="" />
                     </div>
                     <p className="popular-tag-name">Детское</p>
                 </button>
-                <button className="tag-block" onClick={() => handleSearch("От шеф-поваров")}>
+                <button
+                    className="tag-block"
+                    onClick={() => handleSearch("От шеф-поваров")}
+                >
                     <div className="tag-icon">
                         <img src={tagIcon3} alt="" />
                     </div>
                     <p className="popular-tag-name">От шеф-поваров</p>
                 </button>
-                <button className="tag-block" onClick={() => handleSearch("На праздник")}>
+                <button
+                    className="tag-block"
+                    onClick={() => handleSearch("На праздник")}
+                >
                     <div className="tag-icon">
                         <img src={tagIcon4} alt="" />
                     </div>
@@ -251,9 +287,17 @@ const Recipes: React.FC = () => {
                         onChange={(e) => setSearchString(e.target.value)}
                         placeholder="Название Блюда..."
                     />
-                    <PopularTags tags={popularTags} onTagClick={handleTagClick} />
+                    <PopularTags
+                        tags={popularTags}
+                        onTagClick={handleTagClick}
+                    />
                 </div>
-                <button className="search-block-button" onClick={() => handleSearch(searchString)}>Поиск</button>
+                <button
+                    className="search-block-button"
+                    onClick={() => handleSearch(searchString)}
+                >
+                    Поиск
+                </button>
             </div>
             {loading && <p>Загрузка рецептов...</p>}
             {error && <p className="error">{error}</p>}
@@ -271,11 +315,16 @@ const Recipes: React.FC = () => {
                         ))}
                     </ul>
                     {visibleCount < recipes.length && (
-                        <button className="button-more-loading" onClick={loadMoreRecipes}>Загрузить еще</button>
+                        <button
+                            className="button-more-loading"
+                            onClick={loadMoreRecipes}
+                        >
+                            Загрузить еще
+                        </button>
                     )}
                 </div>
             ) : (
-                <p>Нет доступных рецептов.</p>
+                <p className="recipe-list-clear">Нет доступных рецептов.</p>
             )}
         </div>
     );

@@ -5,12 +5,13 @@ import {
     getRecipeDetail,
     likeRecipe,
     starRecipe,
+    DeleteRecipe
 } from "../api/recipeService";
 import { infoUser } from "../api/userService";
 import { Recipe, RecipeDetail, RecipeStatus } from "../types/recipe";
 import "./styles/Detail.css";
 import { RecipeCard } from "../components/RecipeCard/RecipeCard";
-import Backspace from "../components/forms/Backspace";
+import Backspace from "../components/Backspace/Backspace";
 import edit from "../assets/images/edit-white.png";
 import deleteImg from "../assets/images/delete.png";
 
@@ -99,6 +100,19 @@ const Detail: React.FC = () => {
         }
     };
 
+    const handleDelete = async () => {
+        try {
+            if (recipe && recipe.id) {
+                await DeleteRecipe(recipe.id);
+                navigate('/profile');
+            } else {
+                setError("Рецепт не найден");
+            }
+        } catch {
+            setError("Ошибка при удалении рецепта");
+        }
+    };
+
     if (loading) {
         return <div className="error">Загрузка...</div>;
     }
@@ -119,7 +133,10 @@ const Detail: React.FC = () => {
                 <div className="detail-header-buttons">
                     {isPersonalRecipe && (
                         <>
-                            <button className="delete-recipe-button">
+                            <button 
+                                className="delete-recipe-button"
+                                onClick={handleDelete}
+                            >
                                 <img src={deleteImg} alt="Корзина" />
                             </button>
                             <button

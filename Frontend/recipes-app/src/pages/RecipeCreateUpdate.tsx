@@ -16,7 +16,7 @@ import "./styles/RecipeCreate.css";
 import close from "../assets/images/Close.png";
 import download from "../assets/images/download.png";
 import plus from "../assets/images/plus.png";
-import Backspace from "../components/forms/Backspace";
+import Backspace from "../components/Backspace/Backspace";
 
 const RecipeCreate: React.FC = () => {
     const navigate = useNavigate();
@@ -27,7 +27,7 @@ const RecipeCreate: React.FC = () => {
         name: "",
         shortDescription: "",
         photoUrl: "",
-        timeCosts: "",
+        timeCosts: 0,
         numberOfPersons: 0,
         ingridients: [{ title: "", description: "" }],
         steps: [{ numberOfStep: 1, description: "" }],
@@ -42,11 +42,11 @@ const RecipeCreate: React.FC = () => {
         const fetchTags = async () => {
             try {
                 const response = await GetTagAllList();
-                console.log("Полученные теги:", response);
+                //console.log("Полученные теги:", response);
                 const tagsList: { name: string }[] = response;
                 setTags(tagsList);
             } catch (error) {
-                console.error("Ошибка при получении тегов:", error);
+                //console.error("Ошибка при получении тегов:", error);
             }
         };
 
@@ -62,9 +62,7 @@ const RecipeCreate: React.FC = () => {
                         photoUrl: recipeData.recipe.photoUrl,
                         shortDescription: recipeData.recipe.shortDescription,
                         numberOfPersons: recipeData.recipe.numberOfPersons,
-                        timeCosts: String(
-                            convertTimeToMinutes(recipeData.recipe.timeCosts)
-                        ),
+                        timeCosts: recipeData.recipe.timeCosts,
                         ingridients:
                             recipeData.recipe.ingridientForCooking?.map(
                                 (ingredient: UpdateIngredient) => ({
@@ -81,27 +79,13 @@ const RecipeCreate: React.FC = () => {
                         idRecipe: Number(id),
                         tags: recipeData.recipe.tags,
                     };
-                    console.log(transformedData);
+                    //console.log(transformedData);
                     setFormData(transformedData);
                 }
             };
             fetchRecipe();
         }
     }, [id]);
-
-    const convertTimeToMinutes = (timeString?: string) => {
-        if (!timeString) {
-            return 0;
-        }
-
-        const parts = timeString.split(":").map(Number);
-        if (parts.length < 2) {
-            return 0;
-        }
-
-        const [hours, minutes] = parts;
-        return (hours || 0) * 60 + (minutes || 0);
-    };
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -112,10 +96,31 @@ const RecipeCreate: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        console.log(formData);
+        const isEmptyField = Object.values(formData).some((value) => {
+            if (Array.isArray(value)) {
+                return value.some((item) => {
+                    if (typeof item === "object" && item !== null) {
+                        return Object.values(item).some((fieldValue) => {
+                            return (
+                                typeof fieldValue === "string" &&
+                                fieldValue.trim() === ""
+                            );
+                        });
+                    }
+                    return true;
+                });
+            }
+            return typeof value === "string" && value.trim() === "";
+        });
+
+        if (isEmptyField) {
+            alert("Пожалуйста, заполните все поля.");
+            return;
+        }
+
+        //console.log(formData);
 
         if (formData.idRecipe) {
-            console.log("------------------------", formData);
             const updateRecipeResponse = await UpdateRecipeApi(
                 formData.idRecipe,
                 formData,
@@ -155,36 +160,6 @@ const RecipeCreate: React.FC = () => {
             setFormData((prevData) => ({
                 ...prevData,
                 photoUrl: URL.createObjectURL(file),
-            }));
-        }
-    };
-
-    const handleMinutesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-
-        if (value === "") {
-            setFormData((prevData) => ({
-                ...prevData,
-                timeCosts: "",
-            }));
-            return;
-        }
-
-        const numericValue = Number(value);
-        if (isNaN(numericValue) || numericValue < 0) {
-            return;
-        }
-
-        const hours = Math.floor(numericValue / 60);
-        const minutes = numericValue % 60;
-        const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes
-            .toString()
-            .padStart(2, "0")}:00`;
-
-        if (!isNaN(Number(formattedTime))) {
-            setFormData((prevData) => ({
-                ...prevData,
-                timeCosts: formattedTime,
             }));
         }
     };
@@ -289,7 +264,7 @@ const RecipeCreate: React.FC = () => {
 
     return (
         <div className="create-recipe-page">
-            <Backspace/>
+            <Backspace />
             <div className="title-button-block">
                 <h2 className="create-recipe-title">
                     {formData.idRecipe
@@ -408,7 +383,7 @@ const RecipeCreate: React.FC = () => {
                                             ? Number(formData.timeCosts)
                                             : 0
                                     }
-                                    onChange={handleMinutesChange}
+                                    onChange={handleChange}
                                     placeholder="Время готовки"
                                 />
                                 <p>Минут</p>

@@ -1,6 +1,9 @@
 footer {
+    background-color: rgba(251, 249, 244, 1);
+}
+
+.footer-block {
     height: 113px;
-    background: rgba(251, 249, 244, 1);
     display: flex;
     justify-content: space-between;
     align-items: center;

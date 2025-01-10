@@ -26,18 +26,6 @@ public class UpdateRecipeCommandHandler : IRequestHandler<UpdateRecipeCommand, R
 
     public async Task<RecipeResult> Handle( UpdateRecipeCommand request, CancellationToken cancellationToken )
     {
-        /*if ( string.IsNullOrWhiteSpace( request.Name ) ||
-         string.IsNullOrWhiteSpace( request.ShortDescription ) ||
-         string.IsNullOrWhiteSpace( request.PhotoUrl ) ||
-         request.NumberOfPersons == 0 ||
-         request.TimeCosts == TimeSpan.Zero ||
-         request.Ingridients.Length == 0 ||
-         request.Steps.Length == 0 ||
-         request.Tags.Length == 0 )
-         {
-
-             return new RecipeResult( null, "Ошибка: Все поля обязательны для заполнения." );
-         }*/
         if ( string.IsNullOrWhiteSpace( request.Name ) )
         {
             return new RecipeResult( null, "Название рецепта обязательно для заполнения." );
@@ -58,7 +46,7 @@ public class UpdateRecipeCommandHandler : IRequestHandler<UpdateRecipeCommand, R
             return new RecipeResult( null, "Количество персон должно быть больше нуля." );
         }
 
-        if ( request.TimeCosts == TimeSpan.Zero )
+        if ( request.TimeCosts == 0 )
         {
             return new RecipeResult( null, "Время приготовления должно быть указано." );
         }

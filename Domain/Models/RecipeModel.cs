@@ -9,7 +9,7 @@ public class RecipeModel
     public string ShortDescription { get; set; }
     public string PhotoUrl { get; set; }
     public int IdAuthor { get; set; }
-    public TimeSpan TimeCosts { get; set; }
+    public int TimeCosts { get; set; }
     public List<Tag> Tags { get; set; }
     public List<Step> StepOfCooking { get; set; }
     public List<Ingridient> IngridientForCooking { get; set; }

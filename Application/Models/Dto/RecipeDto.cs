@@ -10,7 +10,7 @@ public class RecipeDto
     public string ShortDescription { get; set; }
     public string PhotoUrl { get; set; }
     public int IdAuthor { get; set; }
-    public TimeSpan TimeCosts { get; set; }
+    public int TimeCosts { get; set; }
     public int NumberOfPersons { get; set; }
     public List<Step> StepOfCooking { get; set; } = new List<Step>();
     public List<Ingridient> IngridientForCooking { get; set; } = new List<Ingridient>();

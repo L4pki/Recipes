@@ -2,11 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./styles/Main.css";
 import { Recipe, Tag } from "../types/recipe";
-import {
-    GetMostLikedRecipes,
-    SearchRecipes,
-    GetPopularTagList,
-} from "../api/recipeService";
+import { GetMostLikedRecipes, GetPopularTagList } from "../api/recipeService";
 import { BestRecipeCard } from "../components/RecipeCard/RecipeCard";
 import PopularTags from "../components/forms/TagForm";
 import headerImg from "../assets/images/header-img.png";
@@ -15,6 +11,7 @@ import tagIcon1 from "../assets/images/tag-icon1.png";
 import tagIcon2 from "../assets/images/tag-icon2.png";
 import tagIcon3 from "../assets/images/tag-icon3.png";
 import tagIcon4 from "../assets/images/tag-icon4.png";
+import Popup from "../components/AuthPopup/AuthPopup";
 
 const Main: React.FC = () => {
     const navigate = useNavigate();
@@ -23,8 +20,8 @@ const Main: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [searchString, setSearchString] = useState<string>("");
     const [popularTags, setPopularTags] = useState<Tag[]>([]);
-
-    const isAuthenticated = !!localStorage.getItem("token");
+    const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     const handleAddRecipe = () => {
         if (isAuthenticated) {
@@ -32,10 +29,6 @@ const Main: React.FC = () => {
         } else {
             alert("Необходимо авторизоваться");
         }
-    };
-
-    const handleAuthorization = () => {
-        navigate("/authorization");
     };
 
     const fetchMostLikedRecipes = async () => {
@@ -47,7 +40,7 @@ const Main: React.FC = () => {
                 const recipesArray = response.recipes || [];
                 setRecipes(recipesArray);
             } else {
-                setError("Не удалось получить избранные рецепты");
+                setError("Не удалось получить рецепты");
             }
         } catch (err) {
             setError("Ошибка при загрузке рецептов");
@@ -57,26 +50,13 @@ const Main: React.FC = () => {
     };
 
     useEffect(() => {
+        setIsAuthenticated(!!localStorage.getItem("token"));
         fetchMostLikedRecipes();
         fetchPopularTags();
     }, []);
 
     const handleSearch = async (searchTerm: string) => {
-        setLoading(true);
-        setError(null);
-        try {
-            const response = await SearchRecipes(searchTerm);
-            if (response && response.recipes) {
-                const recipesArray = response.recipes || [];
-                setRecipes(recipesArray);
-            } else {
-                setError("Не удалось найти рецепты по вашему запросу");
-            }
-        } catch (err) {
-            setError("Ошибка при поиске рецептов");
-        } finally {
-            setLoading(false);
-        }
+        navigate(`/recipes?query=${encodeURIComponent(searchTerm)}`);
     };
 
     const handleTagClick = (tag: string) => {
@@ -84,21 +64,21 @@ const Main: React.FC = () => {
         handleSearch(tag);
     };
 
+    const handleSuccessfulAuth = () => {
+        setIsAuthenticated(true);
+        setIsPopupOpen(false);
+        window.location.reload();
+    };
+
     const fetchPopularTags = async () => {
         try {
             const response = await GetPopularTagList();
-            if (
-                response &&
-                response.tags &&
-                Array.isArray(response.tags.$values)
-            ) {
+            if (response && response.tags && Array.isArray(response.tags)) {
                 setPopularTags(
-                    response.tags.$values.map(
-                        (tag: { id: number; name: string }) => ({
-                            id: tag.id,
-                            name: tag.name,
-                        })
-                    )
+                    response.tags.map((tag: { id: number; name: string }) => ({
+                        id: tag.id,
+                        name: tag.name,
+                    }))
                 );
             } else {
                 setError("Не удалось загрузить теги");
@@ -127,12 +107,20 @@ const Main: React.FC = () => {
                             <img src={plus} alt="plus" />
                             Добавить рецепт
                         </button>
-                        <button
-                            className="button-login"
-                            onClick={handleAuthorization}
-                        >
-                            Войти
-                        </button>
+                        {!isAuthenticated && (
+                            <button
+                                className="button-login"
+                                onClick={() => setIsPopupOpen(true)}
+                            >
+                                Войти
+                            </button>
+                        )}
+                        <Popup
+                            isOpen={isPopupOpen}
+                            isLogin={"login"}
+                            onClose={() => setIsPopupOpen(false)}
+                            onSuccessfulAuth={handleSuccessfulAuth}
+                        />
                     </div>
                 </div>
 
@@ -198,14 +186,27 @@ const Main: React.FC = () => {
                     </p>
                 </button>
             </div>
-            <h1 className="search-block-title">Поиск рецептов</h1>
+            {loading && <p>Загрузка рецептов...</p>}
+            {error && <p className="error">{error}</p>}
+            {recipes.length > 0 ? (
+                <div>
+                    <ul className="bestRecipe-list">
+                        {recipes.map((recipe) => (
+                            <BestRecipeCard key={recipe.id} recipe={recipe} />
+                        ))}
+                    </ul>
+                </div>
+            ) : (
+                <p>Нет доступных рецептов.</p>
+            )}
+            <h1 className="search-block-title-main">Поиск рецептов</h1>
             <p className="search-block-text">
                 Введите примерное название блюда, а мы по тегам найдем его
             </p>
             <div className="search-block">
                 <div>
                     <input
-                        className="search-block-input"
+                        className="search-block-input-main"
                         type="text"
                         value={searchString}
                         onChange={(e) => setSearchString(e.target.value)}
@@ -223,21 +224,6 @@ const Main: React.FC = () => {
                     Поиск
                 </button>
             </div>
-
-            {loading && <p>Загрузка рецептов...</p>}
-            {error && <p className="error">{error}</p>}
-            {recipes.length > 0 ? (
-                <div>
-                    <h2>Рецепты дня</h2>
-                    <ul>
-                        {recipes.map((recipe) => (
-                            <BestRecipeCard key={recipe.id} recipe={recipe} />
-                        ))}
-                    </ul>
-                </div>
-            ) : (
-                <p>Нет доступных рецептов.</p>
-            )}
         </div>
     );
 };

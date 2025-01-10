@@ -11,7 +11,7 @@ public class CreateRecipeCommand : IRequest<RecipeResult>
     public string PhotoUrl { get; set; }
     public int IdAuthor { get; set; }
     public string AuthorName { get; set; }
-    public TimeSpan TimeCosts { get; set; }
+    public int TimeCosts { get; set; }
     public int NumberOfPersons { get; set; }
     public IngridientDto[] Ingridients { get; set; }
     public StepDto[] Steps { get; set; }
@@ -23,7 +23,7 @@ public class CreateRecipeCommand : IRequest<RecipeResult>
         string photoUrl,
         int idAuthor,
         string authorName,
-        TimeSpan timeCosts,
+        int timeCosts,
         int numberOfPersons,
         IngridientDto[] ingridients,
         StepDto[] steps,

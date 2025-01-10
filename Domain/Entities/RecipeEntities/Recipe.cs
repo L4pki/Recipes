@@ -8,7 +8,7 @@ public class Recipe
     public string PhotoUrl { get; set; }
     public int IdAuthor { get; set; }
     public string AuthorName { get; set; }
-    public TimeSpan TimeCosts { get; set; }
+    public int TimeCosts { get; set; }
     public int NumberOfPersons { get; set; }
 
     public User Author { get; set; }
@@ -24,7 +24,7 @@ public class Recipe
         string shortDescription,
         string photoUrl,
         int idAuthor,
-        TimeSpan timeCosts,
+        int timeCosts,
         int numberOfPersons )
     {
         Name = name;
