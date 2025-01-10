@@ -9,7 +9,7 @@ interface PopularTagsProps {
 
 const PopularTags: React.FC<PopularTagsProps> = ({ tags, onTagClick }) => {
     if (!Array.isArray(tags)) {
-        console.error("tags is not an array:", tags);
+        //console.error("tags is not an array:", tags);
         return <div>Ошибка: Теги не загружены.</div>;
     }
 

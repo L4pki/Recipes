@@ -64,7 +64,7 @@ const Popup: React.FC<PopupProps> = ({
                     return;
                 }
                 userInfo = await infoUser();
-            } else {
+            } else if (isLoginMode === "regist"){
                 const registerResult = await registerUser(user);
                 if (registerResult && registerResult.status) {
                     setErrorMessage(registerResult.message);
@@ -76,7 +76,7 @@ const Popup: React.FC<PopupProps> = ({
             onClose();
             onSuccessfulAuth(userInfo);
         } catch (error) {
-            console.error("Ошибка аутентификации:", error);
+            //console.error("Ошибка аутентификации:", error);
             setErrorMessage(
                 "Произошла ошибка при аутентификации. Пожалуйста, попробуйте еще раз."
             );

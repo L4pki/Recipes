@@ -17,10 +17,10 @@ const Header: React.FC = () => {
             const userInfo = await infoUser();
             setUsername(userInfo.name);
         } catch (error) {
-            console.error(
+            /*console.error(
                 "Ошибка при получении информации о пользователе:",
                 error
-            );
+            );*/
             localStorage.removeItem("token");
             setIsAuthenticated(false);
             setUsername(null);

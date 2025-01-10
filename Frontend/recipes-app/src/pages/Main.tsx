@@ -40,7 +40,7 @@ const Main: React.FC = () => {
                 const recipesArray = response.recipes || [];
                 setRecipes(recipesArray);
             } else {
-                setError("Не удалось получить избранные рецепты");
+                setError("Не удалось получить рецепты");
             }
         } catch (err) {
             setError("Ошибка при загрузке рецептов");

@@ -151,25 +151,30 @@ const Recipes: React.FC = () => {
         try {
             const currentStatus = recipeStatuses[recipeId]?.recipeLiked;
             await likeRecipe(recipeId);
-            setRecipes((prevRecipes) =>
-                prevRecipes.map((recipe) =>
-                    recipe.id === recipeId
-                        ? {
-                              ...recipe,
-                              usersLikesCount: currentStatus
-                                  ? (recipe.usersLikesCount || 0) - 1
-                                  : (recipe.usersLikesCount || 0) + 1,
-                          }
-                        : recipe
-                )
+            const updatedRecipeStatus = await checkStatusLikeStarRecipe(
+                recipeId
             );
-            setRecipeStatuses((prevStatuses) => ({
-                ...prevStatuses,
-                [recipeId]: {
-                    ...prevStatuses[recipeId],
-                    recipeLiked: !currentStatus,
-                },
-            }));
+            if (updatedRecipeStatus) {
+                setRecipes((prevRecipes) =>
+                    prevRecipes.map((recipe) =>
+                        recipe.id === recipeId
+                            ? {
+                                  ...recipe,
+                                  usersLikesCount: currentStatus
+                                      ? (recipe.usersLikesCount || 0) - 1
+                                      : (recipe.usersLikesCount || 0) + 1,
+                              }
+                            : recipe
+                    )
+                );
+                setRecipeStatuses((prevStatuses) => ({
+                    ...prevStatuses,
+                    [recipeId]: {
+                        ...prevStatuses[recipeId],
+                        recipeLiked: !currentStatus,
+                    },
+                }));
+            }
         } catch {
             setError("Ошибка при установке лайка");
         }
@@ -319,7 +324,7 @@ const Recipes: React.FC = () => {
                     )}
                 </div>
             ) : (
-                <p>Нет доступных рецептов.</p>
+                <p className="recipe-list-clear">Нет доступных рецептов.</p>
             )}
         </div>
     );

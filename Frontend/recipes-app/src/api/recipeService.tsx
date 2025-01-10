@@ -14,14 +14,14 @@ export const getFavoriteRecipes = async (): Promise<
         const response = await axiosInstance.get<ApiResponseRecipe>(
             "/user/recipe/star"
         );
-        console.log("Рецепты получены:", response.data);
+        //console.log("Рецепты получены:", response.data);
         return response.data;
     } catch (error: any) {
         handleError(error);
-        console.error(
+        /*console.error(
             "Ошибка при получении избранных рецептов:",
             error.response ? error.response.data : error.message
-        );
+        );*/
         return undefined;
     }
 };
@@ -36,10 +36,10 @@ export const checkStatusLikeStarRecipe = async (
         return response.data;
     } catch (error: any) {
         handleError(error);
-        console.error(
+        /*console.error(
             "Ошибка при получении Статуса:",
             error.response ? error.response.data : error.message
-        );
+        );*/
         return undefined;
     }
 };
@@ -47,14 +47,14 @@ export const checkStatusLikeStarRecipe = async (
 export const likeRecipe = async (id: number) => {
     try {
         const response = await axiosInstance.post(`/recipe/like/${id}`);
-        console.log("Лайк:", response.data);
+        //console.log("Лайк:", response.data);
         return response.data;
     } catch (error: any) {
         handleError(error);
-        console.error(
+        /*console.error(
             "Ошибка лайка:",
             error.response ? error.response.data : error.message
-        );
+        );*/
         return undefined;
     }
 };
@@ -62,14 +62,14 @@ export const likeRecipe = async (id: number) => {
 export const starRecipe = async (id: number) => {
     try {
         const response = await axiosInstance.post(`/user/recipe/star/${id}`);
-        console.log("Звезда:", response.data);
+        //console.log("Звезда:", response.data);
         return response.data;
     } catch (error: any) {
         handleError(error);
-        console.error(
+        /*console.error(
             "Ошибка лайка:",
             error.response ? error.response.data : error.message
-        );
+        );*/
         return undefined;
     }
 };
@@ -77,14 +77,14 @@ export const starRecipe = async (id: number) => {
 export const getRecipeDetail = async (id: number) => {
     try {
         const response = await axiosInstance.get(`/recipe/detail/${id}`);
-        console.log("Рецепт детальная:", response.data);
+        //console.log("Рецепт детальная:", response.data);
         return response.data;
     } catch (error: any) {
         handleError(error);
-        console.error(
+        /*console.error(
             "Ошибка получения деталей:",
             error.response ? error.response.data : error.message
-        );
+        );*/
         return undefined;
     }
 };
@@ -138,10 +138,10 @@ export const UpdateRecipeApi = async (
         } else {
             formData.append("photoUrl", updatedRecipe.photoUrl || "");
         }
-        console.log("Рецепт =======:", formData);
-        Array.from(formData.entries()).forEach(([key, value]) => {
+        //console.log("Рецепт =======:", formData);
+        /*Array.from(formData.entries()).forEach(([key, value]) => {
             console.log(`${key}: ${value}`);
-        });
+        });*/
         const response = await axiosInstance.post(
             `/recipe/update/${id}`,
             formData,
@@ -151,14 +151,14 @@ export const UpdateRecipeApi = async (
                 },
             }
         );
-        console.log("Рецепт обновлен:", response.data);
+        //console.log("Рецепт обновлен:", response.data);
         return response.data;
     } catch (error: any) {
         handleError(error);
-        console.error(
+        /*console.error(
             "Ошибка обновления рецепта:",
             error.response ? error.response.data : error.message
-        );
+        );*/
         return undefined;
     }
 };
@@ -170,14 +170,14 @@ export const DeleteRecipe = async (
         const response = await axiosInstance.delete<string>(
             `/recipe/delete/${idRecipe}`
         );
-        console.log("Рецепт удален:", response.data);
+        //console.log("Рецепт удален:", response.data);
         return response.data;
     } catch (error: any) {
         handleError(error);
-        console.error(
+        /*console.error(
             "Ошибка удаления рецепта:",
             error.response ? error.response.data : error.message
-        );
+        );*/
         return undefined;
     }
 };
@@ -190,7 +190,7 @@ export const CreateRecipeApi = async (
 
     formData.append("Recipe.Name", recipe.name);
     formData.append("Recipe.ShortDescription", recipe.shortDescription);
-    formData.append("Recipe.TimeCosts", "00:30:00");
+    formData.append("Recipe.TimeCosts", recipe.timeCosts.toString());
     formData.append(
         "Recipe.NumberOfPersons",
         recipe.numberOfPersons.toString()
@@ -225,14 +225,14 @@ export const CreateRecipeApi = async (
                 },
             }
         );
-        console.log("Рецепт обновлен:", response.data);
+        //console.log("Рецепт обновлен:", response.data);
         return response.data;
     } catch (error: any) {
         handleError(error);
-        console.error(
+        /*console.error(
             "Ошибка обновления рецепта:",
             error.response ? error.response.data : error.message
-        );
+        );*/
         return undefined;
     }
 };
@@ -240,14 +240,14 @@ export const CreateRecipeApi = async (
 export const GetTagAllList = async () => {
     try {
         const response = await axiosInstance.get(`/recipe/tag/getall`);
-        console.log("Теги:", response.data);
+        //console.log("Теги:", response.data);
         return response.data;
     } catch (error: any) {
         handleError(error);
-        console.error(
+        /*console.error(
             "Ошибка получения тегов:",
             error.response ? error.response.data : error.message
-        );
+        );*/
         return undefined;
     }
 };
@@ -255,14 +255,14 @@ export const GetTagAllList = async () => {
 export const GetPopularTagList = async () => {
     try {
         const response = await axiosInstance.get(`/recipe/tag/getpopular`);
-        console.log("Теги:", response.data);
+        //console.log("Теги:", response.data);
         return response.data;
     } catch (error: any) {
         handleError(error);
-        console.error(
+        /*console.error(
             "Ошибка получения тегов:",
             error.response ? error.response.data : error.message
-        );
+        );*/
         return undefined;
     }
 };
@@ -274,14 +274,14 @@ export const GetMostLikedRecipes = async (): Promise<
         const response = await axiosInstance.get<ApiResponseRecipe>(
             `/recipe/mostliked`
         );
-        console.log("Залайканные рецепты:", response.data);
+        //console.log("Залайканные рецепты:", response.data);
         return response.data;
     } catch (error: any) {
         handleError(error);
-        console.error(
+        /*console.error(
             "Ошибка получения рецептов:",
             error.response ? error.response.data : error.message
-        );
+        );*/
         return undefined;
     }
 };
@@ -293,14 +293,14 @@ export const SearchRecipes = async (
         const response = await axiosInstance.get<ApiResponseRecipe>(
             `/recipe/search/${searchString}`
         );
-        console.log("Найденные рецепты:", response.data);
+        //console.log("Найденные рецепты:", response.data);
         return response.data;
     } catch (error: any) {
         handleError(error);
-        console.error(
+        /*console.error(
             "Ошибка получения рецептов:",
             error.response ? error.response.data : error.message
-        );
+        );*/
         return undefined;
     }
 };

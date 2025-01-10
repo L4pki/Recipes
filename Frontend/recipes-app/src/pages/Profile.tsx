@@ -37,7 +37,7 @@ const Profile: React.FC = () => {
                 setEditUser(userInfo);
 
                 const response = await recipesUser();
-                console.log("Полученные рецепты:", response);
+                //console.log("Полученные рецепты:", response);
                 const recipesArray = response.recipes;
                 if (!Array.isArray(recipesArray)) {
                     throw new TypeError("recipesArray не является массивом");
@@ -61,7 +61,7 @@ const Profile: React.FC = () => {
 
                 setRecipeStatuses(statusesMap);
             } catch (err) {
-                console.error("Ошибка при загрузке данных:", err);
+                //console.error("Ошибка при загрузке данных:", err);
                 setError(
                     "Ошибка при загрузке данных о пользователе или рецептах"
                 );
@@ -168,7 +168,7 @@ const Profile: React.FC = () => {
                 });
             }
         } catch (err) {
-            console.error(err);
+            //console.error(err);
             setError("Ошибка при установке лайка");
         }
     };
@@ -216,7 +216,7 @@ const Profile: React.FC = () => {
                 });
             }
         } catch (err) {
-            console.error("Error in handleStar:", err);
+            //console.error("Error in handleStar:", err);
             setError("Ошибка при установке звезды");
         }
     };

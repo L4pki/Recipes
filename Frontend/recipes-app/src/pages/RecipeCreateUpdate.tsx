@@ -42,11 +42,11 @@ const RecipeCreate: React.FC = () => {
         const fetchTags = async () => {
             try {
                 const response = await GetTagAllList();
-                console.log("Полученные теги:", response);
+                //console.log("Полученные теги:", response);
                 const tagsList: { name: string }[] = response;
                 setTags(tagsList);
             } catch (error) {
-                console.error("Ошибка при получении тегов:", error);
+                //console.error("Ошибка при получении тегов:", error);
             }
         };
 
@@ -79,7 +79,7 @@ const RecipeCreate: React.FC = () => {
                         idRecipe: Number(id),
                         tags: recipeData.recipe.tags,
                     };
-                    console.log(transformedData);
+                    //console.log(transformedData);
                     setFormData(transformedData);
                 }
             };
@@ -118,7 +118,7 @@ const RecipeCreate: React.FC = () => {
             return;
         }
 
-        console.log(formData);
+        //console.log(formData);
 
         if (formData.idRecipe) {
             const updateRecipeResponse = await UpdateRecipeApi(
